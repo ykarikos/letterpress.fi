@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>draggable demo</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css">
+  <style>
+  .box {
+    width: 50px;
+    height: 50px;
+    background: #ccc;
+    border: 1px solid;
+    display: inline-block;
+    padding: 5px;
+    margin: 0;
+  }
+  #sortable {
+    border: 1px solid;
+    padding: 30px;
+    height: 100px;
+  }
+  </style>
+  <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+</head>
+<body>
+
+<div id="sortable">
+<span class="box">drag</span>
+<span class="box">sort</span>
+<span class="box">one</span>
+<span class="box">two</span>
+<span class="box">three</span>
+</div>
+ 
+<script>
+$( "#sortable" ).sortable();
+</script>
+ 
+</body>
+</html>
