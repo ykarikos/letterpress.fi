@@ -24,6 +24,7 @@ body {
     border: 1px #aaa solid;
     font-size: 45px;
     font-weight: bold;
+    position: absolute;
 }
 #board div {
     height: 90px;
@@ -41,6 +42,10 @@ body {
 <script src="js/jquery-1.9.0.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	init();
+    });
+
+var init = function() {
     var alphabet = "ABCDEFGHIJKLMNOPRSTUVYÄÖ";
     $board = $('#board');
     for (var i = 0; i < 5; i += 1) {
@@ -49,10 +54,15 @@ $(document).ready(function() {
 	for (var j = 0; j < 5; j += 1) {
 	    var letter = alphabet.substr(Math.random() * alphabet.length, 1);
 	    $letter = $("<span>" + letter + "</span>");
+	    //		$letter.data("coordinates", i + "," + j);
+	    $letter.css("left", j*80);
 	    $row.append($letter);
+	    $letter.click(function() {
+		    $(this).hide();
+	    });
 	}
     }
-});
+};
 </script>
 </head>
 <body>
