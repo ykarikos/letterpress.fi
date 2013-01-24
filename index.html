@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Letterpress</title>
+<style type="text/css">
+body {
+    font-family: Helvetica;
+    background: #ffe;
+    text-align: center;
+}
+
+#selected {
+    height: 100px
+}
+
+#board span {
+    background: #eff;
+    display: inline-block;
+    padding: 20px 15px 10px 15px;
+    width: 50px;
+    height: 60px;
+    border: 1px #aaa solid;
+    font-size: 45px;
+    font-weight: bold;
+}
+#board div {
+    height: 90px;
+    margin: 0;
+    padding: 0;
+}
+
+</style>
+
+<!--
+<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+<script type="text/javascript">
+</script>
+-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var alphabet = "ABCDEFGHIJKLMNOPRSTUVYÄÖ";
+    $board = $('#board');
+    for (var i = 0; i < 5; i += 1) {
+	var $row = $("<div/>");
+	$board.append($row);
+	for (var j = 0; j < 5; j += 1) {
+	    var letter = alphabet.substr(Math.random() * alphabet.length, 1);
+	    $letter = $("<span>" + letter + "</span>");
+	    $row.append($letter);
+	}
+    }
+});
+</script>
+</head>
+<body>
+<h1>Letterpress</h1>
+<div id="selected">
+</div>
+<div id="board">
+</div>
+
+</body>
+</html>
+
