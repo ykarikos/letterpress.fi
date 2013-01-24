@@ -23,8 +23,8 @@ body {
 #board span, #selected li {
     background: #eff;
     padding: 20px 15px 10px 15px;
-    width: 50px;
-    height: 60px;
+    width: 49px;
+    height: 59px;
     border: 1px #aaa solid;
     font-size: 45px;
     font-weight: bold;
@@ -79,8 +79,10 @@ var select = function() {
 };
 
 var init = function() {
-    var alphabet = "ABCDEFGHIJKLMNOPRSTUVYÄÖ";
     $board = $('#board');
+    $board.find("span").click(select);
+    /*
+    var alphabet = "ABCDEFGHIJKLMNOPRSTUVYÄÖ";
     for (var i = 0; i < 5; i += 1) {
 	var $row = $("<div/>");
 	$board.append($row);
@@ -93,14 +95,17 @@ var init = function() {
 	    $letter.click(select);
 	}
     }
+    */
 };
 </script>
 </head>
 <body>
 <ul id="selected">
 </ul>
+
 <div id="board">
-</div>
+<div><span style="left: 0px;" data-coordinates="0,0">M</span><span style="left: 80px;" data-coordinates="0,1">Ä</span><span style="left: 160px;" data-coordinates="0,2">Y</span><span style="left: 240px;" data-coordinates="0,3">N</span><span style="left: 320px;" data-coordinates="0,4">K</span></div><div><span style="left: 0px;">J</span><span style="left: 80px;">O</span><span style="left: 160px;">E</span><span style="left: 240px;">B</span><span style="left: 320px;">C</span></div><div><span style="left: 0px;">M</span><span style="left: 80px;">L</span><span style="left: 160px;">V</span><span style="left: 240px;">J</span><span style="left: 320px;">V</span></div><div><span style="left: 0px;">E</span><span style="left: 80px;">V</span><span style="left: 160px;">M</span><span style="left: 240px;">Ä</span><span style="left: 320px;">U</span></div><div><span style="left: 0px;">V</span><span style="left: 80px;">Ö</span><span style="left: 160px;">P</span><span style="left: 240px;">D</span><span style="left: 320px;">N</span></div></div>
+
 
 </body>
 </html>
