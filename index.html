@@ -12,20 +12,29 @@ body {
 }
 
 #selected {
-    height: 100px
+    height: 100px;
 }
 
-#board span {
+#selected li {
+    float: left;
+    list-style: none;
+}
+
+#board span, #selected li {
     background: #eff;
-    display: inline-block;
     padding: 20px 15px 10px 15px;
     width: 50px;
     height: 60px;
     border: 1px #aaa solid;
     font-size: 45px;
     font-weight: bold;
-    position: absolute;
 }
+
+#board span {
+    position: absolute;
+    display: inline-block;
+}
+
 #board div {
     height: 90px;
     margin: 0;
@@ -40,10 +49,24 @@ body {
 </script>
 -->
 <script src="js/jquery-1.9.0.js"></script>
+<script src="js/jquery-ui.js"></script>
 <script type="text/javascript">
+var $selected;
+
 $(document).ready(function() {
-	init();
-    });
+  init();
+  $selected = $("#selected");
+  $selected.sortable();
+});
+
+
+var select = function() {
+    $this = $(this);
+    var $li = $("<li>");
+    $li.text($this.text());
+    $selected.append($li);
+    $this.hide();
+};
 
 var init = function() {
     var alphabet = "ABCDEFGHIJKLMNOPRSTUVYÄÖ";
@@ -57,18 +80,15 @@ var init = function() {
 	    //		$letter.data("coordinates", i + "," + j);
 	    $letter.css("left", j*80);
 	    $row.append($letter);
-	    $letter.click(function() {
-		    $(this).hide();
-	    });
+	    $letter.click(select);
 	}
     }
 };
 </script>
 </head>
 <body>
-<h1>Letterpress</h1>
-<div id="selected">
-</div>
+<ul id="selected">
+</ul>
 <div id="board">
 </div>
 
