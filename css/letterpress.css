@@ -1,0 +1,36 @@
+body {
+    font-family: Helvetica;
+    background: #ffe;
+    text-align: center;
+}
+
+#selected {
+    height: 100px;
+}
+
+#selected li {
+    float: left;
+    list-style: none;
+}
+
+#board span, #selected li {
+    background: #eff;
+    padding: 20px 15px 10px 15px;
+    width: 49px;
+    height: 59px;
+    border: 1px #aaa solid;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+#board span {
+    position: absolute;
+    display: inline-block;
+}
+
+#board div {
+    height: 90px;
+    margin: 0;
+    padding: 0;
+}
+

@@ -1,103 +1,12 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
  <title>Letterpress</title>
-<style type="text/css">
-body {
-    font-family: Helvetica;
-    background: #ffe;
-    text-align: center;
-}
-
-#selected {
-    height: 100px;
-}
-
-#selected li {
-    float: left;
-    list-style: none;
-}
-
-#board span, #selected li {
-    background: #eff;
-    padding: 20px 15px 10px 15px;
-    width: 49px;
-    height: 59px;
-    border: 1px #aaa solid;
-    font-size: 45px;
-    font-weight: bold;
-}
-
-#board span {
-    position: absolute;
-    display: inline-block;
-}
-
-#board div {
-    height: 90px;
-    margin: 0;
-    padding: 0;
-}
-
-</style>
-
-<!--
-<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
-<script type="text/javascript">
-</script>
--->
+<link rel="stylesheet" href="css/letterpress.css" type="text/css" media="screen">
 <script src="js/jquery-1.9.0.js"></script>
 <script src="js/jquery-ui.js"></script>
-<script type="text/javascript">
-var $selected;
-var $board;
-
-$(document).ready(function() {
-    init();
-    $selected = $("#selected");
-    $selected.sortable();
-});
-
-var deselect = function() {
-    var $this = $(this);
-    var coordinates = $this.data("coordinates");
-    var $tile = $board.find("[data-coordinates='" + coordinates +"']");
-    $tile.toggle();
-    $this.remove();
-};
-
-var select = function() {
-    var $this = $(this);
-    var $li = $("<li>");
-    $li.text($this.text());
-    $li.data("coordinates", $this.data("coordinates"));
-    $selected.append($li);
-    $li.click(deselect);
-    $this.toggle();
-};
-
-var init = function() {
-    $board = $('#board');
-    $board.find("span").click(select);
-    /*
-    var alphabet = "ABCDEFGHIJKLMNOPRSTUVYÄÖ";
-    for (var i = 0; i < 5; i += 1) {
-	var $row = $("<div/>");
-	$board.append($row);
-	for (var j = 0; j < 5; j += 1) {
-	    var letter = alphabet.substr(Math.random() * alphabet.length, 1);
-	    $letter = $("<span>" + letter + "</span>");
-	    $letter.data("coordinates", i + "," + j);
-	    $letter.css("left", j*80);
-	    $row.append($letter);
-	    $letter.click(select);
-	}
-    }
-    */
-};
-</script>
+<script src="js/letterpress.js"></script>
 </head>
 <body>
 <ul id="selected">
