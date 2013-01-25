@@ -1,0 +1,8 @@
+@(tile: Tile)
+@left(id: Int) = @{
+  (id % 5) * 80
+}
+@top(id: Int) = @{
+  200 + id / 5 * 90
+ }
+<span style="left: @left(tile.id)px; top: @top(tile.id)px;" data-id="@tile.id">@tile.letter</span>

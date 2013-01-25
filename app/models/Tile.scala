@@ -1,3 +1,3 @@
 package models
 
-case class Tile(letter: Char)
+case class Tile(letter: Char, id: Int)
