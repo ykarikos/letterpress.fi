@@ -20,6 +20,7 @@ var select = function() {
     var $li = $("<li>");
     $li.text($this.text());
     $li.data("id", $this.data("id"));
+    $li.addClass($this.attr('class'));
     $selected.append($li);
     $li.click(deselect);
     $this.toggle();

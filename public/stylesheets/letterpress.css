@@ -23,22 +23,22 @@ body {
     color: #302d25;
 }
 
-#board .blue {
+#board .blue, #selected .blue {
     background: #c388e2;
     color: #271b2d;
 }
 
-#board .blueLocked {
+#board .blueLocked, #selected .blueLocked {
     background: #8c25ff;
     color: #e8d3ff;
 }
 
-#board .red {
+#board .red, #selected .red {
     background: #f4a685;
     color: #30211a;
 }
 
-#board .redLocked {
+#board .redLocked, #selected .redLocked {
     background: #ed6146;
     color: #2f130e;
 }
