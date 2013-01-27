@@ -1,6 +1,6 @@
 body {
     font-family: Helvetica;
-    background: #ffe;
+    background: #fbecc5;
     text-align: center;
 }
 
@@ -14,13 +14,33 @@ body {
 }
 
 #board span, #selected li {
-    background: #eff;
+    background: #f0e2bd;
     padding: 20px 15px 10px 15px;
-    width: 49px;
-    height: 59px;
-    border: 1px #aaa solid;
+    width: 50px;
+    height: 60px;
     font-size: 45px;
     font-weight: bold;
+    color: #302d25;
+}
+
+#board .blue {
+    background: #c388e2;
+    color: #271b2d;
+}
+
+#board .blueLocked {
+    background: #8c25ff;
+    color: #e8d3ff;
+}
+
+#board .red {
+    background: #f4a685;
+    color: #30211a;
+}
+
+#board .redLocked {
+    background: #ed6146;
+    color: #2f130e;
 }
 
 #board span {
