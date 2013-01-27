@@ -4,5 +4,10 @@
 }
 @top(id: Int) = @{
   200 + id / 5 * 90
- }
-<span style="left: @left(tile.id)px; top: @top(tile.id)px;" data-id="@tile.id">@tile.letter</span>
+}
+@cssclass(c: String) = {
+  @if(!c.isEmpty()) {
+    class=@c
+  }
+}
+<span @cssclass(tile.owner) style="left: @left(tile.id)px; top: @top(tile.id)px;" data-id="@tile.id">@tile.letter</span>
