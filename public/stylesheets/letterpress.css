@@ -1,11 +1,22 @@
 body {
-    font-family: Helvetica;
+    font-family: 'Varela Round', Helvetica, sans-serif;
     background: #fbecc5;
     text-align: center;
 }
 
+#board, #selected {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#board {
+    width: 400px;
+}
+
 #selected {
     height: 100px;
+    text-align: center;
 }
 
 #selected li {
@@ -15,10 +26,10 @@ body {
 
 #board span, #selected li {
     background: #f0e2bd;
-    padding: 20px 15px 10px 15px;
+    padding: 20px 15px 10px 15px;	
     width: 50px;
     height: 60px;
-    font-size: 45px;
+    font-size: 50px;
     font-weight: bold;
     color: #302d25;
 }
