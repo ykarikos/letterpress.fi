@@ -16,17 +16,23 @@ body {
 
 #selected {
     height: 100px;
-    text-align: center;
+    padding: 0;
+    display: inline-block;
 }
 
 #selected li {
     float: left;
     list-style: none;
+    width: 50px;
+    padding: 20px 15px 10px 15px;	
+}
+
+#board span {
+    padding: 20px 15px 10px 15px;	
 }
 
 #board span, #selected li {
     background: #f0e2bd;
-    padding: 20px 15px 10px 15px;	
     width: 50px;
     height: 60px;
     font-size: 50px;
