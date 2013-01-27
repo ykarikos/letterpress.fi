@@ -5,12 +5,13 @@ body {
 }
 
 #board, #selected {
-    position: relative;
     margin-left: auto;
     margin-right: auto;
 }
 
 #board {
+    position: relative;
+    top: -200px;
     width: 400px;
 }
 
