@@ -1,4 +1,12 @@
-This is your new Play 2.0 application
-=====================================
+Letterpress.fi
+==============
 
-This file will be packaged with your application, when using `play dist`.
+Attempt to create a clone for Letterpress (http://www.atebits.com/letterpress/)
+in the web using Finnish language.
+
+Ideas for improvement:
+ * language selection
+
+Current bugs:
+ * Firefox: displays too bold font
+ * Firefox: jquery sortable triggers click
