@@ -15,21 +15,14 @@ object Application extends Controller {
     Ok(views.html.index())
   }
   
-  def game = Action {
+  def newgame(name: String) = Action {
     val tiles:List[Tile] = for (i <- List.range(0,25)) 
-      yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, randomOwner)
-    val board = Board(tiles)
-    Ok(views.html.game(board))
+      yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, "")
+    val game = Game(1, tiles, Player(name), null)
+    Ok(views.html.newgame(game))
   }
   
-  def randomOwner: String = {
-    r.nextInt(10) match {
-      case 1 => "red"
-      case 2 => "blue"
-      case 3 => "redLocked"
-      case 4 => "blueLocked"
-      case _ => ""
-    }
+  def word(word: String) = Action {
+    Ok("played word " + word)
   }
-  
 }

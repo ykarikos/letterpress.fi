@@ -1,0 +1,26 @@
+@(game: Game)
+
+@import tags._
+@import models._
+
+@main {
+
+<ul class="players">
+@if(game.playerOne != null) {
+<li>@game.playerOne</li>
+}
+@if(game.playerTwo != null) {
+<li>@game.playerTwo</li>
+}
+</ul>
+
+<ul id="selected">
+</ul>
+
+<div id="board">
+
+@for(tile <- game.tiles) {
+	@tilespan(tile)
+}
+</div>
+}

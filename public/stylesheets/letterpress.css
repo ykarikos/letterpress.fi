@@ -4,6 +4,10 @@ body {
     text-align: center;
 }
 
+.players li {
+	list-style: none;
+}
+
 #board, #selected {
     margin-left: auto;
     margin-right: auto;
