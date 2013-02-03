@@ -8,14 +8,23 @@ import play.api.Play.current
 case class Game(id: Long, tiles: List[Tile], playerOne: Player, playerTwo: Player)
 
 object Game {
-  /*
-  def create(tiles: List[Tile], playerOne: Player, playerTwo: Player) {
+  def create(game: Game) {
     DB.withConnection { implicit c =>
       SQL("insert into game (tiles, playerOne, playerTwo) values " +
           "({tiles}, {playerOne}, {playerTwo})").on(
-              'tiles -> tiles
+              'tiles -> serializeTiles(game.tiles)
               )
     }
   }
-  */
+  
+  def serializeTiles(tiles: List[Tile]) =
+   (for (t <- tiles) yield (t.letter + Game.tileOwnerToString(t.owner))).mkString
+    
+  def tileOwnerToString(owner: Option[String]) =
+    owner match {
+    case Some(o) => 
+      o
+    case None =>
+      "0"
+  }
 }

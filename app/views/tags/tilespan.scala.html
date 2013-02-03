@@ -5,8 +5,8 @@
 @top(id: Int) = @{
   200 + id / 5 * 90
 }
-@cssclass(c: String) = {
-  @if(!c.isEmpty()) {
+@cssclass(c: Option[String]) = {
+  @if(!c.isEmpty) {
     class=@c
   }
 }
