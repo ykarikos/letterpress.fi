@@ -17,8 +17,9 @@ object Application extends Controller {
   }
   
   def newgame(name: String) = Action {
+    val owners = TileOwner.values.toList
     val tiles:List[Tile] = for (i <- List.range(0,25)) 
-      yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, Neither)
+      yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, owners(r.nextInt(owners.length)))
     val game = Game(1, tiles, Player(name), null)
     Ok(views.html.newgame(game))
   }

@@ -45,22 +45,22 @@ body {
     color: #2e2e2d;
 }
 
-#board .blue, #selected .blue {
+#board .player1, #selected .player1 {
     background: #78c8f5;
     color: #182831;
 }
 
-#board .blueLocked, #selected .blueLocked {
+#board .player3, #selected .player3 {
     background: #00a2ff;
     color: #002033;
 }
 
-#board .red, #selected .red {
+#board .player2, #selected .player2 {
     background: #f7998d;
     color: #311e1c;
 }
 
-#board .redLocked, #selected .redLocked {
+#board .player4, #selected .player4 {
     background: #ff432f;
     color: #330d09;
 }

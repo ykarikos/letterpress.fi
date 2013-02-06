@@ -8,7 +8,7 @@
 }
 @cssclass(c: TileOwner) = {
   @if(c != Neither) {
-    class=@c.toString
+    class=player@c.toString
   }
 }
 <span @cssclass(tile.owner) style="left: @left(tile.id)px; top: @top(tile.id)px;" data-id="@tile.id">@tile.letter</span>
