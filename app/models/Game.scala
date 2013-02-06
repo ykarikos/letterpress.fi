@@ -1,5 +1,6 @@
 package models
 
+import models.TileOwner._
 import anorm._
 import anorm.SqlParser._
 import play.api.db._
@@ -18,13 +19,6 @@ object Game {
   }
   
   def serializeTiles(tiles: List[Tile]) =
-   (for (t <- tiles) yield (t.letter + Game.tileOwnerToString(t.owner))).mkString
-    
-  def tileOwnerToString(owner: Option[String]) =
-    owner match {
-    case Some(o) => 
-      o
-    case None =>
-      "0"
-  }
+   (for (t <- tiles) yield (t.letter + t.owner.toString)).mkString
+   
 }

@@ -1,13 +1,14 @@
 @(tile: Tile)
+@import models.TileOwner._
 @left(id: Int) = @{
   (id % 5) * 80
 }
 @top(id: Int) = @{
   200 + id / 5 * 90
 }
-@cssclass(c: Option[String]) = {
-  @if(!c.isEmpty) {
-    class=@c
+@cssclass(c: TileOwner) = {
+  @if(c != Neither) {
+    class=@c.toString
   }
 }
 <span @cssclass(tile.owner) style="left: @left(tile.id)px; top: @top(tile.id)px;" data-id="@tile.id">@tile.letter</span>

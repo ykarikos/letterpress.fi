@@ -4,6 +4,7 @@ import play.api._
 import play.api.mvc._
 
 import models._
+import models.TileOwner._
 import scala.util.Random
 
 object Application extends Controller {
@@ -17,7 +18,7 @@ object Application extends Controller {
   
   def newgame(name: String) = Action {
     val tiles:List[Tile] = for (i <- List.range(0,25)) 
-      yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, None)
+      yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, Neither)
     val game = Game(1, tiles, Player(name), null)
     Ok(views.html.newgame(game))
   }
