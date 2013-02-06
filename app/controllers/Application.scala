@@ -20,7 +20,7 @@ object Application extends Controller {
     val owners = TileOwner.values.toList
     val tiles:List[Tile] = for (i <- List.range(0,25)) 
       yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, owners(r.nextInt(owners.length)))
-    val game = Game(1, tiles, Player(name), null)
+    val game = Game(1, tiles, name, null)
     Ok(views.html.newgame(game))
   }
   

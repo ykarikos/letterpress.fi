@@ -6,7 +6,7 @@ import anorm.SqlParser._
 import play.api.db._
 import play.api.Play.current
 
-case class Game(id: Long, tiles: List[Tile], playerOne: Player, playerTwo: Player)
+case class Game(id: Long, tiles: List[Tile], playerOne: String, playerTwo: String)
 
 object Game {
   def create(game: Game) {
