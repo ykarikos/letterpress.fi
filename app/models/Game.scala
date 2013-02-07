@@ -13,10 +13,29 @@ object Game {
     DB.withConnection { implicit c =>
       SQL("insert into game (tiles, playerOne, playerTwo) values " +
           "({tiles}, {playerOne}, {playerTwo})").on(
-              'tiles -> serializeTiles(game.tiles)
-              )
+              'id -> game.id,
+              'tiles -> serializeTiles(game.tiles),
+              'playerOne -> game.playerOne,
+              'playerTwo -> game.playerTwo
+              ).executeUpdate()
     }
   }
+  
+  def gameparser = {
+    get[Long]("id") ~
+    get[String]("playerOne") ~
+    get[String]("playerTwo") ~
+    get[String]("tiles") map {
+      case id~playerOne~playerTwo~tiles => Game(id, deserializeTiles(tiles), playerOne, playerTwo)
+    }
+  }
+  
+  def fetch(id: Long): Game =
+    DB.withConnection { implicit c =>
+    	SQL("select * from game where id={id}").on(
+    	    'id -> id
+    	    ).single(gameparser)
+  }    
   
   def serializeTiles(tiles: List[Tile]) =
    (for (t <- tiles) yield (t.letter + t.owner.toString)).mkString
