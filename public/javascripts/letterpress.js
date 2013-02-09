@@ -26,7 +26,29 @@ var select = function() {
     $this.toggle();
 };
 
+var clear = function() {
+	$selected.find("li").click();
+};
+
+var submit = function() {
+	var word = "";
+	$selected.find("li").each(function() {
+		word += $(this).text();
+	});
+
+	$.ajax("/submit/" + word)
+    .done(function(data) {
+    	if (data == "OK") {
+    		location.reload();
+    	} else {
+    		alert(data + " is not a valid word");
+    	}
+    });
+};
+
 var init = function() {
     $board = $('#board');
     $board.find("span").click(select);
+    $('.submit').click(submit);
+    $('.clear').click(clear);
 };

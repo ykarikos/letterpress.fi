@@ -5,8 +5,8 @@
 # Home page
 GET     /                           controllers.Application.index
 POST    /newgame                    controllers.Application.newgame
-GET		/game/:id				controllers.Application.getgame(id)
-POST    /word						controllers.Application.word(word)
+GET		/game/:id					controllers.Application.getgame(id)
+GET    	/submit/:word				controllers.Application.submit(word)
 GET     /dbtest						controllers.Application.dbtest
 
 # Map static resources from the /public folder to the /assets URL path

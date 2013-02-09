@@ -15,6 +15,7 @@ import play.api.data.Forms._
 
 object Application extends Controller {
   
+  val words = scala.io.Source.fromFile("conf/wordlist/fi.txt", "UTF-8").getLines.toVector
   val alphabet = "ABCDEFGHIJKLMNOPRSTUVYÄÖ"
   val r = Random
   
@@ -54,8 +55,11 @@ object Application extends Controller {
 	}
   }
   
-  def word(word: String) = Action {
-    Ok("played word " + word)
+  def submit(word: String) = Action {
+    if (words.contains(word.toLowerCase()))
+      Ok("OK")
+    else
+      Ok("FAIL")
   }
   
 	val newgameForm = Form(

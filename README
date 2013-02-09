@@ -6,10 +6,11 @@ in the web using Finnish language.
 
 Todo:
  * submit, check and save played words
- * form for playerTwo joining a game
+ * form for playerTwo joining a game -> how to authenticate playerOne and playerTwo?
  * count points
  * check tile ownerships and update locked tiles
  * fix index form look&feel
+ * use weighed alphabet (based on letter frequency)x
  * use mongodb
 
 Ideas for improvement:
