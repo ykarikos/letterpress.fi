@@ -8,7 +8,8 @@ CREATE TABLE game (
     playerOne varchar(50) not null default '',
     playerTwo varchar(50),
     playerOneScore int not null default 0,
-    playerTwoScore int not null default 0
+    playerTwoScore int not null default 0,
+    turn varchar(1) not null default '1'
 );
  
 # --- !Downs

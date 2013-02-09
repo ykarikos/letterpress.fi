@@ -6,8 +6,17 @@ import anorm.SqlParser._
 import play.api.db._
 import play.api.Play.current
 
+object PlayerTurn extends Enumeration {
+	type PlayerTurn = Value
+	val PlayerOne = Value("1")
+	val PlayerTwo = Value("2")
+}
+
+import PlayerTurn._
+
 case class Game(id: String, tiles: List[Tile], playerOne: String, 
-    playerTwo: Option[String], playerOneScore: Int, playerTwoScore: Int)
+    playerTwo: Option[String], playerOneScore: Int, playerTwoScore: Int, 
+    turn: PlayerTurn)
 
 object Game {
   def create(game: Game) {
@@ -27,18 +36,22 @@ object Game {
     get[Option[String]]("playerTwo") ~
     get[String]("tiles") ~
     get[Int]("playerOneScore") ~
-    get[Int]("playerTwoScore") map {
-      case id~playerOne~playerTwo~tiles~playerOneScore~playerTwoScore => 
-        Game(id, deserializeTiles(tiles), playerOne, playerTwo, playerOneScore, playerTwoScore)
+    get[Int]("playerTwoScore") ~
+    get[String]("turn") map {
+      case id~playerOne~playerTwo~tiles~playerOneScore~playerTwoScore~turn => 
+        Game(id, deserializeTiles(tiles), playerOne, playerTwo, 
+            playerOneScore, playerTwoScore, PlayerTurn.withName(turn))
     }
   }
   
-  def updateScores(playerOneAdd: Int, playerTwoAdd: Int, id: String) {
+  def updateScores(playerOneAdd: Int, playerTwoAdd: Int, id: String, turn: PlayerTurn) {
     DB.withConnection { implicit c =>
       SQL("update game set playerOneScore=playerOneScore+{playerOneAdd}, "+
-          "playerTwoScore=playerTwoScore+{playerTwoAdd} where id={id}").on(
+          "playerTwoScore=playerTwoScore+{playerTwoAdd}, " +
+          "turn={turn} where id={id}").on(
               'playerOneAdd -> playerOneAdd,
               'playerTwoAdd -> playerTwoAdd,
+              'turn -> turn.toString,
               'id -> id
               ).executeUpdate()
       }
@@ -53,7 +66,11 @@ object Game {
   
   def submit(word: String, id: String) {
     // TODO: Save played words
-    updateScores(word.length(), 0, id)
+    val game = fetch(id)
+    if (game.turn == PlayerTurn.PlayerOne)
+	  updateScores(word.length(), 0, id, PlayerTurn.PlayerTwo)
+	else
+	  updateScores(0, word.length(), id, PlayerTurn.PlayerOne)
   } 
   
   def serializeTiles(tiles: List[Tile]) =
