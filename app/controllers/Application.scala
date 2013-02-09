@@ -27,7 +27,7 @@ object Application extends Controller {
         errors => BadRequest(views.html.index(newgameForm)),
         name => {
 		    val id = randomId
-		    val game = Game(id, randomTiles, name, "", 0, 0)
+		    val game = Game(id, randomTiles, name, None, 0, 0)
 		    Game.create(game)
 		    Redirect(routes.Application.getgame(id))
 		  }

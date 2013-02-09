@@ -4,9 +4,18 @@ Letterpress.fi
 Attempt to create a clone for Letterpress (http://www.atebits.com/letterpress/)
 in the web using Finnish language.
 
+Todo:
+ * form for playerTwo joining a game
+ * submit, check and save played words
+ * count points
+ * check tile ownerships and update locked tiles
+ * fix index form look&feel
+ * use mongodb
+
 Ideas for improvement:
  * language selection
 
 Current bugs:
  * Firefox: displays too bold font
  * Firefox: jquery sortable triggers click
+

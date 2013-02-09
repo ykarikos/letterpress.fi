@@ -6,26 +6,25 @@ import anorm.SqlParser._
 import play.api.db._
 import play.api.Play.current
 
-case class Game(id: String, tiles: List[Tile], playerOne: String, playerTwo: String, 
-    playerOneScore: Int, playerTwoScore: Int)
+case class Game(id: String, tiles: List[Tile], playerOne: String, 
+    playerTwo: Option[String], playerOneScore: Int, playerTwoScore: Int)
 
 object Game {
   def create(game: Game) {
     DB.withConnection { implicit c =>
-      SQL("insert into game (id, tiles, playerOne, playerTwo) values " +
-          "({id}, {tiles}, {playerOne}, {playerTwo})").on(
+      SQL("insert into game (id, tiles, playerOne) values " +
+          "({id}, {tiles}, {playerOne})").on(
               'id -> game.id,
               'tiles -> serializeTiles(game.tiles),
-              'playerOne -> game.playerOne,
-              'playerTwo -> game.playerTwo
-              ).executeUpdate()
+              'playerOne -> game.playerOne
+              ).executeInsert()
     }
   }
   
   def gameparser = {
     get[String]("id") ~
     get[String]("playerOne") ~
-    get[String]("playerTwo") ~
+    get[Option[String]]("playerTwo") ~
     get[String]("tiles") ~
     get[Int]("playerOneScore") ~
     get[Int]("playerTwoScore") map {
