@@ -1,1 +1,17 @@
+@(newgameForm: Form[String])
+
+@import helper._
+
+@main {
 <h1>Letterpress.fi</h1>
+
+<p>Create a new game:
+
+    @form(routes.Application.newgame) {
+        
+        @inputText(newgameForm("name")) 
+        
+        <input type="submit" value="Create game">
+        
+    }
+}

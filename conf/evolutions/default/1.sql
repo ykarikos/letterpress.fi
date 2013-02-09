@@ -2,15 +2,15 @@
  
 # --- !Ups
 
-CREATE SEQUENCE game_id_seq;
 CREATE TABLE game (
-    id integer NOT NULL DEFAULT nextval('game_id_seq'),
-    tiles varchar(50),
-    playerOne varchar(50),
-    playerTwo varchar(50)
+    id varchar(50) NOT NULL DEFAULT '',
+    tiles varchar(50) not null default '',
+    playerOne varchar(50) not null default '',
+    playerTwo varchar(50) not null default '',
+    playerOneScore int not null default 0,
+    playerTwoScore int not null default 0
 );
  
 # --- !Downs
  
 DROP TABLE game;
-DROP SEQUENCE game_id_seq;

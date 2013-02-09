@@ -6,13 +6,14 @@ import anorm.SqlParser._
 import play.api.db._
 import play.api.Play.current
 
-case class Game(id: Long, tiles: List[Tile], playerOne: String, playerTwo: String)
+case class Game(id: String, tiles: List[Tile], playerOne: String, playerTwo: String, 
+    playerOneScore: Int, playerTwoScore: Int)
 
 object Game {
   def create(game: Game) {
     DB.withConnection { implicit c =>
-      SQL("insert into game (tiles, playerOne, playerTwo) values " +
-          "({tiles}, {playerOne}, {playerTwo})").on(
+      SQL("insert into game (id, tiles, playerOne, playerTwo) values " +
+          "({id}, {tiles}, {playerOne}, {playerTwo})").on(
               'id -> game.id,
               'tiles -> serializeTiles(game.tiles),
               'playerOne -> game.playerOne,
@@ -22,20 +23,23 @@ object Game {
   }
   
   def gameparser = {
-    get[Long]("id") ~
+    get[String]("id") ~
     get[String]("playerOne") ~
     get[String]("playerTwo") ~
-    get[String]("tiles") map {
-      case id~playerOne~playerTwo~tiles => Game(id, deserializeTiles(tiles), playerOne, playerTwo)
+    get[String]("tiles") ~
+    get[Int]("playerOneScore") ~
+    get[Int]("playerTwoScore") map {
+      case id~playerOne~playerTwo~tiles~playerOneScore~playerTwoScore => 
+        Game(id, deserializeTiles(tiles), playerOne, playerTwo, playerOneScore, playerTwoScore)
     }
   }
   
-  def fetch(id: Long): Game =
+  def fetch(id: String): Game =
     DB.withConnection { implicit c =>
     	SQL("select * from game where id={id}").on(
     	    'id -> id
     	    ).single(gameparser)
-  }    
+  }
   
   def serializeTiles(tiles: List[Tile]) =
    (for (t <- tiles) yield (t.letter + t.owner.toString)).mkString

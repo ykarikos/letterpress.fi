@@ -4,8 +4,8 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /newgame                    controllers.Application.newgame(name)
-GET		/getgame					controllers.Application.getgame(id: Long)
+POST    /newgame                    controllers.Application.newgame
+GET		/getgame/:id				controllers.Application.getgame(id)
 POST    /word						controllers.Application.word(word)
 GET     /dbtest						controllers.Application.dbtest
 

@@ -10,6 +10,8 @@ import anorm._
 import anorm.SqlParser._
 import play.api.db.DB
 import play.api.Play.current
+import play.api.data._
+import play.api.data.Forms._
 
 object Application extends Controller {
   
@@ -17,21 +19,30 @@ object Application extends Controller {
   val r = Random
   
   def index = Action {
-    Ok(views.html.index())
+    Ok(views.html.index(newgameForm))
   }
   
-  def newgame(name: String) = Action {
-    val owners = TileOwner.values.toList
-    val tiles:List[Tile] = for (i <- List.range(0,25)) 
+  def newgame = Action { implicit request =>
+    newgameForm.bindFromRequest.fold( 
+        errors => BadRequest(views.html.index(newgameForm)),
+        name => {
+		    val id = randomId
+		    val game = Game(id, randomTiles, name, "", 0, 0)
+		    Game.create(game)
+		    Redirect(routes.Application.getgame(id))
+		  }
+        )
+  }
+  
+  def randomId: String =
+    r.alphanumeric.take(16).mkString
+  
+  def randomTiles: List[Tile] = 
+    for (i <- List.range(0,25)) 
       yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, Neither)
-    val game = Game(1, tiles, name, "")
-    Game.create(game)
-    Ok(views.html.newgame(game))
-  }
   
-  def getgame(id: Long) = Action {
-    val game = Game.fetch(id)
-    Ok(views.html.newgame(game))
+  def getgame(id: String) = Action {
+    Ok(views.html.game(Game.fetch(id)))
   }
   
   def dbtest = Action {
@@ -46,4 +57,8 @@ object Application extends Controller {
   def word(word: String) = Action {
     Ok("played word " + word)
   }
+  
+	val newgameForm = Form(
+	  "name" -> nonEmptyText
+	)
 }
