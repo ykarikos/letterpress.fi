@@ -50,15 +50,18 @@ object Application extends Controller {
 	DB.withConnection { implicit c =>
 	//val result: Long = SQL("select count(*) from game").as(scalar[Long].single)
 	//val result: Int = SQL("delete from game").executeUpdate()
-	val result: Long = SQL("select id from game limit 1").as(scalar[Long].single)
+	SQL("update game set playerOneScore=playerOneScore+5").executeUpdate()
+	val result: Int = SQL("select playerOneScore from game limit 1").as(scalar[Int].single)
 	  Ok("result: " + result)
 	}
   }
   
-  def submit(word: String) = Action {
-    if (words.contains(word.toLowerCase()))
+  def submit(word: String, id: String) = Action {
+    // TODO check played words for this game
+    if (words.contains(word.toLowerCase())) {
+      Game.submit(word, id)
       Ok("OK")
-    else
+    } else
       Ok("FAIL")
   }
   

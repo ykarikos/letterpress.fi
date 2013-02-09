@@ -36,12 +36,17 @@ var submit = function() {
 		word += $(this).text();
 	});
 
-	$.ajax("/submit/" + word)
-    .done(function(data) {
+	$.ajax({
+		url: "/submit",
+		data: {
+			word: word,
+			id: $("input[name='gameid']").val()
+		}
+	}).done(function(data) {
     	if (data == "OK") {
     		location.reload();
     	} else {
-    		alert(data + " is not a valid word");
+    		alert(word + " is not a valid word");
     	}
     });
 };

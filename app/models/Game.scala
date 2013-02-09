@@ -33,12 +33,28 @@ object Game {
     }
   }
   
+  def updateScores(playerOneAdd: Int, playerTwoAdd: Int, id: String) {
+    DB.withConnection { implicit c =>
+      SQL("update game set playerOneScore=playerOneScore+{playerOneAdd}, "+
+          "playerTwoScore=playerTwoScore+{playerTwoAdd} where id={id}").on(
+              'playerOneAdd -> playerOneAdd,
+              'playerTwoAdd -> playerTwoAdd,
+              'id -> id
+              ).executeUpdate()
+      }
+  }
+  
   def fetch(id: String): Game =
     DB.withConnection { implicit c =>
     	SQL("select * from game where id={id}").on(
     	    'id -> id
     	    ).single(gameparser)
   }
+  
+  def submit(word: String, id: String) {
+    // TODO: Save played words
+    updateScores(word.length(), 0, id)
+  } 
   
   def serializeTiles(tiles: List[Tile]) =
    (for (t <- tiles) yield (t.letter + t.owner.toString)).mkString

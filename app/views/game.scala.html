@@ -10,15 +10,12 @@
 <input type="submit" value="Clear" class="clear">
 
 <ul class="players">
-@if(game.playerOne != null) {
-	@player(1, game.playerOne, game.playerOneScore)
-}
-@if(game.playerTwo != null) {
-	@player(2, game.playerTwo.getOrElse(""), game.playerTwoScore)
-}
+@player(1, game.playerOne, game.playerOneScore)
+@player(2, game.playerTwo.getOrElse(""), game.playerTwoScore)
 </ul>
 
 <input type="submit" value="Submit" class="submit">
+<input type="hidden" name="gameid" value="@game.id">
 
 </div>
 
