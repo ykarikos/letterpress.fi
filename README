@@ -5,8 +5,8 @@ Attempt to create a clone for Letterpress (http://www.atebits.com/letterpress/)
 in the web using Finnish language.
 
 Todo:
- * form for playerTwo joining a game
  * submit, check and save played words
+ * form for playerTwo joining a game
  * count points
  * check tile ownerships and update locked tiles
  * fix index form look&feel

@@ -5,17 +5,21 @@
 
 @main {
 
+<div class="playersContainer">
 <ul class="players">
 @if(game.playerOne != null) {
-<li>@game.playerOne</li>
+	@player(1, game.playerOne, game.playerOneScore)
 }
 @if(game.playerTwo != null) {
-<li>@game.playerTwo</li>
+	@player(2, game.playerTwo.getOrElse(""), game.playerTwoScore)
 }
 </ul>
+</div>
 
+<div>
 <ul id="selected">
 </ul>
+</div>
 
 <div id="board">
 

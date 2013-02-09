@@ -9,13 +9,44 @@ body {
     text-align: center;
 }
 
-.players li {
+.playersContainer {
+	padding-top: 10px;
+}
 
-	list-style: none;
-	span {
-		 font-size: 50px;
+.players {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    display: inline-block;
+	li {
+		float: left;
+		list-style: none;
+		width: 60px;
+		padding-left: 20px;
+		padding-right: 20px;
+		.icon {
+			line-height: 30px;
+			font-size: 90px;
+			font-weight: bold;
+		}
+		.score {
+			font-size: 24px;
+			padding-left: 7px;
+		}
+		.arrow {
+			line-height: 22px;
+			font-size: 24px;
+			padding-left: 7px;
+		}
+		.player1 {
+			color: @blueLocked;
+		}
+		.player2 {
+			color: @redLocked;
+		}
 	}
 }
+
 
 #board {
     position: relative;
@@ -34,7 +65,8 @@ body {
 }
 
 #selected {
-    height: 100px;
+	margin-top: 5px;
+	margin-bottom: 10px;
     padding: 0;
     display: inline-block;
 	li {
