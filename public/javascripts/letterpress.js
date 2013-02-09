@@ -32,15 +32,19 @@ var clear = function() {
 
 var submit = function() {
 	var word = "";
+	var tiles = "";
 	$selected.find("li").each(function() {
-		word += $(this).text();
+		var $this = $(this);
+		word += $this.text();
+		tiles += $this.data("id") + ",";
 	});
 
 	$.ajax({
 		url: "/submit",
 		data: {
 			word: word,
-			id: $("input[name='gameid']").val()
+			id: $("input[name='gameid']").val(),
+			tiles: tiles.substring(0, tiles.length-1)
 		}
 	}).done(function(data) {
     	if (data == "OK") {

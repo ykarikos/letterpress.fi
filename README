@@ -5,17 +5,18 @@ Attempt to create a clone for Letterpress (http://www.atebits.com/letterpress/)
 in the web using Finnish language.
 
 Todo:
- * indicate whose turn it is
+ * save and display used words and use for checking
  * form for playerTwo joining a game 
  -> how to authenticate playerOne and playerTwo?
  -> how to indicate that playerTwo has not yet joined
- * count points
+ * count points correctly
  * check tile ownerships and update locked tiles
- * fix index form look&feel
- * use weighed alphabet (based on letter frequency)x
- * use mongodb
+ * fix index page form look&feel
+ * use weighed alphabet (based on letter frequency)
+ * check when the game ends 
 
 Ideas for improvement:
+ * use mongodb
  * language selection
 
 Current bugs:

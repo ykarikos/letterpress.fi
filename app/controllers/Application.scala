@@ -56,10 +56,10 @@ object Application extends Controller {
 	}
   }
   
-  def submit(word: String, id: String) = Action {
+  def submit(word: String, id: String, tiles: String) = Action {
     // TODO check played words for this game
     if (words.contains(word.toLowerCase())) {
-      Game.submit(word, id)
+      Game.submit(word, id, tiles)
       Ok("OK")
     } else
       Ok("FAIL")
