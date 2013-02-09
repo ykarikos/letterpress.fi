@@ -1,0 +1,80 @@
+@blue: #78c8f5;
+@blueLocked: #00a2ff;
+@red: #f7998d;
+@redLocked: #ff432f;
+
+body {
+    font-family: 'Varela Round', Helvetica, sans-serif;
+    background: #f0efec;
+    text-align: center;
+}
+
+.players li {
+
+	list-style: none;
+	span {
+		 font-size: 50px;
+	}
+}
+
+#board {
+    position: relative;
+    top: -200px;
+    width: 400px;
+	span {
+	    padding: 20px 15px 10px 15px;	
+	    position: absolute;
+	    display: inline-block;
+	}
+	div {
+	    height: 90px;
+	    margin: 0;
+	    padding: 0;
+	}
+}
+
+#selected {
+    height: 100px;
+    padding: 0;
+    display: inline-block;
+	li {
+	    float: left;
+	    list-style: none;
+	    width: 50px;
+	    padding: 20px 15px 10px 15px;	
+	}
+}
+
+// tile colors
+#board, #selected {
+    margin-left: auto;
+    margin-right: auto;
+
+	span, li {
+	    background: #e8e7e4;
+	    width: 50px;
+	    height: 60px;
+	    font-size: 50px;
+	    font-weight: bold;
+	    color: #2e2e2d;
+	}
+	 .player1 {
+	    background: @blue;
+	    color: #182831;
+	}
+	
+	.player3 {
+	    background: @blueLocked;
+	    color: #002033;
+	}
+	
+	.player2 {
+	    background: @red;
+	    color: #311e1c;
+	}
+	
+	.player4 {
+	    background: @redLocked;
+	    color: #330d09;
+	}
+}
