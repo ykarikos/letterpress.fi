@@ -50,8 +50,10 @@ var submit = function() {
     	if (data == "OK") {
     		location.reload();
     	} else {
-    		alert(word + " is not a valid word");
+    		alert(word + " is not a valid word.");
     	}
+    }).fail(function() {
+    	alert("Submitting " + word + " failed.");
     });
 };
 

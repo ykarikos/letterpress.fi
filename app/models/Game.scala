@@ -59,12 +59,12 @@ object Game {
       }
   }
   
-  def fetch(id: String): Game =
-    DB.withConnection { implicit c =>
-    	SQL("select * from game where id={id}").on(
-    	    'id -> id
-    	    ).single(gameparser)
-  }
+  def fetch(id: String): Option[Game] =
+	    DB.withConnection { implicit c =>
+	    	SQL("select * from game where id={id}").on(
+	    	    'id -> id
+	    	    ).singleOpt(gameparser)
+	  }
 
   def turn2Owner(turn: PlayerTurn): TileOwner =
     if (turn == PlayerTurn.PlayerOne)
@@ -84,16 +84,14 @@ object Game {
     }
       
   
-  def submit(word: String, id: String, tiles: String) {
+  def submit(word: String, game: Game, tiles: String) {
     // TODO: Save played words
-    val game = fetch(id)
-    
     val newTiles = setTileOwner(game.tiles, tiles.split(",").map(s => s.toInt), game.turn)
     
     if (game.turn == PlayerTurn.PlayerOne)
-	  updateScores(word.length(), 0, id, PlayerTurn.PlayerTwo, newTiles)
+	  updateScores(word.length(), 0, game.id, PlayerTurn.PlayerTwo, newTiles)
 	else
-	  updateScores(0, word.length(), id, PlayerTurn.PlayerOne, newTiles)
+	  updateScores(0, word.length(), game.id, PlayerTurn.PlayerOne, newTiles)
   } 
   
   def serializeTiles(tiles: List[Tile]) =

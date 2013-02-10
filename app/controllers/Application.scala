@@ -12,6 +12,7 @@ import play.api.db.DB
 import play.api.Play.current
 import play.api.data._
 import play.api.data.Forms._
+import anorm.SqlMappingError
 
 object Application extends Controller {
   
@@ -43,7 +44,11 @@ object Application extends Controller {
       yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, Neither)
   
   def getgame(id: String) = Action {
-    Ok(views.html.game(Game.fetch(id)))
+    val game = Game.fetch(id)
+    if (game.isEmpty) 
+      NotFound("Game " + id + " not found")
+    else
+      Ok(views.html.game(game.get))
   }
   
   def dbtest = Action {
@@ -57,9 +62,13 @@ object Application extends Controller {
   }
   
   def submit(word: String, id: String, tiles: String) = Action {
+    val game = Game.fetch(id)
+    
     // TODO check played words for this game
-    if (words.contains(word.toLowerCase())) {
-      Game.submit(word, id, tiles)
+    if (game.isEmpty)
+      NotFound("Game " + id + " not found")
+    else if (words.contains(word.toLowerCase())) {
+      Game.submit(word, game.get, tiles)
       Ok("OK")
     } else
       Ok("FAIL")
