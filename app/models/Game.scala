@@ -21,23 +21,25 @@ object Game {
   val mongoClient =  MongoClient()
   val mongoColl = mongoClient("letterpress")("game")
 
-  def create(game: Game) { }
+  def create(game: Game) { 
+    val gameObj = MongoDBObject(
+    	"id" -> game.id,
+    	"tiles" -> serializeTiles(game.tiles),
+    	"playerOne" -> game.playerOne,
+    	"playerTwo" -> game.playerTwo,
+    	"playerOneScore" -> game.playerOneScore,
+    	"playerTwoScore" -> game.playerTwoScore,
+    	"turn" -> game.turn.toString
+    )
+    mongoColl += gameObj
+  }
   
-  def updateScores(playerOneAdd: Int, playerTwoAdd: Int, id: String, turn: PlayerTurn, tiles: List[Tile]) {
-    /*
-    DB.withConnection { implicit c =>
-      SQL("update game set playerOneScore=playerOneScore+{playerOneAdd}, "+
-          "playerTwoScore=playerTwoScore+{playerTwoAdd}, " +
-          "turn={turn}, tiles={tiles} where id={id}").on(
-              'playerOneAdd -> playerOneAdd,
-              'playerTwoAdd -> playerTwoAdd,
-              'turn -> turn.toString,
-              'tiles -> serializeTiles(tiles),
-              'id -> id
-              ).executeUpdate()
-      }
-      * 
-      */
+  def updateScores(playerOneScore: Int, playerTwoScore: Int, id: String, turn: PlayerTurn, tiles: List[Tile]) {
+    mongoColl.update(MongoDBObject("id" -> id), 
+        $set(Seq("playerOneScore" -> playerOneScore,
+            "playerTwoScore" -> playerTwoScore,
+            "turn" -> turn.toString,
+            "tiles" -> serializeTiles(tiles))))
   }
   
   def fetch(id: String): Option[Game] = {
@@ -52,7 +54,7 @@ object Game {
            gameVal.getAs[String]("playerTwo"),
            gameVal.getAsOrElse[Int]("playerOneScore", 0),
            gameVal.getAsOrElse[Int]("playerTwoScore", 0),
-           gameVal.getAsOrElse[PlayerTurn]("playerTurn", PlayerTurn.PlayerOne)))           
+           PlayerTurn.withName(gameVal.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString))))
     }
   }
   
@@ -80,9 +82,11 @@ object Game {
     val newTiles = setTileOwner(game.tiles, tiles.split(",").map(s => s.toInt), game.turn)
     
     if (game.turn == PlayerTurn.PlayerOne)
-	  updateScores(word.length(), 0, game.id, PlayerTurn.PlayerTwo, newTiles)
+	  updateScores(game.playerOneScore + word.length(), game.playerTwoScore, 
+	      game.id, PlayerTurn.PlayerTwo, newTiles)
 	else
-	  updateScores(0, word.length(), game.id, PlayerTurn.PlayerOne, newTiles)
+	  updateScores(game.playerOneScore, game.playerTwoScore + word.length(), 
+	      game.id, PlayerTurn.PlayerOne, newTiles)
   } 
   
   def serializeTiles(tiles: List[Tile]) =

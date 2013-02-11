@@ -48,15 +48,6 @@ object Application extends Controller {
   }
   
   def dbtest = Action {
-    /*
-	DB.withConnection { implicit c =>
-	//val result: Long = SQL("select count(*) from game").as(scalar[Long].single)
-	//val result: Int = SQL("delete from game").executeUpdate()
-	SQL("update game set playerOneScore=playerOneScore+5").executeUpdate()
-	val result: Int = SQL("select playerOneScore from game limit 1").as(scalar[Int].single)
-	  Ok("result: " + result)
-	}
-	*/
 	Ok("foo")
   }
   
