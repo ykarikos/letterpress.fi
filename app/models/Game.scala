@@ -1,10 +1,6 @@
 package models
 
 import models.TileOwner._
-import anorm._
-import anorm.SqlParser._
-import play.api.db._
-import play.api.Play.current
 import TileOwner._
 
 object PlayerTurn extends Enumeration {
@@ -20,32 +16,11 @@ case class Game(id: String, tiles: List[Tile], playerOne: String,
     turn: PlayerTurn)
 
 object Game {
-  def create(game: Game) {
-    DB.withConnection { implicit c =>
-      SQL("insert into game (id, tiles, playerOne) values " +
-          "({id}, {tiles}, {playerOne})").on(
-              'id -> game.id,
-              'tiles -> serializeTiles(game.tiles),
-              'playerOne -> game.playerOne
-              ).executeInsert()
-    }
-  }
   
-  def gameparser = {
-    get[String]("id") ~
-    get[String]("playerOne") ~
-    get[Option[String]]("playerTwo") ~
-    get[String]("tiles") ~
-    get[Int]("playerOneScore") ~
-    get[Int]("playerTwoScore") ~
-    get[String]("turn") map {
-      case id~playerOne~playerTwo~tiles~playerOneScore~playerTwoScore~turn => 
-        Game(id, deserializeTiles(tiles), playerOne, playerTwo, 
-            playerOneScore, playerTwoScore, PlayerTurn.withName(turn))
-    }
-  }
+  def create(game: Game) { }
   
   def updateScores(playerOneAdd: Int, playerTwoAdd: Int, id: String, turn: PlayerTurn, tiles: List[Tile]) {
+    /*
     DB.withConnection { implicit c =>
       SQL("update game set playerOneScore=playerOneScore+{playerOneAdd}, "+
           "playerTwoScore=playerTwoScore+{playerTwoAdd}, " +
@@ -57,14 +32,12 @@ object Game {
               'id -> id
               ).executeUpdate()
       }
+      * 
+      */
   }
   
-  def fetch(id: String): Option[Game] =
-	    DB.withConnection { implicit c =>
-	    	SQL("select * from game where id={id}").on(
-	    	    'id -> id
-	    	    ).singleOpt(gameparser)
-	  }
+  def fetch(id: String): Option[Game] = None
+  
 
   def turn2Owner(turn: PlayerTurn): TileOwner =
     if (turn == PlayerTurn.PlayerOne)

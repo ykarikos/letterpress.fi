@@ -6,13 +6,9 @@ import play.api.mvc._
 import models._
 import models.TileOwner._
 import scala.util.Random
-import anorm._ 
-import anorm.SqlParser._
-import play.api.db.DB
 import play.api.Play.current
 import play.api.data._
 import play.api.data.Forms._
-import anorm.SqlMappingError
 
 object Application extends Controller {
   
@@ -52,6 +48,7 @@ object Application extends Controller {
   }
   
   def dbtest = Action {
+    /*
 	DB.withConnection { implicit c =>
 	//val result: Long = SQL("select count(*) from game").as(scalar[Long].single)
 	//val result: Int = SQL("delete from game").executeUpdate()
@@ -59,6 +56,8 @@ object Application extends Controller {
 	val result: Int = SQL("select playerOneScore from game limit 1").as(scalar[Int].single)
 	  Ok("result: " + result)
 	}
+	*/
+	Ok("foo")
   }
   
   def submit(word: String, id: String, tiles: String) = Action {
