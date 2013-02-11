@@ -2,6 +2,7 @@ package models
 
 import models.TileOwner._
 import TileOwner._
+import com.mongodb.casbah.Imports._
 
 object PlayerTurn extends Enumeration {
 	type PlayerTurn = Value
@@ -16,7 +17,10 @@ case class Game(id: String, tiles: List[Tile], playerOne: String,
     turn: PlayerTurn)
 
 object Game {
-  
+
+  val mongoClient =  MongoClient()
+  val mongoColl = mongoClient("letterpress")("game")
+
   def create(game: Game) { }
   
   def updateScores(playerOneAdd: Int, playerTwoAdd: Int, id: String, turn: PlayerTurn, tiles: List[Tile]) {
@@ -36,7 +40,21 @@ object Game {
       */
   }
   
-  def fetch(id: String): Option[Game] = None
+  def fetch(id: String): Option[Game] = {
+    val game = mongoColl.findOne(MongoDBObject("id" -> id))
+    if (game.isEmpty)
+      None
+    else {
+      val gameVal = game.get
+      Some(Game(gameVal.getAsOrElse[String]("id", null),
+           deserializeTiles(gameVal.getAsOrElse[String]("tiles", "")),
+           gameVal.getAsOrElse[String]("playerOne", ""),
+           gameVal.getAs[String]("playerTwo"),
+           gameVal.getAsOrElse[Int]("playerOneScore", 0),
+           gameVal.getAsOrElse[Int]("playerTwoScore", 0),
+           gameVal.getAsOrElse[PlayerTurn]("playerTurn", PlayerTurn.PlayerOne)))           
+    }
+  }
   
 
   def turn2Owner(turn: PlayerTurn): TileOwner =
