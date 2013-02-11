@@ -25,7 +25,7 @@ object Application extends Controller {
         errors => BadRequest(views.html.index(newgameForm)),
         name => {
 		    val id = randomId
-		    val game = Game(id, randomTiles, name, None, 0, 0, PlayerTurn.PlayerOne)
+		    val game = Game(id, randomTiles, name, None, 0, 0, PlayerTurn.PlayerOne, Nil)
 		    Game.create(game)
 		    Redirect(routes.Application.getgame(id))
 		  }
@@ -54,9 +54,10 @@ object Application extends Controller {
   def submit(word: String, id: String, tiles: String) = Action {
     val game = Game.fetch(id)
     
-    // TODO check played words for this game
     if (game.isEmpty)
       NotFound("Game " + id + " not found")
+    else if (game.get.words.contains(word))
+      Ok("PLAYED")
     else if (words.contains(word.toLowerCase())) {
       Game.submit(word, game.get, tiles)
       Ok("OK")

@@ -14,7 +14,7 @@ import PlayerTurn._
 
 case class Game(id: String, tiles: List[Tile], playerOne: String, 
     playerTwo: Option[String], playerOneScore: Int, playerTwoScore: Int, 
-    turn: PlayerTurn)
+    turn: PlayerTurn, words: List[String])
 
 object Game {
 
@@ -29,7 +29,8 @@ object Game {
     	"playerTwo" -> game.playerTwo,
     	"playerOneScore" -> game.playerOneScore,
     	"playerTwoScore" -> game.playerTwoScore,
-    	"turn" -> game.turn.toString
+    	"turn" -> game.turn.toString,
+    	"words" -> game.words
     )
     mongoColl += gameObj
   }
@@ -54,7 +55,8 @@ object Game {
            gameVal.getAs[String]("playerTwo"),
            gameVal.getAsOrElse[Int]("playerOneScore", 0),
            gameVal.getAsOrElse[Int]("playerTwoScore", 0),
-           PlayerTurn.withName(gameVal.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString))))
+           PlayerTurn.withName(gameVal.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString)),
+    	   gameVal.as[MongoDBList]("words").toList collect { case s: String => s }))
     }
   }
   
@@ -78,7 +80,10 @@ object Game {
       
   
   def submit(word: String, game: Game, tiles: String) {
-    // TODO: Save played words
+	// save new word
+    mongoColl.update(MongoDBObject("id" -> game.id),
+        $push(Seq("words" -> word)))
+    
     val newTiles = setTileOwner(game.tiles, tiles.split(",").map(s => s.toInt), game.turn)
     
     if (game.turn == PlayerTurn.PlayerOne)

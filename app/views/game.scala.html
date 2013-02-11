@@ -30,4 +30,10 @@
 	@tilespan(tile)
 }
 </div>
+
+<ul class="playedWords">
+@for(word <- game.words) {
+	<li>@word</li>
+}
+</ul>
 }

@@ -122,3 +122,22 @@ body {
 	    color: #330d09;
 	}
 }
+
+.playedWords {
+	position: relative;
+	top: 450px;
+	width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+
+	li {
+		list-style: none;
+		display: inline-block;
+	}
+	li:after {
+		content: ", ";
+	}
+	li:last-child:after {
+		content: "";
+	}
+}
