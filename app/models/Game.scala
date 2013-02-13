@@ -108,4 +108,6 @@ object Game {
     }
     deserializeTiles0(0, tiles)
   }
+  
+  def score(tiles: List[Tile]) = (0, 0)
 }
