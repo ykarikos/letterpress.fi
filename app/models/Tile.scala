@@ -33,14 +33,21 @@ object Tile {
   val ROWS = 5
   val COLS = 5
   
-  def lock(id: Int, tiles: List[Tile]): Boolean = 
-    false
-    
   def normalize(tiles: List[Tile]): List[Tile] = 
     tiles map { t => normalize(neighbors(tiles, t), t) }
     
   def normalize(neighbors: List[Tile], tile: Tile): Tile =
-    tile
+    if (tile.owner == Neither)
+      tile
+    else {
+      val equalNeighbors = neighbors.map { t => locked(t.owner) }.
+        filter {o => o == locked(tile.owner)}
+      if (equalNeighbors.length == neighbors.length)
+        Tile(tile.letter, tile.id, locked(tile.owner))
+      else 
+        tile
+    }
+    
     
   def neighbors(tiles: List[Tile], tile: Tile): List[Tile] = {
     val col = tile.id % ROWS

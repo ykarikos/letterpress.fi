@@ -96,17 +96,34 @@ class GameSuite extends FunSuite {
 	      1,2,2,2,0,
 	      0,0,2,0,2,
 	      2,2,0,0,2)
+	  val tiles = createTiles(owners map { o => TileOwner.withName(o.toString) })
 	  val expectedOwners = List(
 	      3,1,0,0,0,
 	      3,1,2,0,0,
 	      1,2,4,2,0,
 	      0,0,2,0,2,
 	      2,2,0,0,2)
-	  val tiles = createTiles(owners map { o => TileOwner.withName(o.toString) })
 	  val expectedTiles = createTiles(expectedOwners map { o => TileOwner.withName(o.toString) })
 	  val normalized = Tile.normalize(tiles)
 	  expectedTiles.foreach(t => assert(t === normalized(t.id)))
 	  
+	}
+
+	test("scoreNeither") {
+	  val tiles = createTiles(List.fill(25)(Neither))
+	  assert(Game.score(tiles) === (0,0))
+	}
+	
+	test("score") {
+	  val owners = List(
+	      1,1,0,0,0,
+	      1,1,2,0,0,
+	      1,2,2,2,0,
+	      0,0,2,0,2,
+	      2,2,0,0,2)
+	  val tiles = createTiles(owners map { o => TileOwner.withName(o.toString) })
+	  assert(Game.score(tiles) === (5, 9))
+	  assert(Game.score(Tile.normalize(tiles)) === (5, 9))
 	}
 	
 	test("selectWord") {

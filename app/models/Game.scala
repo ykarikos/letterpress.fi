@@ -8,6 +8,12 @@ object PlayerTurn extends Enumeration {
 	type PlayerTurn = Value
 	val PlayerOne = Value("1")
 	val PlayerTwo = Value("2")
+	
+	def other(turn: PlayerTurn): PlayerTurn =
+	  if (turn == PlayerOne)
+	    PlayerTwo
+	  else
+	    PlayerOne
 }
 
 import PlayerTurn._
@@ -35,10 +41,10 @@ object Game {
     mongoColl += gameObj
   }
   
-  def updateScores(playerOneScore: Int, playerTwoScore: Int, id: String, turn: PlayerTurn, tiles: List[Tile]) {
+  def updateScores(scores: (Int, Int), id: String, turn: PlayerTurn, tiles: List[Tile]) {
     mongoColl.update(MongoDBObject("id" -> id), 
-        $set(Seq("playerOneScore" -> playerOneScore,
-            "playerTwoScore" -> playerTwoScore,
+        $set(Seq("playerOneScore" -> scores._1,
+            "playerTwoScore" -> scores._2,
             "turn" -> turn.toString,
             "tiles" -> serializeTiles(tiles))))
   }
@@ -67,31 +73,13 @@ object Game {
     else
       TileOwner.PlayerTwo
   
-  def setTileOwner(tiles: List[Tile], tilesToChange: Array[Int], turn: PlayerTurn): List[Tile] =
-    if (tiles.isEmpty)
-      Nil
-    else {
-      val head: Tile = tiles.head
-      if (tilesToChange.contains(head.id))
-        Tile(head.letter, head.id, turn2Owner(turn)) :: setTileOwner(tiles.tail, tilesToChange, turn)
-      else
-        head :: setTileOwner(tiles.tail, tilesToChange, turn)
-    }
-      
-  
   def submit(word: String, game: Game, tiles: String) {
 	// save new word
     mongoColl.update(MongoDBObject("id" -> game.id),
         $push(Seq("words" -> word)))
     
-    val newTiles = setTileOwner(game.tiles, tiles.split(",").map(s => s.toInt), game.turn)
-    
-    if (game.turn == PlayerTurn.PlayerOne)
-	  updateScores(game.playerOneScore + word.length(), game.playerTwoScore, 
-	      game.id, PlayerTurn.PlayerTwo, newTiles)
-	else
-	  updateScores(game.playerOneScore, game.playerTwoScore + word.length(), 
-	      game.id, PlayerTurn.PlayerOne, newTiles)
+    val newTiles = Tile.normalize(Tile.selectWord(tiles.split(",").toList.map(s => s.toInt), game.tiles, game.turn))
+    updateScores(score(newTiles), game.id, other(game.turn), newTiles)
   } 
   
   def serializeTiles(tiles: List[Tile]) =
@@ -109,5 +97,8 @@ object Game {
     deserializeTiles0(0, tiles)
   }
   
-  def score(tiles: List[Tile]) = (0, 0)
+  def score(tiles: List[Tile]) = 
+    (tiles.filter(t => locked(t.owner) == TileOwner.PlayerOneLocked).length,
+    tiles.filter(t => locked(t.owner) == TileOwner.PlayerTwoLocked).length)
+    
 }
