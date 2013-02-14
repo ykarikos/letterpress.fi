@@ -8,17 +8,17 @@ Todo:
  * form for playerTwo joining a game 
  -> how to authenticate playerOne and playerTwo?
  -> how to indicate that playerTwo has not yet joined
- * count points correctly
- * check tile ownerships and update locked tiles
  * fix index page form look&feel
  * use weighed alphabet (based on letter frequency)
- * check when the game ends 
+ * check when the game ends
+ * count scores when selecting tiles before submitting
+ * use player colours in used words
 
 Ideas for improvement:
- * use mongodb
  * language selection
 
 Current bugs:
  * Firefox: displays too bold font
  * Firefox: jquery sortable triggers click
+ * Firefox: clear and submit button font size
 
