@@ -17,6 +17,15 @@ object TileOwner extends Enumeration {
 	  case PlayerTwoLocked => PlayerTwoLocked
 	}
 	
+	def unlocked(o: TileOwner): TileOwner =
+	  o match {
+	  case Neither => Neither
+	  case PlayerOne => PlayerOne
+	  case PlayerOneLocked => PlayerOne
+	  case PlayerTwo => PlayerTwo
+	  case PlayerTwoLocked => PlayerTwo
+	}
+	
 	def isLocked(o: TileOwner): Boolean =
 	  if (o == PlayerOneLocked || o == PlayerTwoLocked)
 	    true
@@ -33,10 +42,11 @@ object Tile {
   val ROWS = 5
   val COLS = 5
   
-  def normalize(tiles: List[Tile]): List[Tile] = 
-    tiles map { t => normalize(neighbors(tiles, t), t) }
+  def normalize(tiles: List[Tile]): List[Tile] = { 
+    tiles map { t => normalize0(neighbors(tiles, t.id), t) }
+  }    
     
-  def normalize(neighbors: List[Tile], tile: Tile): Tile =
+  def normalize0(neighbors: List[Tile], tile: Tile): Tile =
     if (tile.owner == Neither)
       tile
     else {
@@ -45,13 +55,12 @@ object Tile {
       if (equalNeighbors.length == neighbors.length)
         Tile(tile.letter, tile.id, locked(tile.owner))
       else 
-        tile
+        Tile(tile.letter, tile.id, unlocked(tile.owner))
     }
     
-    
-  def neighbors(tiles: List[Tile], tile: Tile): List[Tile] = {
-    val col = tile.id % ROWS
-    val row = tile.id / COLS
+  def neighbors(tiles: List[Tile], id: Int): List[Tile] = {
+    val col = id % ROWS
+    val row = id / COLS
     List((col-1, row), (col+1, row), (col, row-1), (col, row+1)).
     	filter { c => c._1 >= 0 && c._2 >= 0 && c._1 < COLS && c._2 < ROWS }.
     	map { c => tiles(c._2 * 5 + c._1) }
