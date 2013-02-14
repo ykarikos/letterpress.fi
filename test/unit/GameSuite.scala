@@ -50,6 +50,65 @@ class GameSuite extends FunSuite {
 	  })
 	}
 	
+	test("neighrbors0") {
+	  val tiles = createTiles(List.fill(25)(Neither))
+	  val n0 = Tile.neighbors(tiles, tiles(0))
+	  assert(n0.length === 2)
+	  assert(n0.contains(tiles(1)) === true)
+	  assert(n0.contains(tiles(5)) === true)
+	}
+	
+	test("neighrbors1") {
+	  val tiles = createTiles(List.fill(25)(Neither))
+	  val n = Tile.neighbors(tiles, tiles(1))
+	  assert(n.length === 3)
+	  assert(n.contains(tiles(0)) === true)
+	  assert(n.contains(tiles(2)) === true)
+	  assert(n.contains(tiles(6)) === true)
+	}
+
+	test("neighrbors6") {
+	  val tiles = createTiles(List.fill(25)(Neither))
+	  val n = Tile.neighbors(tiles, tiles(6))
+	  assert(n.length === 4)
+	  assert(n.contains(tiles(1)) === true)
+	  assert(n.contains(tiles(5)) === true)
+	  assert(n.contains(tiles(7)) === true)
+	  assert(n.contains(tiles(11)) === true)
+	}
+	
+	test("normalizeNeither") {
+	  val tiles = createTiles(List.fill(25)(Neither))
+	  val normalized = Tile.normalize(tiles)
+	  tiles.foreach(t => assert(t === normalized(t.id)))
+	}
+	/*
+11000 => 31000
+11200    31200
+12220    12420
+00202    00202
+22002    22002
+	 */
+	test("normalize") {
+	  val owners = List(
+	      1,1,0,0,0,
+	      1,1,2,0,0,
+	      1,2,2,2,0,
+	      0,0,2,0,2,
+	      2,2,0,0,2)
+	  val expectedOwners = List(
+	      3,1,0,0,0,
+	      3,1,2,0,0,
+	      1,2,4,2,0,
+	      0,0,2,0,2,
+	      2,2,0,0,2)
+	  val tiles = createTiles(owners map { o => TileOwner.withName(o.toString) })
+	  val expectedTiles = createTiles(expectedOwners map { o => TileOwner.withName(o.toString) })
+	  val normalized = Tile.normalize(tiles)
+	  expectedTiles.foreach(t => assert(t === normalized(t.id)))
+	  
+	}
+	
 	test("selectWord") {
 	  val tiles = createTiles(List.fill(25)(Neither))
 	  val word = List(0, 2, 4)
