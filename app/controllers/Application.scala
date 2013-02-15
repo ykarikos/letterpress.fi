@@ -77,7 +77,7 @@ object Application extends Controller {
 		      Ok("PLAYERMISSING")
 		    else if (Game.ended(game.get.tiles))
 		      Ok("ENDED")
-		    else if (game.get.words.contains(word))
+		    else if (game.get.words.count(_.word == word) > 0)
 		      Ok("PLAYED")
 		    else if (words.contains(word.toLowerCase())) {
 		      Game.submit(word, game.get, tiles)
