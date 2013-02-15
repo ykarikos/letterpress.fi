@@ -73,6 +73,8 @@ object Application extends Controller {
 		    
 		    if (game.isEmpty)
 		      NotFound("Game " + id + " not found")
+		    else if (game.get.playerTwo.isEmpty && game.get.turn == PlayerTurn.PlayerTwo)
+		      Ok("PLAYERMISSING")
 		    else if (Game.ended(game.get.tiles))
 		      Ok("ENDED")
 		    else if (game.get.words.contains(word))

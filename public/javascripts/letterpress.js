@@ -50,6 +50,8 @@ var submit = function() {
 	}).done(function(data) {
     	if (data == "OK") {
     		location.reload();
+    	} else if (data == "PLAYERMISSING") {
+    		alert("Player two name has not joined and can't play yet.")
     	} else if (data == "ENDED") {
     		alert("The game has ended.");
     	} else if (data == "PLAYED") {
