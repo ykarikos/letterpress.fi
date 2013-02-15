@@ -1,5 +1,7 @@
 @(number: String, name: Option[String], score: Int, turn: String, ended: Boolean)
 
+@import helper._
+@implicitField = @{ FieldConstructor(fieldConstructor.f) }
 
 <li>
 @if(name.isEmpty) {
