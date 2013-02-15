@@ -1,4 +1,4 @@
-@(game: Game, winner: Option[String])
+@(game: Game, score: (Int, Int), winner: Option[String])
 
 @import tags._
 @import models._
@@ -19,8 +19,8 @@
 <input type="submit" value="Clear" class="clear topbuttons">
 
 <ul class="players">
-@player("1", Some(game.playerOne), game.playerOneScore, game.turn.toString, ended)
-@player("2", game.playerTwo, game.playerTwoScore, game.turn.toString, ended)
+@player("1", Some(game.playerOne), score._1, game.turn.toString, ended)
+@player("2", game.playerTwo, score._2, game.turn.toString, ended)
 </ul>
 
 <input type="submit" value="Submit" class="submit topbuttons" 

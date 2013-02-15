@@ -19,7 +19,7 @@ object PlayerTurn extends Enumeration {
 import PlayerTurn._
 
 case class Game(id: String, tiles: List[Tile], playerOne: String, 
-    playerTwo: Option[String], playerOneScore: Int, playerTwoScore: Int, 
+    playerTwo: Option[String], score: (Int, Int), 
     turn: PlayerTurn, words: List[String])
 
 object Game {
@@ -33,19 +33,15 @@ object Game {
     	"tiles" -> serializeTiles(game.tiles),
     	"playerOne" -> game.playerOne,
     	"playerTwo" -> game.playerTwo,
-    	"playerOneScore" -> game.playerOneScore,
-    	"playerTwoScore" -> game.playerTwoScore,
     	"turn" -> game.turn.toString,
     	"words" -> game.words
     )
     mongoColl += gameObj
   }
   
-  def updateScores(scores: (Int, Int), id: String, turn: PlayerTurn, tiles: List[Tile]) {
+  def updateTiles(id: String, turn: PlayerTurn, tiles: List[Tile]) {
     mongoColl.update(MongoDBObject("id" -> id), 
-        $set(Seq("playerOneScore" -> scores._1,
-            "playerTwoScore" -> scores._2,
-            "turn" -> turn.toString,
+        $set(Seq("turn" -> turn.toString,
             "tiles" -> serializeTiles(tiles))))
   }
   
@@ -55,12 +51,12 @@ object Game {
       None
     else {
       val gameVal = game.get
+      val tiles = deserializeTiles(gameVal.getAsOrElse[String]("tiles", ""))
       Some(Game(gameVal.getAsOrElse[String]("id", null),
-           deserializeTiles(gameVal.getAsOrElse[String]("tiles", "")),
+           tiles,
            gameVal.getAsOrElse[String]("playerOne", ""),
            gameVal.getAs[String]("playerTwo"),
-           gameVal.getAsOrElse[Int]("playerOneScore", 0),
-           gameVal.getAsOrElse[Int]("playerTwoScore", 0),
+           score(tiles),
            PlayerTurn.withName(gameVal.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString)),
     	   gameVal.as[MongoDBList]("words").toList collect { case s: String => s }))
     }
@@ -83,7 +79,7 @@ object Game {
         $push(Seq("words" -> word)))
     
     val newTiles = Tile.normalize(Tile.selectWord(tiles.split(",").toList.map(s => s.toInt), game.tiles, game.turn))
-    updateScores(score(newTiles), game.id, other(game.turn), newTiles)
+    updateTiles(game.id, other(game.turn), newTiles)
   } 
   
   def serializeTiles(tiles: List[Tile]) =

@@ -25,7 +25,7 @@ object Application extends Controller {
         errors => BadRequest(views.html.index(newgameForm)),
         name => {
 		    val id = randomId
-		    val game = Game(id, randomTiles, name, None, 0, 0, PlayerTurn.PlayerOne, Nil)
+		    val game = Game(id, randomTiles, name, None, (0, 0), PlayerTurn.PlayerOne, Nil)
 		    Game.create(game)
 		    Redirect(routes.Application.getgame(id))
 		  }
@@ -44,7 +44,7 @@ object Application extends Controller {
     if (game.isEmpty) 
       NotFound("Game " + id + " not found")
     else
-      Ok(views.html.game(game.get, Game.winner(game.get)))
+      Ok(views.html.game(game.get, Game.score(game.get.tiles), Game.winner(game.get)))
   }
   
   def joingame = Action { implicit request =>
