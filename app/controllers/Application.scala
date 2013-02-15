@@ -44,7 +44,7 @@ object Application extends Controller {
     if (game.isEmpty) 
       NotFound("Game " + id + " not found")
     else
-      Ok(views.html.game(game.get))
+      Ok(views.html.game(game.get, Game.winner(game.get)))
   }
   
   def dbtest = Action {
@@ -56,6 +56,8 @@ object Application extends Controller {
     
     if (game.isEmpty)
       NotFound("Game " + id + " not found")
+    else if (Game.ended(game.get.tiles))
+      Ok("ENDED")
     else if (game.get.words.contains(word))
       Ok("PLAYED")
     else if (words.contains(word.toLowerCase())) {

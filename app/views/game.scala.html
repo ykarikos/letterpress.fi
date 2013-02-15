@@ -1,20 +1,29 @@
-@(game: Game)
+@(game: Game, winner: Option[String])
 
 @import tags._
 @import models._
 
+
 @main {
+
+@defining(!winner.isEmpty) { ended => 
+
+@if(ended) {
+<p class="ended">The game has ended.<br>
+@winner.get won!
+</p>
+}
 
 <div class="playersContainer">
 
 <input type="submit" value="Clear" class="clear">
 
 <ul class="players">
-@player("1", game.playerOne, game.playerOneScore, game.turn.toString)
-@player("2", game.playerTwo.getOrElse(""), game.playerTwoScore, game.turn.toString)
+@player("1", game.playerOne, game.playerOneScore, game.turn.toString, ended)
+@player("2", game.playerTwo.getOrElse(""), game.playerTwoScore, game.turn.toString, ended)
 </ul>
 
-<input type="submit" value="Submit" class="submit">
+<input type="submit" value="Submit" class="submit" @if(ended) { disabled="disabled" } >
 <input type="hidden" name="gameid" value="@game.id">
 
 </div>
@@ -36,4 +45,6 @@
 	<li>@word</li>
 }
 </ul>
+
+}
 }

@@ -49,8 +49,10 @@ var submit = function() {
 	}).done(function(data) {
     	if (data == "OK") {
     		location.reload();
+    	} else if (data == "ENDED") {
+    		alert("The game has ended.");
     	} else if (data == "PLAYED") {
-    		alert(word + " has already been played.")
+    		alert(word + " has already been played.");
     	} else {
     		alert(word + " is not a valid word.");
     	}

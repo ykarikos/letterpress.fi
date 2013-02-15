@@ -97,8 +97,20 @@ object Game {
     deserializeTiles0(0, tiles)
   }
   
-  def score(tiles: List[Tile]) = 
+  def score(tiles: List[Tile]): (Int, Int) = 
     (tiles.filter(t => locked(t.owner) == TileOwner.PlayerOneLocked).length,
     tiles.filter(t => locked(t.owner) == TileOwner.PlayerTwoLocked).length)
     
+  def ended(tiles: List[Tile]): Boolean =
+    tiles.count(_.owner == Neither) == 0
+
+  def winner(game: Game): Option[String] =
+    if (ended(game.tiles)) {
+      val s = score(game.tiles)
+      if (s._1 > s._2)
+        Some(game.playerOne)
+      else
+        game.playerTwo
+    } else
+      None
 }

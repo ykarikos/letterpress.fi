@@ -10,9 +10,9 @@ Todo:
  -> how to indicate that playerTwo has not yet joined
  * fix index page form look&feel
  * use weighed alphabet (based on letter frequency)
- * check when the game ends
  * count scores when selecting tiles before submitting
  * use player colours in used words
+ * pass turn
 
 Ideas for improvement:
  * language selection

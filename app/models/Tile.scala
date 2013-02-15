@@ -51,8 +51,8 @@ object Tile {
       tile
     else {
       val equalNeighbors = neighbors.map { t => locked(t.owner) }.
-        filter {o => o == locked(tile.owner)}
-      if (equalNeighbors.length == neighbors.length)
+        count {_ == locked(tile.owner)}
+      if (equalNeighbors == neighbors.length)
         Tile(tile.letter, tile.id, locked(tile.owner))
       else 
         Tile(tile.letter, tile.id, unlocked(tile.owner))
