@@ -41,6 +41,7 @@ var submit = function() {
 
 	$.ajax({
 		url: "/submit",
+		type: "POST",
 		data: {
 			word: word,
 			id: $("input[name='gameid']").val(),
@@ -61,9 +62,28 @@ var submit = function() {
     });
 };
 
+var namesubmit = function() {
+	$.ajax({
+		url: "/joingame",
+		type: "POST",
+		data: {
+			name: $("input[name='playerTwoName']").val(),
+			id: $("input[name='gameid']").val()
+		}
+	}).done(function(data) {
+    	if (data != "OK") {
+    		alert("Could not join the game");
+    	}
+		location.reload();
+    }).fail(function() {
+    	alert("Joining to game failed.");
+    });
+};
+
 var init = function() {
     $board = $('#board');
     $board.find("span").click(select);
     $('.submit').click(submit);
     $('.clear').click(clear);
+    $('.namesubmit').click(namesubmit);
 };

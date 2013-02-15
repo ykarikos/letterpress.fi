@@ -5,9 +5,9 @@
 # Home page
 GET     /                           controllers.Application.index
 POST    /newgame                    controllers.Application.newgame
+POST    /joingame					controllers.Application.joingame
 GET		/game/:id					controllers.Application.getgame(id)
-GET    	/submit						controllers.Application.submit(word, id, tiles)
-GET     /dbtest						controllers.Application.dbtest
+POST   	/submit						controllers.Application.submit
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

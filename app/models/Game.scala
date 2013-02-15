@@ -65,7 +65,11 @@ object Game {
     	   gameVal.as[MongoDBList]("words").toList collect { case s: String => s }))
     }
   }
-  
+
+  def join(id: String, name: String) {
+    mongoColl.update(MongoDBObject("id" -> id), 
+        $set(Seq("playerTwo" -> name)))
+  }
 
   def turn2Owner(turn: PlayerTurn): TileOwner =
     if (turn == PlayerTurn.PlayerOne)
