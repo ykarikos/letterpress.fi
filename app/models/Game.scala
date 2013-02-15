@@ -20,8 +20,10 @@ import PlayerTurn._
 
 case class Game(id: String, tiles: List[Tile], playerOne: String, 
     playerTwo: Option[String], score: (Int, Int), 
-    turn: PlayerTurn, words: List[String])
+    turn: PlayerTurn, words: List[Word])
 
+case class Word(word: String, turn: PlayerTurn)
+    
 object Game {
 
   val mongoClient =  MongoClient()
@@ -34,7 +36,7 @@ object Game {
     	"playerOne" -> game.playerOne,
     	"playerTwo" -> game.playerTwo,
     	"turn" -> game.turn.toString,
-    	"words" -> game.words
+    	"words" -> List()
     )
     mongoColl += gameObj
   }
@@ -58,10 +60,24 @@ object Game {
            gameVal.getAs[String]("playerTwo"),
            score(tiles),
            PlayerTurn.withName(gameVal.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString)),
-    	   gameVal.as[MongoDBList]("words").toList collect { case s: String => s }))
+           deserializeWords(gameVal.as[MongoDBList]("words").toList collect { case s: String => s })
+      ))
     }
   }
 
+  def serializeWord(word: Word): String =
+    word.turn.toString + word.word
+      
+  def deserializeWords(words: List[String]): List[Word] = {
+    def deserializeWord(word: String): Word =
+      Word(word.substring(1), PlayerTurn.withName(word.substring(0, 1)))
+ 
+    if (words.isEmpty)
+      Nil
+    else
+      deserializeWord(words.head) :: deserializeWords(words.tail)
+  }
+  
   def join(id: String, name: String) {
     mongoColl.update(MongoDBObject("id" -> id), 
         $set(Seq("playerTwo" -> name)))
@@ -76,7 +92,7 @@ object Game {
   def submit(word: String, game: Game, tiles: String) {
 	// save new word
     mongoColl.update(MongoDBObject("id" -> game.id),
-        $push(Seq("words" -> word)))
+        $push(Seq("words" -> serializeWord(Word(word, game.turn)))))
     
     val newTiles = Tile.normalize(Tile.selectWord(tiles.split(",").toList.map(s => s.toInt), game.tiles, game.turn))
     updateTiles(game.id, other(game.turn), newTiles)
