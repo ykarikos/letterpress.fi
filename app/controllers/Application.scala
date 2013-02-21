@@ -13,8 +13,12 @@ import play.api.data.Forms._
 object Application extends Controller {
   
   val words = scala.io.Source.fromFile("conf/wordlist/fi.txt", "UTF-8").getLines.toVector
-  val alphabet = "ABCDEFGHIJKLMNOPRSTUVYÄÖ"
-  val r = Random
+  val alphabet = List((0.11607, 'I'), (0.23011, 'A'), (0.31651, 'T'), (0.39098, 'S'), (0.45836, 'E'), 
+		  (0.52488, 'U'), (0.59058, 'K'), (0.65494, 'N'), (0.71334, 'L'), (0.76748, 'O'), 
+		  (0.80699, 'R'), (0.83889, 'Ä'), (0.86920, 'P'), (0.89892, 'M'), (0.92313, 'V'), 
+		  (0.94481, 'H'), (0.96644, 'Y'), (0.97941, 'J'), (0.98683, 'D'), (0.99417, 'Ö'), 
+		  (0.99682, 'G'), (0.99847, 'F'), (1.00000, 'B'))
+  val rnd = Random
   
   def index = Action {
     Ok(views.html.index(newgameForm))
@@ -33,11 +37,16 @@ object Application extends Controller {
   }
   
   def randomId: String =
-    r.alphanumeric.take(16).mkString
+    rnd.alphanumeric.take(16).mkString
   
-  def randomTiles: List[Tile] = 
+  def nextLetter: Char = {
+    val r = rnd.nextDouble()
+    alphabet.find(_._1 > r).get._2
+  }
+  
+  def randomTiles: List[Tile] =
     for (i <- List.range(0,25)) 
-      yield Tile(alphabet.charAt(r.nextInt(alphabet.length())), i, Neither)
+    yield Tile(nextLetter, i, Neither)
   
   def getgame(id: String) = Action {
     val game = Game.fetch(id)
