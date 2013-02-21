@@ -41,6 +41,12 @@ object Game {
     mongoColl += gameObj
   }
   
+  def getCurrentTurn(game: Game) = 
+    if (game.turn == PlayerTurn.PlayerOne)
+      Some(game.playerOne)
+    else
+      game.playerTwo
+  
   def updateTiles(id: String, turn: PlayerTurn, tiles: List[Tile]) {
     mongoColl.update(MongoDBObject("id" -> id), 
         $set(Seq("turn" -> turn.toString,

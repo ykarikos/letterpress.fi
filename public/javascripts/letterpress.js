@@ -50,14 +50,8 @@ var submit = function() {
 	}).done(function(data) {
     	if (data == "OK") {
     		location.reload();
-    	} else if (data == "PLAYERMISSING") {
-    		alert("Player two name has not joined and can't play yet.")
-    	} else if (data == "ENDED") {
-    		alert("The game has ended.");
-    	} else if (data == "PLAYED") {
-    		alert(word + " has already been played.");
     	} else {
-    		alert(word + " is not a valid word.");
+    		alert(data);
     	}
     }).fail(function() {
     	alert("Submitting " + word + " failed.");
@@ -65,11 +59,18 @@ var submit = function() {
 };
 
 var namesubmit = function() {
+	var playerTwo = $("input[name='playerTwoName']").val();
+	var playerOne = $("span.player1").attr("title");
+	if (playerTwo == playerOne) {
+		alert("Can not join the game with same name as player one");
+		return;
+	}
+	
 	$.ajax({
 		url: "/joingame",
 		type: "POST",
 		data: {
-			name: $("input[name='playerTwoName']").val(),
+			name: playerTwo,
 			id: $("input[name='gameid']").val()
 		}
 	}).done(function(data) {

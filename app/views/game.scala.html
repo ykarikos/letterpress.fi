@@ -1,4 +1,4 @@
-@(game: Game, score: (Int, Int), winner: Option[String])
+@(game: Game, score: (Int, Int), winner: Option[String], currentPlayer: Option[String])
 
 @import tags._
 @import models._
@@ -20,11 +20,12 @@
 
 <ul class="players">
 @player("1", Some(game.playerOne), score._1, game.turn.toString, ended)
-@player("2", game.playerTwo, score._2, game.turn.toString, ended)
+@player("2", game.playerTwo, score._2, game.turn.toString, ended, Some(game.playerOne), currentPlayer)
 </ul>
 
-<input type="submit" value="Submit" class="submit topbuttons" 
-@if(ended || game.playerTwo.isEmpty) { 
+<input type="submit" value="Submit" class="submit topbuttons"
+
+@if(ended || !currentPlayer.equals(Game.getCurrentTurn(game))) { 
   disabled="disabled" 
 } >
 <input type="hidden" name="gameid" value="@game.id">

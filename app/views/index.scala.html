@@ -1,17 +1,20 @@
-@(newgameForm: Form[String])
+@(newgameForm: Form[String], currentPlayer: Option[String] = None)
 
 @import helper._
 @implicitField = @{ FieldConstructor(fieldConstructor.f) }
 
 @main {
 
-<h1>Letterpress</h1>
-
-<p>Create a new game
+	<h1>Letterpress</h1>
 
     @form(routes.Application.newgame) {
-        
-        @inputText(newgameForm("name")) 
+        @if(currentPlayer.isDefined) {
+            <span>Name: @currentPlayer</span>
+		    <input type="hidden" name="name" value="@currentPlayer">
+        } else {
+        	@inputText(newgameForm("name"))
+        }
+        <p> 
         <input type="submit" value="Create game">
         
     }

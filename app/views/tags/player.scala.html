@@ -1,12 +1,26 @@
-@(number: String, name: Option[String], score: Int, turn: String, ended: Boolean)
+@(number: String, name: Option[String], score: Int, turn: String, ended: Boolean, 
+  playerOne: Option[String] = None, currentPlayer: Option[String] = None)
 
 @import helper._
 @implicitField = @{ FieldConstructor(fieldConstructor.f) }
 
 <li>
 @if(name.isEmpty) {
-    <label>Name:<input name="playerTwoName" class="nameinput"></label><br>
-    <input type="submit" value="Join game" class="namesubmit">
+	@if(playerOne.isDefined && playerOne.equals(currentPlayer)) {
+		<span class="waiting">Waiting&nbsp;for player&nbsp;two to join</span>
+	} else { 
+		@if(currentPlayer.isDefined) {
+		    <label>Name: @currentPlayer
+		    <input type="hidden" name="playerTwoName" value="@currentPlayer">
+		    </label><br>
+		    <input type="submit" value="Join game" class="namesubmit">
+	    } else {
+		    <label>Name:
+		    <input name="playerTwoName" class="nameinput">
+		    </label><br>
+		    <input type="submit" value="Join game" class="namesubmit">
+		}
+	}
 } else {
 	<span class="icon player@number" title="@name">☺</span><br>
 	<span class="score">@score</span>

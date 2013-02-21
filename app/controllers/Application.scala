@@ -19,9 +19,10 @@ object Application extends Controller {
 		  (0.94481, 'H'), (0.96644, 'Y'), (0.97941, 'J'), (0.98683, 'D'), (0.99417, 'Ö'), 
 		  (0.99682, 'G'), (0.99847, 'F'), (1.00000, 'B'))
   val rnd = Random
+  val CURRENT = "current"
   
-  def index = Action {
-    Ok(views.html.index(newgameForm))
+  def index = Action { request =>
+    Ok(views.html.index(newgameForm, request.session.get(CURRENT)))
   }
   
   def newgame = Action { implicit request =>
@@ -31,7 +32,7 @@ object Application extends Controller {
 		    val id = randomId
 		    val game = Game(id, randomTiles, name, None, (0, 0), PlayerTurn.PlayerOne, Nil)
 		    Game.create(game)
-		    Redirect(routes.Application.getgame(id))
+		    Redirect(routes.Application.getgame(id)).withSession(CURRENT -> name)
 		  }
         )
   }
@@ -48,12 +49,13 @@ object Application extends Controller {
     for (i <- List.range(0,25)) 
     yield Tile(nextLetter, i, Neither)
   
-  def getgame(id: String) = Action {
+  def getgame(id: String) = Action { request =>
+    val name = request.session.get(CURRENT)
     val game = Game.fetch(id)
     if (game.isEmpty) 
       NotFound("Game " + id + " not found")
     else
-      Ok(views.html.game(game.get, Game.score(game.get.tiles), Game.winner(game.get)))
+      Ok(views.html.game(game.get, Game.score(game.get.tiles), Game.winner(game.get), name))
   }
   
   def joingame = Action { implicit request =>
@@ -67,32 +69,35 @@ object Application extends Controller {
 		      Ok("FAIL")
 		    else {
 		      Game.join(id, name)
-		      Ok("OK")
+		      Ok("OK").withSession(CURRENT -> name)
 		    }
           }
         }
      )
   }
-  // (word: String, id: String, tiles: String)
+  
   def submit = Action { implicit request => 
     submitForm.bindFromRequest.fold(
         errors => BadRequest("FAIL"),
         { case (word, id, tiles) => {
+            val currentPlayer = session.get(CURRENT)
 		    val game = Game.fetch(id)
-		    
+
 		    if (game.isEmpty)
 		      NotFound("Game " + id + " not found")
+		    else if (currentPlayer.isEmpty || !currentPlayer.equals(Game.getCurrentTurn(game.get)))
+		      Ok("It's not your turn")
 		    else if (game.get.playerTwo.isEmpty && game.get.turn == PlayerTurn.PlayerTwo)
-		      Ok("PLAYERMISSING")
+		      Ok("Player two name has not joined and can't play yet.")
 		    else if (Game.ended(game.get.tiles))
-		      Ok("ENDED")
+		      Ok("The game has ended")
 		    else if (game.get.words.count(_.word == word) > 0)
-		      Ok("PLAYED")
+		      Ok(word + " has already been played.")
 		    else if (words.contains(word.toLowerCase())) {
 		      Game.submit(word, game.get, tiles)
 		      Ok("OK")
 		    } else
-		      Ok("FAIL")
+		      Ok(word + " is not a valid word.")
         }
       }
     )
