@@ -5,7 +5,6 @@ Attempt to create a clone for Letterpress (http://www.atebits.com/letterpress/)
 in the web using Finnish language.
 
 Todo:
- * count scores when selecting tiles before submitting
  * pass turn
  * reload page in browser when the model updates in server
 

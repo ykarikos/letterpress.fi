@@ -9,10 +9,37 @@ $(document).ready(function() {
 
 var deselect = function() {
     var $this = $(this);
+    var tileClass = $this.attr('class');
     var id = $this.data("id");
     var $tile = $board.find("[data-id='" + id +"']");
     $tile.toggle();
     $this.remove();
+    
+    updateScore(tileClass, -1);
+};
+
+
+var updateScore = function(tileClass, diff) {
+	var updateScoreNum = function(player, diff) {
+    	var $score = $('.player' + player + ' .score');
+    	$score.text(parseInt($score.text()) + diff);
+	};
+	var otherPlayer = function(player) {
+		return (player % 2) + 1;
+	};
+	
+	var turn = function() {
+		return parseInt($(".arrow").parent().attr('class').substr(6));
+	};
+
+    var player = turn();
+    
+    if (!tileClass || otherPlayer(player) == parseInt(tileClass.substr(6))) {
+    	updateScoreNum(player, diff);
+    	if (tileClass) {
+    		updateScoreNum(otherPlayer(player), diff * -1);
+    	}
+    }
 };
 
 var select = function() {
@@ -20,11 +47,16 @@ var select = function() {
     var $li = $("<li>");
     $li.text($this.text());
     $li.data("id", $this.data("id"));
-    $li.addClass($this.attr('class'));
+    var tileClass = $this.attr('class');
+    
+    $li.addClass(tileClass);
     $selected.append($li);
     $li.click(deselect);
     $this.toggle();
+    
+    updateScore(tileClass, +1);
 };
+
 
 var clear = function() {
 	$selected.find("li").click();
