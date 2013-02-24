@@ -17,6 +17,10 @@
 <div class="playersContainer">
 
 <input type="submit" value="Clear" class="clear topbuttons">
+<input type="submit" value="Pass" class="pass topbuttons"
+@if(ended || !currentPlayer.equals(Game.getCurrentTurn(game))) { 
+  disabled="disabled" 
+} >
 
 <ul class="players">
 @player("1", Some(game.playerOne), score._1, game.turn.toString, ended)

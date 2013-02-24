@@ -102,7 +102,12 @@ object Game {
     
     val newTiles = Tile.normalize(Tile.selectWord(tiles.split(",").toList.map(s => s.toInt), game.tiles, game.turn))
     updateTiles(game.id, other(game.turn), newTiles)
-  } 
+  }
+  
+  def pass(game: Game) {
+    mongoColl.update(MongoDBObject("id" -> game.id),
+        $set(Seq("turn" -> PlayerTurn.other(game.turn).toString)))
+  }
   
   def serializeTiles(tiles: List[Tile]) =
    (for (t <- tiles) yield (t.letter + t.owner.toString)).mkString

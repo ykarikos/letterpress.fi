@@ -5,13 +5,14 @@ Attempt to create a clone for Letterpress (http://www.atebits.com/letterpress/)
 in the web using Finnish language.
 
 Todo:
- * pass turn
  * reload page in browser when the model updates in server
 
 Ideas for improvement:
  * authenticate players properly (e.g. via Google) and/or make
    sure that a game can not be hijacked 
  * language selection
+ * list player's games
+ * list leaderboard
 
 Current bugs:
  * Firefox: displays too bold font

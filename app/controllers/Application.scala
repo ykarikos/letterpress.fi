@@ -76,6 +76,26 @@ object Application extends Controller {
      )
   }
   
+  def pass = Action { implicit request =>
+    passForm.bindFromRequest.fold(
+        errors => BadRequest("FAIL"),
+        { case (id) => {
+        	val currentPlayer = session.get(CURRENT)
+        	val game = Game.fetch(id)
+        	
+		    if (game.isEmpty)
+		      NotFound("Game " + id + " not found")
+		    else if (currentPlayer.isEmpty || !currentPlayer.equals(Game.getCurrentTurn(game.get)))
+		      Ok("It's not your turn")
+		    else {
+		       Game.pass(game.get)
+        	   Ok("OK")
+		    }
+        }
+      }
+    )
+  }
+  
   def submit = Action { implicit request => 
     submitForm.bindFromRequest.fold(
         errors => BadRequest("FAIL"),
@@ -103,19 +123,23 @@ object Application extends Controller {
     )
   }
   
-	val newgameForm = Form(
-	  "name" -> nonEmptyText
-	)
+  val passForm = Form(
+      "id" -> nonEmptyText
+  )
+  
+  val newgameForm = Form(
+    "name" -> nonEmptyText
+  )
 	
-	val joinForm = Form(tuple(
-	  "id" -> nonEmptyText,
-	  "name" -> nonEmptyText
-	))
+  val joinForm = Form(tuple(
+	"id" -> nonEmptyText,
+	"name" -> nonEmptyText
+  ))
 	
-	val submitForm = Form(tuple(
-	  "word" -> nonEmptyText,
-	  "id" -> nonEmptyText,
-	  "tiles" -> nonEmptyText
-	))
+  val submitForm = Form(tuple(
+	"word" -> nonEmptyText,
+	"id" -> nonEmptyText,
+	"tiles" -> nonEmptyText
+  ))
 	    
 }

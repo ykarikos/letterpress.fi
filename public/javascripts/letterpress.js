@@ -115,10 +115,29 @@ var namesubmit = function() {
     });
 };
 
+var pass = function() {
+	$.ajax({
+		url: "/pass",
+		type: "POST",
+		data: {
+			id: $("input[name='gameid']").val()
+		}
+	}).done(function(data) {
+    	if (data != "OK") {
+    		alert(data);
+    	} else {
+    		location.reload();
+    	}
+    }).fail(function() {
+    	alert("Pass turn failed.");
+    });
+};
+
 var init = function() {
     $board = $('#board');
     $board.find("span").click(select);
     $('.submit').click(submit);
     $('.clear').click(clear);
     $('.namesubmit').click(namesubmit);
+    $('.pass').click(pass);
 };
