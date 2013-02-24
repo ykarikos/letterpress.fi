@@ -4,12 +4,11 @@ Letterpress.fi
 Attempt to create a clone for Letterpress (http://www.atebits.com/letterpress/)
 in the web using Finnish language.
 
-Todo:
- * reload page in browser when the model updates in server
-
 Ideas for improvement:
  * authenticate players properly (e.g. via Google) and/or make
-   sure that a game can not be hijacked 
+   sure that a game can not be hijacked
+ * when another player has played a tile, reload the page less violently:
+   preserve selected tiles 
  * language selection
  * list player's games
  * list leaderboard

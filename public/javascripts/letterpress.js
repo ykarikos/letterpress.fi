@@ -1,10 +1,10 @@
 var $selected;
 var $board;
+var turn;
+var player;
 
 $(document).ready(function() {
     init();
-    $selected = $("#selected");
-    $selected.sortable();
 });
 
 var deselect = function() {
@@ -18,9 +18,6 @@ var deselect = function() {
     updateScore(tileClass, -1);
 };
 
-var turn = function() {
-	return parseInt($(".arrow").parent().attr('class').substr(6));
-};
 
 var updateScore = function(tileClass, diff) {
 	var updateScoreNum = function(player, diff) {
@@ -31,8 +28,6 @@ var updateScore = function(tileClass, diff) {
 		return (player % 2) + 1;
 	};
 	
-    var player = parseInt($("input[name='playerNumber']").val())
-    
     if (!tileClass || otherPlayer(player) == parseInt(tileClass.substr(6))) {
     	updateScoreNum(player, diff);
     	if (tileClass) {
@@ -61,7 +56,7 @@ var clear = function() {
 	$selected.find("li").click();
 };
 
-var submit = function() {
+var getSelected = function() {
 	var word = "";
 	var tiles = "";
 	$selected.find("li").each(function() {
@@ -69,14 +64,19 @@ var submit = function() {
 		word += $this.text();
 		tiles += $this.data("id") + ",";
 	});
+	return {word: word, tiles: tiles.substring(0, tiles.length-1) };
+};
+
+var submit = function() {
+	var selected = getSelected();
 
 	$.ajax({
 		url: "/submit",
 		type: "POST",
 		data: {
-			word: word,
+			word: selected.word,
 			id: $("input[name='gameid']").val(),
-			tiles: tiles.substring(0, tiles.length-1)
+			tiles: selected.tiles
 		}
 	}).done(function(data) {
     	if (data == "OK") {
@@ -132,11 +132,30 @@ var pass = function() {
     });
 };
 
+var checkTurn = function() {
+	$.ajax("/turn/" + $("input[name='gameid']").val()).done(function(data) {
+    	if (data == player || data == "0") {
+    		// TODO: reload page less violently – preserve selected tiles
+    		location.reload();
+    	}
+    });
+};
+
 var init = function() {
+	turn =  parseInt($("input[name='turn']").val());
+	player = parseInt($("input[name='playerNumber']").val());
+	
     $board = $('#board');
+    $selected = $("#selected");
+    $selected.sortable();
+    
     $board.find("span").click(select);
     $('.submit').click(submit);
     $('.clear').click(clear);
     $('.namesubmit').click(namesubmit);
     $('.pass').click(pass);
+    
+    if (player && player != turn) {
+    	setInterval(function() { checkTurn(); }, 5000);
+    }
 };

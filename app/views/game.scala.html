@@ -25,8 +25,9 @@
 <ul class="players">
 @player("1", game.playerOne, score._1, game.turn.toString, ended, currentPlayer)
 @if(game.playerTwo.isEmpty) {
+	<li>
 	@if(Some(game.playerOne) == currentPlayer) {
-		<span class="waiting">Waiting&nbsp;for<br>player&nbsp;two<br>to join</span>
+		<span class="waiting">Waiting&nbsp;for player&nbsp;two to join</span>
 	} else { 
 		@if(currentPlayer.isDefined) {
 		    <label>Name: @currentPlayer
@@ -40,6 +41,7 @@
 		    <input type="submit" value="Join game" class="namesubmit">
 		}
 	}
+	</li>
 } else {
 	@player("2", game.playerTwo.get, score._2, game.turn.toString, ended, currentPlayer)
 }
@@ -52,6 +54,7 @@
 } >
 <input type="hidden" name="gameid" value="@game.id">
 <input type="hidden" name="playerName" value="@currentPlayer">
+<input type="hidden" name="turn" value="@game.turn.toString">
 
 </div>
 
