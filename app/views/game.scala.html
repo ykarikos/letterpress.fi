@@ -23,8 +23,26 @@
 } >
 
 <ul class="players">
-@player("1", Some(game.playerOne), score._1, game.turn.toString, ended)
-@player("2", game.playerTwo, score._2, game.turn.toString, ended, Some(game.playerOne), currentPlayer)
+@player("1", game.playerOne, score._1, game.turn.toString, ended, currentPlayer)
+@if(game.playerTwo.isEmpty) {
+	@if(Some(game.playerOne) == currentPlayer) {
+		<span class="waiting">Waiting&nbsp;for<br>player&nbsp;two<br>to join</span>
+	} else { 
+		@if(currentPlayer.isDefined) {
+		    <label>Name: @currentPlayer
+		    <input type="hidden" name="playerTwoName" value="@currentPlayer">
+		    </label><br>
+		    <input type="submit" value="Join game" class="namesubmit">
+	    } else {
+		    <label>Name:
+		    <input name="playerTwoName" class="nameinput">
+		    </label><br>
+		    <input type="submit" value="Join game" class="namesubmit">
+		}
+	}
+} else {
+	@player("2", game.playerTwo.get, score._2, game.turn.toString, ended, currentPlayer)
+}
 </ul>
 
 <input type="submit" value="Submit" class="submit topbuttons"
@@ -33,6 +51,7 @@
   disabled="disabled" 
 } >
 <input type="hidden" name="gameid" value="@game.id">
+<input type="hidden" name="playerName" value="@currentPlayer">
 
 </div>
 

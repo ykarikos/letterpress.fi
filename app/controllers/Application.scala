@@ -77,7 +77,7 @@ object Application extends Controller {
   }
   
   def pass = Action { implicit request =>
-    passForm.bindFromRequest.fold(
+    idForm.bindFromRequest.fold(
         errors => BadRequest("FAIL"),
         { case (id) => {
         	val currentPlayer = session.get(CURRENT)
@@ -94,6 +94,19 @@ object Application extends Controller {
         }
       }
     )
+  }
+  
+  def getTurn(id: String) = Action {
+	val game = Game.fetch(id)
+	
+    if (game.isEmpty)
+      NotFound("Game " + id + " not found")
+    else {
+	  if (Game.ended(game.get.tiles))
+	    Ok("0")
+      else
+    	Ok(game.get.turn.toString)
+    }
   }
   
   def submit = Action { implicit request => 
@@ -123,7 +136,7 @@ object Application extends Controller {
     )
   }
   
-  val passForm = Form(
+  val idForm = Form(
       "id" -> nonEmptyText
   )
   

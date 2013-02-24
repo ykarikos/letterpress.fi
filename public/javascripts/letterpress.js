@@ -18,6 +18,9 @@ var deselect = function() {
     updateScore(tileClass, -1);
 };
 
+var turn = function() {
+	return parseInt($(".arrow").parent().attr('class').substr(6));
+};
 
 var updateScore = function(tileClass, diff) {
 	var updateScoreNum = function(player, diff) {
@@ -28,11 +31,7 @@ var updateScore = function(tileClass, diff) {
 		return (player % 2) + 1;
 	};
 	
-	var turn = function() {
-		return parseInt($(".arrow").parent().attr('class').substr(6));
-	};
-
-    var player = turn();
+    var player = parseInt($("input[name='playerNumber']").val())
     
     if (!tileClass || otherPlayer(player) == parseInt(tileClass.substr(6))) {
     	updateScoreNum(player, diff);
