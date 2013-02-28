@@ -9,11 +9,16 @@ Ideas for improvement:
    sure that a game can not be hijacked
  * when another player has played a tile, reload the page less violently:
    preserve selected tiles 
- * language selection
+ * use player gravatars instead of icons
+ * language selection (e.g. de, sv, en)
  * list player's games
  * list leaderboard
+ * show player names more clearly
+ * show rules
+ * Github banner
 
 Current bugs:
  * Firefox: displays too bold font
- * Firefox: jquery sortable triggers click
-
+ * Firefox: dragging a tile puts it back - jquery sortable triggers click
+ * prefixes of played words are allowed
+ * when a word is submitted, tiles are not checked against the word
