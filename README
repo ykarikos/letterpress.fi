@@ -20,4 +20,3 @@ Ideas for improvement:
 Current bugs:
  * Firefox: displays too bold font
  * Firefox: dragging a tile puts it back - jquery sortable triggers click
- * prefixes of played words are allowed

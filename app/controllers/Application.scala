@@ -126,7 +126,7 @@ object Application extends Controller {
 		      Ok("Player two name has not joined and can't play yet.")
 		    else if (Game.ended(game.get.tiles))
 		      Ok("The game has ended")
-		    else if (game.get.words.count(_.word == word) > 0)
+		    else if (game.get.words.count(_.word.startsWith(word)) > 0)
 		      Ok(word + " has already been played.")
 		    else if (words.contains(word.toLowerCase())) {
 		      Game.submit(word, game.get, tiles)
