@@ -100,8 +100,17 @@ object Game {
     mongoColl.update(MongoDBObject("id" -> game.id),
         $push(Seq("words" -> serializeWord(Word(word, game.turn)))))
     
-    val newTiles = Tile.normalize(Tile.selectWord(tiles.split(",").toList.map(s => s.toInt), game.tiles, game.turn))
+    val newTiles = Tile.normalize(Tile.selectWord(stringToTileIds(tiles), game.tiles, game.turn))
     updateTiles(game.id, other(game.turn), newTiles)
+  }
+  
+  def stringToTileIds(tilesString: String): List[Int] = {
+    tilesString.split(",").toList.map(s => s.toInt)    
+  }
+  
+  def tilesMatch(game: Game, word: String, tilesString: String): Boolean = {
+    val tileWord = stringToTileIds(tilesString).map { id => game.tiles(id).letter }.mkString
+    word == tileWord
   }
   
   def pass(game: Game) {

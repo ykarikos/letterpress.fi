@@ -21,4 +21,3 @@ Current bugs:
  * Firefox: displays too bold font
  * Firefox: dragging a tile puts it back - jquery sortable triggers click
  * prefixes of played words are allowed
- * when a word is submitted, tiles are not checked against the word

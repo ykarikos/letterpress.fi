@@ -118,6 +118,8 @@ object Application extends Controller {
 
 		    if (game.isEmpty)
 		      NotFound("Game " + id + " not found")
+		    else if (!Game.tilesMatch(game.get, word, tiles))
+		      Ok("Submitted tiles and word don't match.")
 		    else if (currentPlayer.isEmpty || !currentPlayer.equals(Game.getCurrentTurn(game.get)))
 		      Ok("It's not your turn")
 		    else if (game.get.playerTwo.isEmpty && game.get.turn == PlayerTurn.PlayerTwo)
