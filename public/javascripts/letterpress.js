@@ -85,7 +85,7 @@ var submit = function() {
     		alert(data);
     	}
     }).fail(function() {
-    	alert("Submitting " + word + " failed.");
+    	alert("Submitting " + selected.word + " failed.");
     });
 };
 
