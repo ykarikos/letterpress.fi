@@ -28,6 +28,7 @@ object Game {
 
   val mongoClient =  MongoClient()
   val mongoColl = mongoClient("letterpress")("game")
+  val words = scala.io.Source.fromFile("conf/wordlist/fi.txt", "UTF-8").getLines.toVector
 
   def create(game: Game) { 
     val gameObj = MongoDBObject(
@@ -95,7 +96,25 @@ object Game {
     else
       TileOwner.PlayerTwo
   
-  def submit(word: String, game: Game, tiles: String) {
+  def submit(game: Game, word: String, tiles: String, currentPlayer: Option[String]): String = {
+    if (!tilesMatch(game, word, tiles))
+      "Submitted tiles and word don't match."
+    else if (currentPlayer.isEmpty || !currentPlayer.equals(getCurrentTurn(game)))
+      "It's not your turn"
+    else if (game.playerTwo.isEmpty && game.turn == PlayerTurn.PlayerTwo)
+      "Player two name has not joined and can't play yet."
+    else if (ended(game.tiles))
+      "The game has ended"
+    else if (game.words.count(_.word.startsWith(word)) > 0)
+      word + " has already been played."
+    else if (words.contains(word.toLowerCase())) {
+      saveSubmit(word, game, tiles)
+      "OK"
+    } else
+      word + " is not a valid word."
+  }
+      
+  def saveSubmit(word: String, game: Game, tiles: String) {
 	// save new word
     mongoColl.update(MongoDBObject("id" -> game.id),
         $push(Seq("words" -> serializeWord(Word(word, game.turn)))))
@@ -109,8 +128,15 @@ object Game {
   }
   
   def tilesMatch(game: Game, word: String, tilesString: String): Boolean = {
-    val tileWord = stringToTileIds(tilesString).map { id => game.tiles(id).letter }.mkString
-    word == tileWord
+    val tiles = stringToTileIds(tilesString)
+    
+    // check for duplicate ids
+    if (tiles.distinct != tiles)
+      false
+    else {
+      val tileWord = tiles.map { id => game.tiles(id).letter }.mkString
+      word == tileWord
+    }
   }
   
   def pass(game: Game) {

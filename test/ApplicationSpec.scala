@@ -29,5 +29,26 @@ class ApplicationSpec extends Specification {
         contentAsString(home) must contain ("Letterpress")
       }
     }
+    
+    "check tiles match" in {
+      running(FakeApplication()) {
+        val newgame = route(FakeRequest(POST, "/newgame").withFormUrlEncodedBody(
+            ("name", "foo")
+        )).get
+        
+        status(newgame) must equalTo(SEE_OTHER)
+        val location = redirectLocation(newgame).get
+        location must startWith("/game/")
+        
+        val id = location.split("/")(2)
+        
+        val submit = route(FakeRequest(POST, "/submit").withFormUrlEncodedBody(
+            ("word", "foo"), ("id", id), ("tiles", "1,2")
+        )).get
+        
+        status(submit) must equalTo(OK)
+        contentAsString(submit) must equalTo("Submitted tiles and word don't match.")
+      }
+    }
   }
 }

@@ -12,7 +12,6 @@ import play.api.data.Forms._
 
 object Application extends Controller {
   
-  val words = scala.io.Source.fromFile("conf/wordlist/fi.txt", "UTF-8").getLines.toVector
   val alphabet = List((0.11607, 'I'), (0.23011, 'A'), (0.31651, 'T'), (0.39098, 'S'), (0.45836, 'E'), 
 		  (0.52488, 'U'), (0.59058, 'K'), (0.65494, 'N'), (0.71334, 'L'), (0.76748, 'O'), 
 		  (0.80699, 'R'), (0.83889, 'Ä'), (0.86920, 'P'), (0.89892, 'M'), (0.92313, 'V'), 
@@ -118,21 +117,8 @@ object Application extends Controller {
 
 		    if (game.isEmpty)
 		      NotFound("Game " + id + " not found")
-		    else if (!Game.tilesMatch(game.get, word, tiles))
-		      Ok("Submitted tiles and word don't match.")
-		    else if (currentPlayer.isEmpty || !currentPlayer.equals(Game.getCurrentTurn(game.get)))
-		      Ok("It's not your turn")
-		    else if (game.get.playerTwo.isEmpty && game.get.turn == PlayerTurn.PlayerTwo)
-		      Ok("Player two name has not joined and can't play yet.")
-		    else if (Game.ended(game.get.tiles))
-		      Ok("The game has ended")
-		    else if (game.get.words.count(_.word.startsWith(word)) > 0)
-		      Ok(word + " has already been played.")
-		    else if (words.contains(word.toLowerCase())) {
-		      Game.submit(word, game.get, tiles)
-		      Ok("OK")
-		    } else
-		      Ok(word + " is not a valid word.")
+		    else
+		      Ok(Game.submit(game.get, word, tiles, currentPlayer))
         }
       }
     )
