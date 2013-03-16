@@ -55,21 +55,19 @@ object Game {
   }
   
   def fetch(id: String): Option[Game] = {
-    val game = mongoColl.findOne(MongoDBObject("id" -> id))
-    if (game.isEmpty)
-      None
-    else {
-      val gameVal = game.get
-      val tiles = deserializeTiles(gameVal.getAsOrElse[String]("tiles", ""))
-      Some(Game(gameVal.getAsOrElse[String]("id", null),
-           tiles,
-           gameVal.getAsOrElse[String]("playerOne", ""),
-           gameVal.getAs[String]("playerTwo"),
-           score(tiles),
-           PlayerTurn.withName(gameVal.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString)),
-           deserializeWords(gameVal.as[MongoDBList]("words").toList collect { case s: String => s })
-      ))
-    }
+    mongoColl.findOne(MongoDBObject("id" -> id)).map(
+      game => {
+    	  val tiles = deserializeTiles(game.getAsOrElse[String]("tiles", ""))
+    	  Game(game.getAsOrElse[String]("id", null),
+            tiles,
+            game.getAsOrElse[String]("playerOne", ""),
+            game.getAs[String]("playerTwo"),
+            score(tiles),
+            PlayerTurn.withName(game.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString)),
+            deserializeWords(game.as[MongoDBList]("words").toList collect { case s: String => s })
+          )
+      }
+    )
   }
 
   def serializeWord(word: Word): String =

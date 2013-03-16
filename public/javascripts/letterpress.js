@@ -155,6 +155,7 @@ var init = function() {
     $('.namesubmit').click(namesubmit);
     $('.pass').click(pass);
     
+    // TODO: check if game has ended
     if (player && player != turn) {
     	setInterval(function() { checkTurn(); }, 5000);
     }

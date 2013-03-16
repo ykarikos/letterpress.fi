@@ -50,25 +50,28 @@ object Application extends Controller {
   
   def getgame(id: String) = Action { request =>
     val name = request.session.get(CURRENT)
-    val game = Game.fetch(id)
-    if (game.isEmpty) 
-      NotFound("Game " + id + " not found")
-    else
-      Ok(views.html.game(game.get, Game.score(game.get.tiles), Game.winner(game.get), name))
+    Game.fetch(id) match {
+      case None =>
+      	NotFound("Game " + id + " not found")
+      case Some(game) =>
+      	Ok(views.html.game(game, Game.score(game.tiles), Game.winner(game), name))
+    }
   }
   
   def joingame = Action { implicit request =>
     joinForm.bindFromRequest.fold(
         errors => BadRequest("FAIL"),
         { case (id, name) => {
-		    val game = Game.fetch(id)
-		    if (game.isEmpty) 
-		      NotFound("Game " + id + " not found")
-		    else if (game.get.playerTwo.isDefined)
-		      Ok("FAIL")
-		    else {
-		      Game.join(id, name)
-		      Ok("OK").withSession(CURRENT -> name)
+		    Game.fetch(id) match {
+		      case None =>
+		      	NotFound("Game " + id + " not found")
+		      case Some(game) =>
+			    if (game.playerTwo.isDefined)
+			      Ok("FAIL")
+			    else {
+			      Game.join(id, name)
+			      Ok("OK").withSession(CURRENT -> name)
+			    }
 		    }
           }
         }
@@ -80,32 +83,33 @@ object Application extends Controller {
         errors => BadRequest("FAIL"),
         { case (id) => {
         	val currentPlayer = session.get(CURRENT)
-        	val game = Game.fetch(id)
-        	
-		    if (game.isEmpty)
-		      NotFound("Game " + id + " not found")
-		    else if (currentPlayer.isEmpty || !currentPlayer.equals(Game.getCurrentTurn(game.get)))
-		      Ok("It's not your turn")
-		    else {
-		       Game.pass(game.get)
-        	   Ok("OK")
-		    }
+        	Game.fetch(id) match {
+        	  case None =>
+        	  	NotFound("Game " + id + " not found")
+        	  	
+        	  case Some(game) =>
+			    if (currentPlayer.isEmpty || !currentPlayer.equals(Game.getCurrentTurn(game)))
+			      Ok("It's not your turn")
+			    else {
+			       Game.pass(game)
+	        	   Ok("OK")
+			    }
+        	}
         }
       }
     )
   }
   
   def getTurn(id: String) = Action {
-	val game = Game.fetch(id)
-	
-    if (game.isEmpty)
-      NotFound("Game " + id + " not found")
-    else {
-	  if (Game.ended(game.get.tiles))
-	    Ok("0")
-      else
-    	Ok(game.get.turn.toString)
-    }
+	Game.fetch(id) match {
+	  case Some(game) =>
+		  if (Game.ended(game.tiles))
+		    Ok("0")
+	      else
+	    	Ok(game.turn.toString)
+	  case None =>
+		  NotFound("Game " + id + " not found")
+	}
   }
   
   def submit = Action { implicit request => 
@@ -113,12 +117,10 @@ object Application extends Controller {
         errors => BadRequest("FAIL"),
         { case (word, id, tiles) => {
             val currentPlayer = session.get(CURRENT)
-		    val game = Game.fetch(id)
-
-		    if (game.isEmpty)
-		      NotFound("Game " + id + " not found")
-		    else
-		      Ok(Game.submit(game.get, word, tiles, currentPlayer))
+		    Game.fetch(id) match {
+              case None => NotFound("Game " + id + " not found")
+              case Some(game) => Ok(Game.submit(game, word, tiles, currentPlayer))
+            }
         }
       }
     )
