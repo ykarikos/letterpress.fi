@@ -22,9 +22,11 @@ Try it out at http://letterpress.peruna.fi
 
 
 ## Requirements
-Letterpress.fi is created with 
-[Play Framework 2.1](http://www.playframework.com/) and 
-[Scala 2.10](http://www.scala-lang.org/).
+Letterpress.fi is created with
+[Scala 2.10](http://www.scala-lang.org/), 
+[Play Framework 2.1](http://www.playframework.com/), and
+[MongoDB](http://www.mongodb.org/).
+ 
 
 
 ##Licenses
