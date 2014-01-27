@@ -3,6 +3,8 @@ package models
 import models.TileOwner._
 import TileOwner._
 import com.mongodb.casbah.Imports._
+import com.mongodb.casbah.MongoClientURI
+import play.api.Play
 
 object PlayerTurn extends Enumeration {
 	type PlayerTurn = Value
@@ -26,7 +28,8 @@ case class Word(word: String, turn: PlayerTurn)
     
 object Game {
 
-  val mongoClient =  MongoClient()
+  val uri = Play.current.configuration.getString("mongodb.uri").get
+  val mongoClient =  MongoClient(MongoClientURI(uri))
   val mongoColl = mongoClient("letterpress")("game")
   val words = scala.io.Source.fromFile("conf/wordlist/fi.txt", "UTF-8").getLines.toVector
 
