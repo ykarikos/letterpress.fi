@@ -3,7 +3,7 @@
 Attempt to create a clone for [Letterpress](http://www.atebits.com/letterpress/)
 in the web using Finnish language.
 
-Try it out at http://letterpress.peruna.fi
+Try it out at http://letterpress-fi.herokuapp.com/
 
 ### Ideas for improvement:
 * authenticate players properly (e.g. via Google) and/or make sure that a game can not be hijacked
