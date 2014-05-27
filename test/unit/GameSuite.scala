@@ -11,6 +11,8 @@ import models.PlayerTurn
 
 @RunWith(classOf[JUnitRunner])
 class GameSuite extends FunSuite {
+  val GAME_SIZE = 5
+  
   def createTiles(owners: List[TileOwner]) = {
     var i = 0
     for (o <- owners)
@@ -51,16 +53,16 @@ class GameSuite extends FunSuite {
 	}
 	
 	test("neighrbors0") {
-	  val tiles = createTiles(List.fill(25)(Neither))
-	  val n0 = Tile.neighbors(tiles, 0)
+	  val tiles = createTiles(List.fill(GAME_SIZE * GAME_SIZE)(Neither))
+	  val n0 = Game.neighbors(tiles, 0, GAME_SIZE)
 	  assert(n0.length === 2)
 	  assert(n0.contains(tiles(1)) === true)
 	  assert(n0.contains(tiles(5)) === true)
 	}
 	
 	test("neighrbors1") {
-	  val tiles = createTiles(List.fill(25)(Neither))
-	  val n = Tile.neighbors(tiles, 1)
+	  val tiles = createTiles(List.fill(GAME_SIZE*GAME_SIZE)(Neither))
+	  val n = Game.neighbors(tiles, 1, GAME_SIZE)
 	  assert(n.length === 3)
 	  assert(n.contains(tiles(0)) === true)
 	  assert(n.contains(tiles(2)) === true)
@@ -68,8 +70,8 @@ class GameSuite extends FunSuite {
 	}
 
 	test("neighrbors6") {
-	  val tiles = createTiles(List.fill(25)(Neither))
-	  val n = Tile.neighbors(tiles, 6)
+	  val tiles = createTiles(List.fill(GAME_SIZE*GAME_SIZE)(Neither))
+	  val n = Game.neighbors(tiles, 6, GAME_SIZE)
 	  assert(n.length === 4)
 	  assert(n.contains(tiles(1)) === true)
 	  assert(n.contains(tiles(5)) === true)
@@ -78,8 +80,8 @@ class GameSuite extends FunSuite {
 	}
 	
 	test("normalizeNeither") {
-	  val tiles = createTiles(List.fill(25)(Neither))
-	  val normalized = Tile.normalize(tiles)
+	  val tiles = createTiles(List.fill(GAME_SIZE*GAME_SIZE)(Neither))
+	  val normalized = Game.normalize(tiles, GAME_SIZE)
 	  tiles.foreach(t => assert(t === normalized(t.id)))
 	}
 	/*
@@ -104,7 +106,7 @@ class GameSuite extends FunSuite {
 	      0,0,2,0,2,
 	      2,2,0,0,2)
 	  val expectedTiles = createTiles(expectedOwners map { o => TileOwner.withName(o.toString) })
-	  val normalized = Tile.normalize(tiles)
+	  val normalized = Game.normalize(tiles, GAME_SIZE)
 	  expectedTiles.foreach(t => assert(t === normalized(t.id)))
 	  
 	}
@@ -125,7 +127,7 @@ class GameSuite extends FunSuite {
 	      0,0,0,0,1,
 	      0,0,0,0,0)
 	  val expectedTiles = createTiles(expectedOwners map { o => TileOwner.withName(o.toString) })
-	  val normalized = Tile.normalize(tiles)
+	  val normalized = Game.normalize(tiles, GAME_SIZE)
 	  expectedTiles.foreach(t => assert(t === normalized(t.id)))
 	  
 	}
@@ -144,7 +146,7 @@ class GameSuite extends FunSuite {
 	      2,2,0,0,2)
 	  val tiles = createTiles(owners map { o => TileOwner.withName(o.toString) })
 	  assert(Game.score(tiles) === (5, 9))
-	  assert(Game.score(Tile.normalize(tiles)) === (5, 9))
+	  assert(Game.score(Game.normalize(tiles, GAME_SIZE)) === (5, 9))
 	}
 	
 	test("selectWord") {

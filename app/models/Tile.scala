@@ -39,33 +39,6 @@ import PlayerTurn._
 case class Tile(letter: Char, id: Int, owner: TileOwner)
 
 object Tile {
-  val ROWS = 5
-  val COLS = 5
-  
-  def normalize(tiles: List[Tile]): List[Tile] = { 
-    tiles map { t => normalize0(neighbors(tiles, t.id), t) }
-  }    
-    
-  def normalize0(neighbors: List[Tile], tile: Tile): Tile =
-    if (tile.owner == Neither)
-      tile
-    else {
-      val equalNeighbors = neighbors.map { t => locked(t.owner) }.
-        count {_ == locked(tile.owner)}
-      if (equalNeighbors == neighbors.length)
-        Tile(tile.letter, tile.id, locked(tile.owner))
-      else 
-        Tile(tile.letter, tile.id, unlocked(tile.owner))
-    }
-    
-  def neighbors(tiles: List[Tile], id: Int): List[Tile] = {
-    val col = id % ROWS
-    val row = id / COLS
-    List((col-1, row), (col+1, row), (col, row-1), (col, row+1)).
-    	filter { c => c._1 >= 0 && c._2 >= 0 && c._1 < COLS && c._2 < ROWS }.
-    	map { c => tiles(c._2 * 5 + c._1) }
-  }
-    
   def selectWord(word: List[Int], tiles: List[Tile], player: PlayerTurn): List[Tile] = 
     if (word.isEmpty)
       tiles

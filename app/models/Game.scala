@@ -22,11 +22,13 @@ import PlayerTurn._
 
 case class Game(id: String, tiles: List[Tile], playerOne: String, 
     playerTwo: Option[String], score: (Int, Int), 
-    turn: PlayerTurn, words: List[Word])
+    turn: PlayerTurn, words: List[Word], size: Int)
 
 case class Word(word: String, turn: PlayerTurn)
     
 object Game {
+  
+  val DEFAULT_SIZE = 5
 
   val uri = Play.current.configuration.getString("mongodb.uri").get
   val mongoClient =  MongoClient(MongoClientURI(uri))
@@ -40,7 +42,8 @@ object Game {
     	"playerOne" -> game.playerOne,
     	"playerTwo" -> game.playerTwo,
     	"turn" -> game.turn.toString,
-    	"words" -> List()
+    	"words" -> List(),
+    	"size" -> game.size
     )
     mongoColl += gameObj
   }
@@ -67,10 +70,11 @@ object Game {
             game.getAs[String]("playerTwo"),
             score(tiles),
             PlayerTurn.withName(game.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString)),
-            deserializeWords(game.as[MongoDBList]("words").toList collect { case s: String => s })
+            deserializeWords(game.as[MongoDBList]("words").toList collect { case s: String => s }),
+            game.getAsOrElse[Int]("size", DEFAULT_SIZE)
           )
       }
-    )
+    ) 
   }
 
   def serializeWord(word: Word): String =
@@ -120,7 +124,7 @@ object Game {
     mongoColl.update(MongoDBObject("id" -> game.id),
         $push(Seq("words" -> serializeWord(Word(word, game.turn)))))
     
-    val newTiles = Tile.normalize(Tile.selectWord(stringToTileIds(tiles), game.tiles, game.turn))
+    val newTiles = normalize(Tile.selectWord(stringToTileIds(tiles), game.tiles, game.turn), game.size)
     updateTiles(game.id, other(game.turn), newTiles)
   }
   
@@ -176,4 +180,32 @@ object Game {
         game.playerTwo
     } else
       None
+      
+   // *** Handle List of Tiles ***
+  def normalize(tiles: List[Tile], gameSize: Int): List[Tile] = { 
+    tiles map { t => normalize0(neighbors(tiles, t.id, gameSize), t) }
+  }    
+    
+  def normalize0(neighbors: List[Tile], tile: Tile): Tile =
+    if (tile.owner == Neither)
+      tile
+    else {
+      val equalNeighbors = neighbors.map { t => locked(t.owner) }.
+        count {_ == locked(tile.owner)}
+      if (equalNeighbors == neighbors.length)
+        Tile(tile.letter, tile.id, locked(tile.owner))
+      else 
+        Tile(tile.letter, tile.id, unlocked(tile.owner))
+    }
+    
+  def neighbors(tiles: List[Tile], id: Int, gameSize: Int): List[Tile] = {
+    val ROWS = gameSize
+    val COLS = gameSize
+    val col = id % ROWS
+    val row = id / COLS
+    List((col-1, row), (col+1, row), (col, row-1), (col, row+1)).
+    	filter { c => c._1 >= 0 && c._2 >= 0 && c._1 < COLS && c._2 < ROWS }.
+    	map { c => tiles(c._2 * 5 + c._1) }
+  }
+   
 }

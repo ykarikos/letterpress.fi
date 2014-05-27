@@ -29,7 +29,7 @@ object Application extends Controller {
         errors => BadRequest(views.html.index(newgameForm)),
         name => {
 		    val id = randomId
-		    val game = Game(id, randomTiles, name, None, (0, 0), PlayerTurn.PlayerOne, Nil)
+		    val game = Game(id, randomTiles, name, None, (0, 0), PlayerTurn.PlayerOne, Nil, Game.DEFAULT_SIZE)
 		    Game.create(game)
 		    Redirect(routes.Application.getgame(id)).withSession(CURRENT -> name)
 		  }
