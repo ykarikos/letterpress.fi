@@ -63,14 +63,14 @@
 </ul>
 </div>
 
-<div id="board">
+<div id="board" style="width: @(game.size * 80)px">
 
 @for(tile <- game.tiles) {
-	@tilespan(tile)
+	@tilespan(tile, game.size)
 }
 </div>
 
-<ul class="playedWords">
+<ul class="playedWords" style="top: @(game.size * 90)px">
 @for(word <- game.words) {
 	<li class="player@word.turn">@word.word</li>
 }

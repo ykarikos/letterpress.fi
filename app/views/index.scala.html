@@ -1,4 +1,4 @@
-@(newgameForm: Form[String], currentPlayer: Option[String] = None)
+@(newgameForm: Form[(String, Int)], currentPlayer: Option[String] = None)
 
 @import helper._
 @implicitField = @{ FieldConstructor(fieldConstructor.f) }
@@ -23,6 +23,8 @@ alt="Fork me on GitHub"></a></p>
         	@inputText(newgameForm("name"))
         }
         <p> 
+		@inputText(newgameForm("size"))
+		<p>
         <input type="submit" value="Create game">
         
     }

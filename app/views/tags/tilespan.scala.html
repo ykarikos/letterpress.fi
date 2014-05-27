@@ -1,10 +1,10 @@
-@(tile: Tile)
+@(tile: Tile, size: Int)
 @import models.TileOwner._
 @left(id: Int) = @{
-  (id % 5) * 80
+  (id % size) * 80
 }
 @top(id: Int) = @{
-  200 + id / 5 * 90
+  200 + id / size * 90
 }
 @cssclass(c: TileOwner) = {
   @if(c != Neither) {

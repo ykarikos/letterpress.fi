@@ -27,12 +27,13 @@ object Application extends Controller {
   def newgame = Action { implicit request =>
     newgameForm.bindFromRequest.fold( 
         errors => BadRequest(views.html.index(newgameForm)),
-        name => {
+        { case (name, size) => {
 		    val id = randomId
-		    val game = Game(id, randomTiles, name, None, (0, 0), PlayerTurn.PlayerOne, Nil, Game.DEFAULT_SIZE)
+		    val game = Game(id, randomTiles(size*size), name, None, (0, 0), PlayerTurn.PlayerOne, Nil, size)
 		    Game.create(game)
 		    Redirect(routes.Application.getgame(id)).withSession(CURRENT -> name)
 		  }
+        }
         )
   }
   
@@ -44,8 +45,8 @@ object Application extends Controller {
     alphabet.find(_._1 > r).get._2
   }
   
-  def randomTiles: List[Tile] =
-    for (i <- List.range(0,25)) 
+  def randomTiles(count: Int): List[Tile] =
+    for (i <- List.range(0, count)) 
     yield Tile(nextLetter, i, Neither)
   
   def getgame(id: String) = Action { request =>
@@ -130,9 +131,10 @@ object Application extends Controller {
       "id" -> nonEmptyText
   )
   
-  val newgameForm = Form(
-    "name" -> nonEmptyText
-  )
+  val newgameForm = Form(tuple(
+    "name" -> nonEmptyText,
+    "size" -> number 
+  ))
 	
   val joinForm = Form(tuple(
 	"id" -> nonEmptyText,

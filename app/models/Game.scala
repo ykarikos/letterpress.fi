@@ -205,7 +205,7 @@ object Game {
     val row = id / COLS
     List((col-1, row), (col+1, row), (col, row-1), (col, row+1)).
     	filter { c => c._1 >= 0 && c._2 >= 0 && c._1 < COLS && c._2 < ROWS }.
-    	map { c => tiles(c._2 * 5 + c._1) }
+    	map { c => tiles(c._2 * COLS + c._1) }
   }
    
 }
