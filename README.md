@@ -12,9 +12,7 @@ Try it out at http://letterpress-fi.herokuapp.com/
 * language selection (e.g. de, sv, en)
 * list player's games
 * list leaderboard
-* show player names more clearly
 * show rules
-* Github banner
 
 ### Current bugs:
 * Firefox: displays too bold font
