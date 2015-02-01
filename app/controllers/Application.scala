@@ -34,7 +34,7 @@ object Application extends Controller {
 		    Redirect(routes.Application.getgame(id)).withSession(CURRENT -> name)
 		  }
         }
-        )
+    )
   }
   
   def randomId: String =
@@ -55,7 +55,13 @@ object Application extends Controller {
       case None =>
       	NotFound("Game " + id + " not found")
       case Some(game) =>
-      	Ok(views.html.game(game, Game.score(game.tiles), Game.winner(game), name))
+        name match {
+          case None => 
+        	Ok(views.html.game(game, Game.score(game.tiles), Game.winner(game), name))
+          case Some(currentName) => 
+        	Ok(views.html.game(game, Game.score(game.tiles), Game.winner(game), name)).withSession(CURRENT -> currentName)
+        }
+        
     }
   }
   
