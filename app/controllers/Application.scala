@@ -21,17 +21,27 @@ object Application extends Controller {
   val CURRENT = "current"
   
   def index = Action { request =>
-    Ok(views.html.index(newgameForm, request.session.get(CURRENT)))
+    Ok(views.html.index(newgameForm, setnameForm, request.session.get(CURRENT)))
   }
   
   def newgame = Action { implicit request =>
     newgameForm.bindFromRequest.fold( 
-        errors => BadRequest(views.html.index(newgameForm)),
+        errors => BadRequest(views.html.index(newgameForm, setnameForm)),
         { case (name, size) => {
 		    val id = randomId
 		    val game = Game(id, randomTiles(size*size), name, None, (0, 0), PlayerTurn.PlayerOne, Nil, size)
 		    Game.create(game)
 		    Redirect(routes.Application.getgame(id)).withSession(CURRENT -> name)
+		  }
+        }
+    )
+  }
+  
+  def setname = Action { implicit request =>
+    setnameForm.bindFromRequest.fold( 
+        errors => BadRequest(views.html.index(newgameForm, setnameForm)),
+        { case (name) => {
+        	Redirect(routes.Application.index).withSession(CURRENT -> name)
 		  }
         }
     )
@@ -141,6 +151,10 @@ object Application extends Controller {
     "name" -> nonEmptyText,
     "size" -> number 
   ))
+	
+  val setnameForm = Form(
+    "name" -> nonEmptyText
+  )
 	
   val joinForm = Form(tuple(
 	"id" -> nonEmptyText,

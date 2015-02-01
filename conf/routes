@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index
 POST    /newgame                    controllers.Application.newgame
 POST    /joingame					controllers.Application.joingame
+POST    /setname					controllers.Application.setname
 GET		/game/:id					controllers.Application.getgame(id)
 POST   	/submit						controllers.Application.submit
 POST   	/pass						controllers.Application.pass
