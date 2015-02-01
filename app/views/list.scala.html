@@ -1,0 +1,23 @@
+@(setnameForm: Form[String], currentPlayer: Option[String] = None, ids: Option[List[String]])
+
+@import helper._
+@implicitField = @{ FieldConstructor(fieldConstructor.f) }
+
+@main {
+
+	<h1>Letterpress.fi</h1>
+
+	@if(currentPlayer.isDefined) {
+		<p>Hi, @currentPlayer! Your games are:</p>
+		<ul>
+		@for(id <- ids.get) {
+			<li><a href="/game/@id">@id</a>
+		}
+		</ul>		
+	} else {
+	    @form(routes.Application.setname) {
+        	@inputText(setnameForm("name"))
+        	<input type="submit" value="List games">
+	    }
+	}
+}

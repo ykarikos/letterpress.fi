@@ -40,10 +40,7 @@ object Application extends Controller {
   def setname = Action { implicit request =>
     setnameForm.bindFromRequest.fold( 
         errors => BadRequest(views.html.index(newgameForm, setnameForm)),
-        { case (name) => {
-        	Redirect(routes.Application.index).withSession(CURRENT -> name)
-		  }
-        }
+        name =>	Redirect(routes.Application.listgames).withSession(CURRENT -> name)
     )
   }
   
@@ -75,6 +72,11 @@ object Application extends Controller {
     }
   }
   
+  def listgames = Action { request =>
+    val currentPlayer = request.session.get(CURRENT)
+    Ok(views.html.list(setnameForm, currentPlayer, Game.listGames(currentPlayer)))
+  }
+    
   def joingame = Action { implicit request =>
     joinForm.bindFromRequest.fold(
         errors => BadRequest("FAIL"),

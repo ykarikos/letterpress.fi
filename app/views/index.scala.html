@@ -14,6 +14,7 @@ alt="Fork me on GitHub"></a></p>
 	<h1>Letterpress.fi</h1>
 	
 	<p>A <a href="http://www.atebits.com/letterpress/">Letterpress</a> clone in Finnish</p>
+	<p><a href="@routes.Application.listgames">List</a> your games</p>
 
     @form(routes.Application.newgame) {
         @if(currentPlayer.isDefined) {
@@ -28,10 +29,4 @@ alt="Fork me on GitHub"></a></p>
         <input type="submit" value="Create game">        
     }
     
-    @if(!currentPlayer.isDefined) {
-	    @form(routes.Application.setname) {
-        	@inputText(setnameForm("name"))
-        	<input type="submit" value="Save name">
-	    }
-	}
 }

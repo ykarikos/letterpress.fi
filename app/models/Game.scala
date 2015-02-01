@@ -2,8 +2,10 @@ package models
 
 import models.TileOwner._
 import TileOwner._
-import com.mongodb.casbah.Imports._
+import com.mongodb.casbah.Imports.MongoDBObject
 import com.mongodb.casbah.MongoClientURI
+import com.mongodb.casbah.MongoClient
+import com.mongodb.casbah.query.Imports._
 import play.api.Play
 
 object PlayerTurn extends Enumeration {
@@ -75,6 +77,14 @@ object Game {
           )
       }
     ) 
+  }
+  
+
+  def listGames(name: Option[String]): Option[List[String]] = {
+    name.map( n => {
+	    (for (game <- mongoColl.find($or("playerOne" -> n, "playerTwo" -> n)))
+	      yield game.getAsOrElse[String]("id", null)).toList
+    })
   }
 
   def serializeWord(word: Word): String =
