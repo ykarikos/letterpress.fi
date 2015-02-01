@@ -1,4 +1,4 @@
-@(setnameForm: Form[String], currentPlayer: Option[String] = None, ids: Option[List[String]])
+@(setnameForm: Form[String], currentPlayer: Option[String] = None, games: Option[List[Game]])
 
 @import helper._
 @implicitField = @{ FieldConstructor(fieldConstructor.f) }
@@ -9,9 +9,13 @@
 
 	@if(currentPlayer.isDefined) {
 		<p>Hi, @currentPlayer! Your games are:</p>
-		<ul>
-		@for(id <- ids.get) {
-			<li><a href="/game/@id">@id</a>
+		<ul id="gamelist">
+		@for(game <- games.get) {
+			<li><a href="/game/@game.id">@game.playerOne – @game.playerTwo.getOrElse("")</a>: 
+			@game.score
+			@if(game.ended) {
+				<span class="gameover">Game over</span>
+			}
 		}
 		</ul>		
 	} else {

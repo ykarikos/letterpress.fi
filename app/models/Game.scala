@@ -24,7 +24,7 @@ import PlayerTurn._
 
 case class Game(id: String, tiles: List[Tile], playerOne: String, 
     playerTwo: Option[String], score: (Int, Int), 
-    turn: PlayerTurn, words: List[Word], size: Int)
+    turn: PlayerTurn, words: List[Word], size: Int, ended: Boolean = false)
 
 case class Word(word: String, turn: PlayerTurn)
     
@@ -62,28 +62,31 @@ object Game {
             "tiles" -> serializeTiles(tiles))))
   }
   
+  def fromMongoDB(game: DBObject): Game = {
+	  val tiles = deserializeTiles(game.getAsOrElse[String]("tiles", ""))
+	  Game(game.getAsOrElse[String]("id", null),
+	    tiles,
+	    game.getAsOrElse[String]("playerOne", ""),
+	    game.getAs[String]("playerTwo"),
+	    score(tiles),
+	    PlayerTurn.withName(game.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString)),
+	    deserializeWords(game.as[MongoDBList]("words").toList collect { case s: String => s }),
+	    game.getAsOrElse[Int]("size", DEFAULT_SIZE),
+	    ended(tiles)
+	 )
+  }
+  
   def fetch(id: String): Option[Game] = {
     mongoColl.findOne(MongoDBObject("id" -> id)).map(
-      game => {
-    	  val tiles = deserializeTiles(game.getAsOrElse[String]("tiles", ""))
-    	  Game(game.getAsOrElse[String]("id", null),
-            tiles,
-            game.getAsOrElse[String]("playerOne", ""),
-            game.getAs[String]("playerTwo"),
-            score(tiles),
-            PlayerTurn.withName(game.getAsOrElse[String]("turn", PlayerTurn.PlayerOne.toString)),
-            deserializeWords(game.as[MongoDBList]("words").toList collect { case s: String => s }),
-            game.getAsOrElse[Int]("size", DEFAULT_SIZE)
-          )
-      }
-    ) 
+      game => fromMongoDB(game)
+    )
   }
   
 
-  def listGames(name: Option[String]): Option[List[String]] = {
+  def listGames(name: Option[String]): Option[List[Game]] = {
     name.map( n => {
 	    (for (game <- mongoColl.find($or("playerOne" -> n, "playerTwo" -> n)))
-	      yield game.getAsOrElse[String]("id", null)).toList
+	      yield fromMongoDB(game)).toList
     })
   }
 

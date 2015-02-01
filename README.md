@@ -10,7 +10,6 @@ Try it out at http://letterpress-fi.herokuapp.com/
 * when another player has played a tile, reload the page less violently: preserve selected tiles 
 * use player gravatars instead of icons
 * language selection (e.g. de, sv, en)
-* list player's games
 * list leaderboard
 * show rules
 

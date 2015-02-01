@@ -64,9 +64,9 @@ object Application extends Controller {
       case Some(game) =>
         name match {
           case None => 
-        	Ok(views.html.game(game, Game.score(game.tiles), Game.winner(game), name))
+        	Ok(views.html.game(game, game.score, Game.winner(game), name))
           case Some(currentName) => 
-        	Ok(views.html.game(game, Game.score(game.tiles), Game.winner(game), name)).withSession(CURRENT -> currentName)
+        	Ok(views.html.game(game, game.score, Game.winner(game), name)).withSession(CURRENT -> currentName)
         }
         
     }
