@@ -6,9 +6,8 @@ import play.api.test._
 import play.api.test.Helpers._
 
 /**
- * Add your spec here.
- * You can mock out a whole application including requests, plugins etc.
- * For more information, consult the wiki.
+ * NOTE: you need mongodb running to pass these tests!
+ * TODO: use some in-memory db that is run inside the test to get rid of the dependency.
  */
 class ApplicationSpec extends Specification {
   
@@ -33,7 +32,7 @@ class ApplicationSpec extends Specification {
     "check tiles match" in {
       running(FakeApplication()) {
         val newgame = route(FakeRequest(POST, "/newgame").withFormUrlEncodedBody(
-            ("name", "foo")
+            ("name", "foo"), ("size", "5")
         )).get
         
         status(newgame) must equalTo(SEE_OTHER)
