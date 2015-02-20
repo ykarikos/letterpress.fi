@@ -5,6 +5,8 @@ in the web using Finnish language.
 
 Try it out at http://letterpress.peruna.fi/
 
+Part of the contributions are sponsored by [Futurice](http://futurice.com)'s [Spice Program](http://spiceprogram.org/oss-sponsorship/).
+
 ### Ideas for improvement:
 * authenticate players properly (e.g. via Google) and/or make sure that a game can not be hijacked
 * when another player has played a tile, reload the page less violently: preserve selected tiles 
