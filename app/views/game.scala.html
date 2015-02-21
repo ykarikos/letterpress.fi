@@ -9,9 +9,8 @@
 @defining(!winner.isEmpty) { ended => 
 
 @if(ended) {
-<p class="ended">The game has ended.<br>
-@winner.get won!
-</p>
+<p class="ended">The game has ended. @winner.get won!</p>
+<p class="ended"><a href="@routes.Application.index">Start</a> another game.</p>
 }
 
 <div class="playersContainer">
