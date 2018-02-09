@@ -28,7 +28,7 @@ Letterpress.fi is created with
  
 
 
-##Licenses
+## Licenses
 Letterpress.fi (C) 2013 Yrjö Kari-Koskinen <ykk@peruna.fi>
 
 Letterpress.fi's source code is licensed with the MIT License, see 
