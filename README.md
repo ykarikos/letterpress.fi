@@ -1,43 +1,95 @@
-# Letterpress.fi
+# letterpress
 
-Attempt to create a clone for [Letterpress](http://www.atebits.com/letterpress/)
-in the web using Finnish language.
+This is the letterpress project.
 
-Try it out at http://letterpress.peruna.fi/
+## Development mode
 
-Part of the contributions are sponsored by [Futurice](http://futurice.com)'s [Spice Program](http://spiceprogram.org/oss-sponsorship/).
+To start the Figwheel compiler, navigate to the project folder and run the following command in the terminal:
 
-### Ideas for improvement:
-* authenticate players properly (e.g. via Google) and/or make sure that a game can not be hijacked
-* when another player has played a tile, reload the page less violently: preserve selected tiles 
-* use player gravatars instead of icons
-* language selection (e.g. de, sv, en)
-* list leaderboard
-* show rules
+```
+lein figwheel
+```
 
-### Current bugs:
-* Firefox: displays too bold font
-* Firefox: dragging a tile puts it back - jquery sortable triggers click
+Figwheel will automatically push cljs changes to the browser. The server will be available at [http://localhost:3449](http://localhost:3449) once Figwheel starts up. 
+
+Figwheel also starts `nREPL` using the value of the `:nrepl-port` in the `:figwheel`
+config found in `project.clj`. By default the port is set to `7002`.
+
+The figwheel server can have unexpected behaviors in some situations such as when using
+websockets. In this case it's recommended to run a standalone instance of a web server as follows:
+
+```
+lein do clean, run
+```
+
+The application will now be available at [http://localhost:3000](http://localhost:3000).
+
+### Style compilation
+To compile [sass](https://github.com/Deraen/sass4clj) sources and then watch for changes and recompile until interrupted, run
+```
+lein sass4clj auto
+```
+
+### Optional development tools
+
+Start the browser REPL:
+
+```
+$ lein repl
+```
+The Jetty server can be started by running:
+
+```clojure
+(start-server)
+```
+and stopped by running:
+```clojure
+(stop-server)
+```
 
 
-## Requirements
-Letterpress.fi is created with
-[Scala 2.10](http://www.scala-lang.org/), 
-[Play Framework 2.1](http://www.playframework.com/), and
-[MongoDB](http://www.mongodb.org/).
- 
+## Building for release
 
+```
+lein do clean, uberjar
+```
 
-## Licenses
-Letterpress.fi (C) 2013 Yrjö Kari-Koskinen <ykk@peruna.fi>
+## Deploying to Heroku
 
-Letterpress.fi's source code is licensed with the MIT License, see 
-[LICENSE.txt](https://github.com/ykarikos/letterpress.fi/blob/master/LICENSE.txt)
+Make sure you have [Git](http://git-scm.com/downloads) and [Heroku toolbelt](https://toolbelt.heroku.com/) installed, then simply follow the steps below.
 
-Varela Round font is obtained from [Google Web Fonts](http://www.google.com/webfonts)
-and is licensed with SIL Open Font License, see 
-[OFL.txt](https://github.com/ykarikos/letterpress.fi/blob/master/OFL.txt).
+Optionally, test that your application runs locally with foreman by running.
 
-Finnish word list is obtained from 
-[Kotimaisten kielten keskus](http://kaino.kotus.fi/sanat/nykysuomi/)
-and is licensed with [GNU LGPL](http://www.gnu.org/licenses/lgpl.html)
+```
+foreman start
+```
+
+Now, you can initialize your git repo and commit your application.
+
+```
+git init
+git add .
+git commit -m "init"
+```
+create your app on Heroku
+
+```
+heroku create
+```
+
+optionally, create a database for the application
+
+```
+heroku addons:add heroku-postgresql
+```
+
+The connection settings can be found at your [Heroku dashboard](https://dashboard.heroku.com/apps/) under the add-ons for the app.
+
+deploy the application
+
+```
+git push heroku master
+```
+
+Your application should now be deployed to Heroku!
+For further instructions see the [official documentation](https://devcenter.heroku.com/articles/clojure).
