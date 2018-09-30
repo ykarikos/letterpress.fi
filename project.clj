@@ -61,19 +61,16 @@
               :output-dir "target/cljsbuild/public/js/out"
               :source-map true
               :optimizations :none
-              :pretty-print  true}}
+              :pretty-print  true}}}}
 
-
-
-            }
-   }
 
   :figwheel
   {:http-server-root "public"
-   :server-port 3449
+   :reload-clj-files true
+   :server-port 3030
    :nrepl-port 7002
-   :nrepl-middleware [cider.piggieback/wrap-cljs-repl
-                      ]
+   :nrepl-middleware [cider.piggieback/wrap-cljs-repl]
+
    :css-dirs ["resources/public/css"]
    :ring-handler letterpress.handler/app}
 
@@ -91,15 +88,14 @@
                                   [nrepl "0.4.4"]
                                   [cider/piggieback "0.3.8"]
                                   [pjstadig/humane-test-output "0.8.3"]
-                                  
+
                                   ;; To silence warnings from sass4clj dependecies about missing logger implementation
-                                  [org.slf4j/slf4j-nop "1.7.25"]
-                                   ]
+                                  [org.slf4j/slf4j-nop "1.7.25"]]
+
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.16"]
-                             [deraen/lein-sass4clj "0.3.1"]
-                             ]
+                             [deraen/lein-sass4clj "0.3.1"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]
