@@ -40,7 +40,7 @@ returns the game object."
   [player-name size]
   (let [id (generate-id)
         size-num (clojure.edn/read-string size)
-        game {:id id
+        game {:_id id
               :tiles (generate-tiles size-num)
               :player-one player-name
               :score [0 0]

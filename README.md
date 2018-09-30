@@ -1,6 +1,16 @@
-# letterpress
+# Letterpress.fi
 
-This is the letterpress project.
+A Finnish language [Letterpress](http://www.atebits.com/letterpress/) clone.
+
+## Requirements
+
+* [Leiningen](https://leiningen.org/) for Development
+* JVM for running it
+* [Mongodb](https://www.mongodb.com/)
+
+## Environment variables
+
+* `DB_URI` – MongoDB URI, defaults to `"mongodb://localhost/letterpress"`
 
 ## Development mode
 
@@ -10,7 +20,7 @@ To start the Figwheel compiler, navigate to the project folder and run the follo
 lein figwheel
 ```
 
-Figwheel will automatically push cljs changes to the browser. The server will be available at [http://localhost:3449](http://localhost:3449) once Figwheel starts up. 
+Figwheel will automatically push cljs changes to the browser. The server will be available at [http://localhost:3449](http://localhost:3449) once Figwheel starts up.
 
 Figwheel also starts `nREPL` using the value of the `:nrepl-port` in the `:figwheel`
 config found in `project.clj`. By default the port is set to `7002`.
