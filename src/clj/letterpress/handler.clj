@@ -29,7 +29,9 @@
      (include-js "/js/app.js")]))
 
 (defn- api-response [o]
-  (-> o prn-str response))
+  (if (nil? o)
+    (not-found "Game not found.")
+    (-> o prn-str response)))
 
 (defroutes routes
   (GET "/" [] (main-page))
