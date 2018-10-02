@@ -17,6 +17,7 @@
                  [org.clojure/clojurescript "1.10.339"
                   :scope "provided"]
                  [secretary "1.2.3"]
+                 [cljs-ajax "0.7.3"]
                  [venantius/accountant "0.2.4"
                   :exclusions [org.clojure/tools.reader]]]
 

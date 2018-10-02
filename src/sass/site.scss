@@ -5,22 +5,37 @@
 // @import 'profile';
 
 // You can use any sass features, like variables, for instance:
-$font-stack: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
+$font-stack: 'Varela Round', Verdana, Helvetica, Arial, sans-serif;
 $base-font-size: 1.125em;
+
+$blue: #78c8f5;
+$blueLocked: #00a2ff;
+$red: #f7998d;
+$redLocked: #ff432f;
+
+@font-face {
+  font-family: 'Varela Round';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Varela Round'), local('VarelaRound-Regular'), url(/fonts/VarelaRound-Regular.ttf);
+}
 
 .body-container {
   font-family: $font-stack;
+  background: #f0efec;
   max-width: 600px;
   margin: 0 auto;
   padding-top: 72px;
   -webkit-font-smoothing: antialiased;
   font-size: $base-font-size;
-  color: #333;
-  line-height: 1.5em;
 }
 
 h1, h2, h3 {
   color: #000;
+}
+
+input[type="submit"] {
+	font-size: 12pt;
 }
 
 h1 {

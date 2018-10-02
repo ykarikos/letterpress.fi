@@ -1,38 +1,34 @@
 (ns letterpress.core
-    (:require [reagent.core :as reagent :refer [atom]]
-              [secretary.core :as secretary :include-macros true]
-              [accountant.core :as accountant]))
-
-;; -------------------------
-;; Views
-
-(defn home-page []
-  [:div [:h2 "Welcome to letterpress"]
-   [:div [:a {:href "/about"} "go to about page"]]])
-
-(defn about-page []
-  [:div [:h2 "About letterpress"]
-   [:div [:a {:href "/"} "go to the home page"]]])
+  (:require [reagent.core :as r]
+            [secretary.core :as secretary :include-macros true]
+            [accountant.core :as accountant]
+            [letterpress.views.index :refer [index-page]]
+            [letterpress.views.list :refer [list-page]]
+            [letterpress.views.game :refer [game-page]]))
 
 ;; -------------------------
 ;; Routes
 
-(defonce page (atom #'home-page))
+(defonce page (r/atom #'index-page))
 
 (defn current-page []
   [:div [@page]])
 
 (secretary/defroute "/" []
-  (reset! page #'home-page))
+  (reset! page #'index-page))
 
-(secretary/defroute "/about" []
-  (reset! page #'about-page))
+(secretary/defroute "/list" []
+  (reset! page #'list-page))
+
+(secretary/defroute "/game/:id" [id]
+  (reset! page #'game-page))
+
 
 ;; -------------------------
 ;; Initialize app
 
 (defn mount-root []
-  (reagent/render [current-page] (.getElementById js/document "app")))
+  (r/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
   (accountant/configure-navigation!
