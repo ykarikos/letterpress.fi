@@ -1,14 +1,19 @@
 (ns letterpress.views.index
   (:require [reagent.core :as r]
             [ajax.core :refer [POST]]
-            [secretary.core :as secretary]))
+            [secretary.core :as secretary]
+            [letterpress.state :refer [game]]
+            [cljs.tools.reader.edn :as edn]))
 
 (def default-size 5)
 
-(defn- start-game [game]
-  (do
-    (println game)
-    (secretary/dispatch! (str "/game/" (:_id game)))))
+(defn- redirect! [loc]
+  (set! (.-location js/window) loc))
+
+(defn- start-game [data]
+  (let [new-game (edn/read-string data)]
+    (reset! game new-game)
+    (redirect! (str "/game/" (:_id new-game)))))
 
 (defn- create-game [player-name]
   (if (empty? player-name)

@@ -9,19 +9,19 @@
 ;; -------------------------
 ;; Routes
 
-(defonce page (r/atom #'index-page))
+(defonce page (r/atom {:page #'index-page}))
 
 (defn current-page []
-  [:div [@page]])
+  [:div [(:page @page) (:id @page)]])
 
 (secretary/defroute "/" []
-  (reset! page #'index-page))
+  (swap! page assoc :page #'index-page))
 
 (secretary/defroute "/list" []
-  (reset! page #'list-page))
+  (swap! page assoc :page #'list-page))
 
 (secretary/defroute "/game/:id" [id]
-  (reset! page #'game-page))
+  (swap! page assoc :page #'game-page :id id))
 
 
 ;; -------------------------
