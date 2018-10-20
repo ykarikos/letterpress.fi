@@ -1,6 +1,6 @@
 # Letterpress.fi
 
-A Finnish language [Letterpress](http://www.atebits.com/letterpress/) clone.
+A Finnish language [Letterpress](http://www.letterpressapp.com/) clone.
 
 ## Requirements
 
