@@ -35,8 +35,19 @@
        first
        first))
 
+(defn- letter-to-tile [acc letter]
+  {:index (-> acc :index inc)
+   :tiles (conj (:tiles acc)
+                {:letter letter
+                 :id (:index acc)})})
+
 (defn- generate-tiles [size]
-  (take (* size size) (repeatedly #(get-character (rand)))))
+  (let [tile-letters (take (* size size)
+                           (repeatedly #(get-character (rand))))
+        tiles (reduce letter-to-tile
+                      {:index 0 :tiles []}
+                      tile-letters)]
+    (:tiles tiles)))
 
 (defn create-game
   "Creates a new game, saves it in the database and
@@ -49,7 +60,7 @@ returns the game object."
               :player-one player-name
               :score [0 0]
               :turn :player-one
-              :words []
+              :played-words []
               :size size-num}]
     (db/save-game game)
     game))

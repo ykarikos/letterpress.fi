@@ -10,8 +10,16 @@
   (GET (str "/api/game/" id)
        {:handler update-game-state}))
 
-(defn- render-tile [tile]
- [:span tile])
+(defn- render-tile [tile size]
+  (let [id (:id tile)
+        left (* (mod id size) 80)
+        top (+ 200 (* (quot id size) 90))]
+    [:span
+     {:style {:left (str left "px")
+              :top (str top "px")}
+      :class (:owner tile)
+      :data-id id}
+     (:letter tile)]))
 
 (defn- render-player [num name score]
   [:li {:class (str "player" num)}
@@ -37,10 +45,11 @@
 (defn game-page [id]
   (if (nil? @game)
     (do (fetch-game id) [:div "Fetching the game..."])
-    [:div
-     (str @game)
-     (render-players @game)
-     [:div {:id "board"
-            :style {:width (str (* 80 (:size @game)) "px")}}
-      (for [tile (:tiles @game)]
-        ^{:key tile} (render-tile tile))]]))
+    (let [size (:size @game)]
+      [:div
+       (str @game)
+       (render-players @game)
+       [:div {:id "board"
+              :style {:width (str (* 80 size) "px")}}
+        (for [tile (:tiles @game)]
+          ^{:key (:id tile)} [render-tile tile size])]])))
