@@ -2,16 +2,11 @@
 // Partials (files starting with _) can be inclued using @import:
 // (import path can include _ but it is not needed)
 
-// @import 'profile';
-
 // You can use any sass features, like variables, for instance:
 $font-stack: 'Varela Round', Verdana, Helvetica, Arial, sans-serif;
 $base-font-size: 1.125em;
 
-$blue: #78c8f5;
-$blueLocked: #00a2ff;
-$red: #f7998d;
-$redLocked: #ff432f;
+@import 'game';
 
 @font-face {
   font-family: 'Varela Round';
@@ -34,10 +29,6 @@ h1, h2, h3 {
   color: #000;
 }
 
-input[type="submit"] {
-	font-size: 12pt;
-}
-
 h1 {
   font-size: $base-font-size + 1.375;
 }
@@ -54,7 +45,6 @@ a {
   text-decoration: none;
   color: #09f;
 
- // nesting is also supported
   &:hover {
     text-decoration: underline;
   }

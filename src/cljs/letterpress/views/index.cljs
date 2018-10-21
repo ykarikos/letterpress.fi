@@ -30,7 +30,7 @@
       [:div
        [:h1 "Letterpress.fi"]
        [:p "A "
-        [:a {:href "http://www.atebits.com/letterpress/"}
+        [:a {:href "http://www.letterpressapp.com/"}
          "Letterpress"]
         " clone in Finnish"]
        [:p
