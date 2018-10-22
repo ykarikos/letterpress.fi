@@ -1,5 +1,5 @@
 (ns letterpress.views.game
-  (:require [letterpress.state :refer [game]]
+  (:require [letterpress.state :refer [game current-player]]
             [ajax.core :refer [GET]]
             [cljs.tools.reader.edn :as edn]))
 
@@ -95,11 +95,11 @@
 
 (defn game-page [id]
   (if (nil? @game)
-    (do (fetch-game id) [:div "Fetching the game..."])
+    (do (fetch-game id) [:div "Haetaan peliä..."])
     (let [size (:size @game)]
       (println @game)
       [:div
-       (render-players @game "foo") ; TODO: read current player from cookie
+       (render-players @game @current-player)
        [:div
         [:ul {:id "selected"}]]
        [:div {:id "board"

@@ -23,7 +23,7 @@ input[type="submit"] {
 	.topbuttons {
 		position: absolute;
 		top: 10px;
-		width: 75px;
+		width: 90px;
 	}
 	.clear {
 		left: 20px;
@@ -51,6 +51,8 @@ input[type="submit"] {
 		.icon {
 			line-height: 30px;
 			font-size: 90px;
+			margin-right: -10px;
+			margin-left: -10px;
 			font-weight: bold;
 		}
 		.score {

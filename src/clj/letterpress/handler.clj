@@ -9,10 +9,12 @@
 
 (def mount-target
   [:div#app
-   [:h3 "ClojureScript has not been compiled!"]
-   [:p "please run "
-    [:b "lein figwheel"]
-    " in order to start the compiler"]])
+   [:h1 "Letterpress.fi"]
+   [:p "Suomenkielinen "
+    [:a {:href "http://www.letterpressapp.com/"}
+     "Letterpress"]
+    "-kopio"]
+   [:p "Ladataan..."]])
 
 (defn head []
   [:head

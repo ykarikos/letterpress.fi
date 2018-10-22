@@ -13,6 +13,7 @@
                  [compojure "1.6.1"]
                  [hiccup "1.0.5"]
                  [yogthos/config "1.1.1"]
+                 [alandipert/storage-atom "1.2.4"]
                  [com.novemberain/monger "3.1.0" :exclusions [com.google.guava/guava]]
                  [org.clojure/clojurescript "1.10.339"
                   :scope "provided"]

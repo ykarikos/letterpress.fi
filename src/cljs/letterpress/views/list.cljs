@@ -2,5 +2,5 @@
 
 (defn list-page []
   [:div
-   [:h1 "Game list"]
-   [:div [:a {:href "/"} "go to the home page"]]])
+   [:h1 "Pelilista"]
+   [:div [:a {:href "/"} "Siirry etusivulle"]]])
