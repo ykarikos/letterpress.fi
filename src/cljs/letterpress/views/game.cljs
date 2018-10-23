@@ -1,6 +1,7 @@
 (ns letterpress.views.game
   (:require [letterpress.state :refer [game current-player]]
-            [ajax.core :refer [GET]]
+            [reagent.core :as r]
+            [ajax.core :refer [GET POST]]
             [cljs.tools.reader.edn :as edn]))
 
 (defn- update-game-state [data]
@@ -40,17 +41,31 @@
 (defn- turn [game]
   (-> game :turn keyword game))
 
-(defn- join-game [current-player]
-  [:li
-   (if (nil? current-player)
-      [:label "Nimi: "
-       [:input {:id "player-two-input"
-                :class "nameinput"}]]
-      [:label "Nimi: " current-player])
-   [:br]
-   [:input {:type "submit"
-            :value "Liity peliin"
-            :class "namesubmit"}]])
+(defn- join-game! [id player-name]
+  (if (empty? player-name)
+    (println "Player name missing!") ;TODO
+    (do
+      (reset! current-player player-name)
+      (POST (str "/api/game/" id "/join")
+            {:params {:player-name player-name}
+             :format :raw
+             :handler update-game-state}))))
+
+(defn- join-game-form [game current-player]
+  (let [player-name (r/atom current-player)]
+    (fn []
+      [:li
+       (if (nil? current-player)
+          [:label "Nimi: "
+           [:input {:value @player-name
+                    :class "nameinput"
+                    :on-change #(reset! player-name (-> % .-target .-value))}]]
+          [:label "Nimi: " current-player])
+       [:br]
+       [:input {:type "submit"
+                :value "Liity peliin"
+                :class "namesubmit"
+                :on-click #(join-game! (:_id game) @player-name)}]])))
 
 (defn- render-players [game current-player]
   (let [winner (:winner game)
@@ -82,7 +97,7 @@
            [:li
             [:span {:class "waiting"}
              "Odotetaan toista pelaajaa."]]
-           (join-game current-player))
+           [join-game-form game current-player])
          (render-player 2
                         (:player-two game)
                         (-> game :score second)
@@ -97,7 +112,6 @@
   (if (nil? @game)
     (do (fetch-game id) [:div "Haetaan peliä..."])
     (let [size (:size @game)]
-      (println @game)
       [:div
        (render-players @game @current-player)
        [:div

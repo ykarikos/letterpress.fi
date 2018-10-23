@@ -52,7 +52,9 @@
     (POST "/game" [player-name size]
       (api-response (game/create-game player-name size)))
     (GET "/game/:id" [id]
-      (api-response (game/get-game id))))
+      (api-response (game/get-game id)))
+    (POST "/game/:id/join" [id player-name]
+      (api-response (game/join-game id player-name))))
 
   (resources "/")
   (not-found "Not Found"))

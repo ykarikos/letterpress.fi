@@ -14,7 +14,7 @@
     (println @game)
     (accountant/navigate! (str "/game/" (:_id new-game)))))
 
-(defn- create-game [player-name]
+(defn- create-game! [player-name]
   (if (empty? player-name)
     (println "Player name missing!") ; TODO
     (do
@@ -26,7 +26,7 @@
              :handler start-game}))))
 
 (defn index-page []
-  (let [player-name (r/atom "")]
+  (let [player-name (r/atom @current-player)]
     (fn []
       [:div
        [:h1 "Letterpress.fi"]
@@ -39,10 +39,13 @@
          "Näytä"]
         (str " omat pelisi")]
        [:div
-        [:input {:type "text"
-                 :value @player-name
-                 :on-change #(reset! player-name (-> % .-target .-value))}]
-        " "
+        "Nimi: "
+        (if (nil? @current-player)
+          [:input {:type "text"
+                   :value @player-name
+                   :on-change #(reset! player-name (-> % .-target .-value))}]
+          @current-player)]
+       [:div
         [:input {:type "submit"
-                 :value "Käynnistä"
-                 :on-click #(create-game @player-name)}]]])))
+                 :value "Käynnistä uusi peli"
+                 :on-click #(create-game! @player-name)}]]])))

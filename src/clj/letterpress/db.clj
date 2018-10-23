@@ -1,5 +1,6 @@
 (ns letterpress.db
   (:require [monger.collection :as mc]
+            [monger.operators :refer [$set]]
             [monger.core :as mg]
             [config.core :refer [env]]))
 
@@ -18,3 +19,8 @@
 
 (defn get-game [id]
   (mc/find-one-as-map db game-db {:_id id}))
+
+(defn join-game [id player-name]
+  (let [result (mc/update-by-id db game-db id {$set {:player-two player-name}})]
+    (when (= 1 (.getN result))
+      (get-game id))))

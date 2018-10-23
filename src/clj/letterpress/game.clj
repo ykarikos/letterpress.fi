@@ -68,3 +68,7 @@ returns the game object."
 (defn get-game
   [id]
   (db/get-game id))
+
+(defn join-game
+  [id player-name]
+  (db/join-game id player-name))
