@@ -99,42 +99,36 @@ input[type="submit"] {
 	}
 }
 
-
-#board {
-  position: relative;
-  top: -200px;
-	span {
-    padding: 20px 15px 10px 15px;
-    position: absolute;
-    display: inline-block;
-    text-align: center;
-	}
-	div {
-    height: 90px;
-    margin: 0;
-    padding: 0;
-	}
-}
-
 #selected {
 	margin-top: 5px;
 	margin-bottom: 10px;
-  padding: 0;
-  display: inline-block;
+	display: block;
+	position: relative;
 	li {
     float: left;
     list-style: none;
-    width: 50px;
-    padding: 20px 15px 10px 15px;
+	}
+}
+
+#board {
+	position: relative;
+	top: -100px;
+	li {
+    position: absolute;
+		display: inline-block;
 	}
 }
 
 // tile colors
 #board, #selected {
+	padding: 0;
+	margin: 0;
   margin-left: auto;
   margin-right: auto;
 
-	span, li {
+	li {
+		padding: 20px 15px 10px 15px;
+		text-align: center;
     background: #e8e7e4;
     width: 50px;
     height: 60px;
