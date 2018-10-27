@@ -62,7 +62,8 @@
     [:div {:class "playersContainer container"}
      [:input {:type "submit"
               :value "Tyhjennä"
-              :class "clear topbuttons"}]
+              :class "clear topbuttons"
+              :on-click #(reset! selected-tiles [])}]
      [:input (conj {:type "submit"
                     :value "Pass"
                     :class "pass topbuttons"}
