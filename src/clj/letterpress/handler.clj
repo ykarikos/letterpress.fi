@@ -9,12 +9,14 @@
 
 (def mount-target
   [:div#app
-   [:h1 "Letterpress.fi"]
-   [:p "Suomenkielinen "
-    [:a {:href "http://www.letterpressapp.com/"}
-     "Letterpress"]
-    "-kopio"]
-   [:p "Ladataan..."]])
+   [:div {:class "container"
+          :style "width: 300px"}
+    [:h1 "Letterpress.fi"]
+    [:p "Suomenkielinen "
+     [:a {:href "http://www.letterpressapp.com/"}
+      "Letterpress"]
+     "-kopio"]
+    [:p "Ladataan..."]]])
 
 (defn head []
   [:head

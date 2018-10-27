@@ -28,7 +28,8 @@
 (defn index-page []
   (let [player-name (r/atom @current-player)]
     (fn []
-      [:div
+      [:div {:class "container"
+             :style {:width "300px"}}
        [:h1 "Letterpress.fi"]
        [:p "Suomenkielinen "
         [:a {:href "http://www.letterpressapp.com/"}

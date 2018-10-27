@@ -15,10 +15,18 @@ input[type="submit"] {
 	font-size: 12pt;
 }
 
+.container {
+	margin-left: auto;
+  margin-right: auto;
+}
+
+.game-over {
+	width: 500px;
+  text-align: center;
+}
+
 .playersContainer {
   width: 200px;
-  margin-left: auto;
-  margin-right: auto;
 	padding-top: 10px;
 	.topbuttons {
 		position: absolute;
@@ -122,9 +130,6 @@ input[type="submit"] {
 // tile colors
 #board, #selected {
 	padding: 0;
-	margin: 0;
-  margin-left: auto;
-  margin-right: auto;
 
 	li {
 		padding: 20px 15px 10px 15px;
@@ -158,10 +163,8 @@ input[type="submit"] {
 }
 
 .playedWords {
-	position: relative;
 	width: 400px;
-  margin-left: auto;
-  margin-right: auto;
+	position: relative;
   padding-left: 0;
 
 	li {
