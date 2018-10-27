@@ -8,3 +8,5 @@
   (local-storage
     (r/atom nil)
     :current-player))
+
+(def selected-tiles (r/atom []))
