@@ -19,6 +19,7 @@
                   :scope "provided"]
                  [secretary "1.2.3"]
                  [cljs-ajax "0.7.3"]
+                 [fogus/ring-edn "0.3.0"]
                  [venantius/accountant "0.2.4"
                   :exclusions [org.clojure/tools.reader]]]
 

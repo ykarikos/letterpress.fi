@@ -4,7 +4,9 @@
             [hiccup.page :refer [include-js include-css html5]]
             [letterpress.middleware :refer [wrap-middleware]]
             [letterpress.game :as game]
+            [clojure.edn :as edn]
             [ring.util.response :refer [response]]
+            [ring.middleware.edn :refer [wrap-edn-params]]
             [config.core :refer [env]]))
 
 (def mount-target
@@ -56,9 +58,14 @@
     (GET "/game/:id" [id]
       (api-response (game/get-game id)))
     (POST "/game/:id/join" [id player-name]
-      (api-response (game/join-game id player-name))))
+      (api-response (game/join-game id player-name)))
+    (POST "/game/:id/submit" [id tiles player-name]
+      (api-response (game/submit-word id player-name (edn/read-string tiles)))))
 
   (resources "/")
   (not-found "Not Found"))
 
-(def app (wrap-middleware #'routes))
+(def app
+  (-> routes
+      wrap-middleware
+      wrap-edn-params))

@@ -5,12 +5,34 @@
             [ajax.core :refer [GET POST]]
             [cljs.tools.reader.edn :as edn]))
 
+; Calls to backend
+
 (defn- update-game-state [data]
+  (reset! selected-tiles [])
   (reset! game (edn/read-string data)))
 
-(defn- fetch-game [id]
+(defn- fetch-game! [id]
   (GET (str "/api/game/" id)
        {:handler update-game-state}))
+
+(defn- join-game! [id player-name]
+  (if (empty? player-name)
+    (println "Player name missing!") ;TODO
+    (do
+      (reset! current-player player-name)
+      (POST (str "/api/game/" id "/join")
+            {:params {:player-name player-name}
+             :format :raw
+             :handler update-game-state}))))
+
+(defn- submit-word! [id]
+  (POST (str "/api/game/" id "/submit")
+        {:params {:tiles (str @selected-tiles)
+                  :player-name @current-player}
+         :format :raw
+         :handler update-game-state}))
+
+; Components
 
 (defn- render-player [num name score current-turn]
   [:li {:class (str "player" num)}
@@ -31,16 +53,6 @@
 (defn- turn [game]
   (-> game :turn keyword game))
 
-(defn- join-game! [id player-name]
-  (if (empty? player-name)
-    (println "Player name missing!") ;TODO
-    (do
-      (reset! current-player player-name)
-      (POST (str "/api/game/" id "/join")
-            {:params {:player-name player-name}
-             :format :raw
-             :handler update-game-state}))))
-
 (defn- join-game-form [game current-player]
   (let [player-name (r/atom current-player)]
     (fn []
@@ -56,6 +68,7 @@
                 :value "Liity peliin"
                 :class "namesubmit"
                 :on-click #(join-game! (:_id game) @player-name)}]])))
+
 
 (defn- render-players [game current-player]
   (let [ended (-> game :winner nil? not)]
@@ -86,7 +99,8 @@
                        (and (= (:turn game) "player-two") (not ended))))]
      [:input (conj {:type "submit"
                     :value "Lähetä"
-                    :class "submit topbuttons"}
+                    :class "submit topbuttons"
+                    :on-click #(submit-word! (:_id game))}
                    (when (or ended (not= current-player (turn game)))
                      {:disabled "disabled"}))]]))
 
@@ -104,7 +118,7 @@
 
 (defn game-page [id]
   (if (nil? @game)
-    (do (fetch-game id)
+    (do (fetch-game! id)
       [:div {:class "container"
              :width "300px"}
        "Haetaan peliä..."])
@@ -126,4 +140,4 @@
              :style {:top (str (+ 120 (* size 90)) "px")}}
         (for [word (:played-words @game)]
           ^{:key (:word word)}
-          [:li {:class (str "player" (:turn word))} (:word word)])]])))
+          [:li {:class (:turn word)} (:word word)])]])))

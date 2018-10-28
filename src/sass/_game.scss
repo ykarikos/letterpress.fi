@@ -166,15 +166,16 @@ input[type="submit"] {
 	width: 400px;
 	position: relative;
   padding-left: 0;
+	text-transform: uppercase;
 
 	li {
 		list-style: none;
 		display: inline-block;
 	}
-	.player1 {
+	.player-one {
 		color: $blueLocked;
 	}
-	.player2 {
+	.player-two {
 		color: $redLocked;
 	}
 	li:after {

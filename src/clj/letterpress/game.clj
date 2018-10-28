@@ -1,5 +1,12 @@
 (ns letterpress.game
-  (:require [letterpress.db :as db]))
+  (:require [letterpress.db :as db]
+            [clojure.java.io :as io]))
+
+(def words
+  (-> "fi.txt"
+      io/resource
+      slurp
+      clojure.string/split-lines))
 
 (def alphabet
   ['(\I 0.11607)
@@ -71,4 +78,41 @@ returns the game object."
 
 (defn join-game
   [id player-name]
-  (db/join-game id player-name))
+  (let [result (db/join-game id player-name)]
+    (when (= 1 result)
+      (db/get-game id))))
+
+(defn- game-contains-tiles?
+  [game tiles]
+  true) ; TODO
+
+(defn- valid-submit?
+  [word game tiles player-name]
+  (and (some (partial = word) words)
+       (game-contains-tiles? game tiles)
+       (-> game :turn keyword game (= player-name))
+       (not (some (partial = word) (:played-words game))))) ; TODO check partials as well
+
+(defn- update-tiles-fn
+  [owner]
+  (fn [old-tiles tile]
+    (replace {tile (assoc tile :owner owner)} old-tiles)))
+
+(defn- new-score
+  [old-score turn tiles]
+  old-score) ; TODO
+
+(defn submit-word
+  [id player-name tiles]
+  (let [word (->> tiles (map :letter) (reduce str) clojure.string/lower-case)
+        game (db/get-game id)]
+    (when (valid-submit? word game tiles player-name)
+      (db/update-game
+        id
+        (reduce (update-tiles-fn (:turn game)) (:tiles game) tiles)
+        (new-score (:score game) (:turn game) tiles)
+        (if (= (:turn game) "player-one")
+          "player-two"
+          "player-one")
+        (conj (:played-words game) {:word word :turn (:turn game)}))
+      (db/get-game id))))

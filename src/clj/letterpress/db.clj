@@ -22,5 +22,10 @@
 
 (defn join-game [id player-name]
   (let [result (mc/update-by-id db game-db id {$set {:player-two player-name}})]
-    (when (= 1 (.getN result))
-      (get-game id))))
+    (.getN result)))
+
+(defn update-game [id tiles score turn played-words]
+  (mc/update-by-id db game-db id {$set {:tiles tiles
+                                        :score score
+                                        :turn turn
+                                        :played-words played-words}}))
