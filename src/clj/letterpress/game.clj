@@ -100,14 +100,31 @@ returns the game object."
        (-> game :turn keyword game (= player-name))
        (not (is-played-word? word (:played-words game)))))
 
-(defn- update-tiles-fn
+(defn- update-tiles-fn ; TODO
   [owner]
   (fn [old-tiles tile]
     (replace {tile (assoc tile :owner owner)} old-tiles)))
 
-(defn- new-score
-  [old-score turn tiles]
-  old-score) ; TODO
+(defn- turn-flip
+  [turn]
+  (if (= turn "player-one")
+      "player-two"
+      "player-one"))
+
+(defn- new-score-fn
+  [turn]
+  (fn [old-score {owner :owner}]
+    (if (or (= owner turn)
+            (= owner "player-one-locked")
+            (= owner "player-two-locked"))
+      old-score
+      (if (= owner (turn-flip turn)) ; other player owned the tile
+        (if (= turn "player-one")
+          [(-> old-score first inc) (-> old-score second dec)]
+          [(-> old-score first dec) (-> old-score second inc)])
+        (if (= turn "player-one") ; no one owned the tile
+          [(-> old-score first inc) (-> old-score second)]
+          [(-> old-score first) (-> old-score second inc)])))))
 
 (defn submit-word
   [id player-name tiles]
@@ -116,10 +133,8 @@ returns the game object."
     (when (valid-submit? word game tiles player-name)
       (db/update-game
         id
-        (reduce (update-tiles-fn (:turn game)) (:tiles game) tiles)
-        (new-score (:score game) (:turn game) tiles)
-        (if (= (:turn game) "player-one")
-          "player-two"
-          "player-one")
-        (conj (:played-words game) {:word word :turn (:turn game)}))
+        {:tiles (reduce (update-tiles-fn (:turn game)) (:tiles game) tiles)
+         :score (reduce (new-score-fn (:turn game)) (:score game) tiles)
+         :turn (turn-flip (:turn game))
+         :played-words (conj (:played-words game) {:word word :turn (:turn game)})})
       (db/get-game id))))

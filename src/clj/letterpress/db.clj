@@ -24,8 +24,5 @@
   (let [result (mc/update-by-id db game-db id {$set {:player-two player-name}})]
     (.getN result)))
 
-(defn update-game [id tiles score turn played-words]
-  (mc/update-by-id db game-db id {$set {:tiles tiles
-                                        :score score
-                                        :turn turn
-                                        :played-words played-words}}))
+(defn update-game [id game]
+  (mc/update-by-id db game-db id {$set game}))
