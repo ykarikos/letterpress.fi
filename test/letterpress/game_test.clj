@@ -55,4 +55,5 @@
     (is (not (#'game/valid-submit? "kesä" game tiles "Mikko")))
     (is (not (#'game/valid-submit? "kes" game tiles "foo")))
     (is (not (#'game/valid-submit? "kesä" game borked-tiles "foo")))
-    (is (not (#'game/valid-submit? "kuha" game tiles "foo")))))
+    (is (not (#'game/valid-submit? "kuha" game tiles "foo")))
+    (is (not (#'game/valid-submit? "rakka" game tiles "foo")))))

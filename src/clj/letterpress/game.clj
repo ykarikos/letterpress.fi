@@ -88,13 +88,17 @@ returns the game object."
        (map (fn [x] (some #(= x %) game-tiles)))
        (every? identity)))
 
+(defn- is-played-word?
+  [word played-words]
+  (some #(.startsWith (:word %) word) played-words))
+
 (defn- valid-submit?
   [word game tiles player-name]
   "Are `word` and `tiles` a valid submission for game state `game` and `player-name`?"
   (and (some (partial = word) words)
        (game-contains-tiles? (:tiles game) tiles)
        (-> game :turn keyword game (= player-name))
-       (not (some #(= word (:word %)) (:played-words game))))) ; TODO check partials as well
+       (not (is-played-word? word (:played-words game)))))
 
 (defn- update-tiles-fn
   [owner]
