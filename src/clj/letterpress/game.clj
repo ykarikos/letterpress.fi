@@ -83,13 +83,16 @@ returns the game object."
       (db/get-game id))))
 
 (defn- game-contains-tiles?
-  [game tiles]
-  true) ; TODO
+  [game-tiles tiles]
+  (->> tiles
+       (map (fn [x] (some #(= x %) game-tiles)))
+       (every? identity)))
 
 (defn- valid-submit?
   [word game tiles player-name]
+  "Are `word` and `tiles` a valid submission for game state `game` and `player-name`?"
   (and (some (partial = word) words)
-       (game-contains-tiles? game tiles)
+       (game-contains-tiles? (:tiles game) tiles)
        (-> game :turn keyword game (= player-name))
        (not (some (partial = word) (:played-words game))))) ; TODO check partials as well
 

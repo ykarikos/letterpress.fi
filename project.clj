@@ -98,6 +98,7 @@
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.17"]
+                             [com.jakemccrary/lein-test-refresh "0.23.0"]
                              [deraen/lein-sass4clj "0.3.1"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
