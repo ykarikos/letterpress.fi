@@ -94,7 +94,7 @@ returns the game object."
   (and (some (partial = word) words)
        (game-contains-tiles? (:tiles game) tiles)
        (-> game :turn keyword game (= player-name))
-       (not (some (partial = word) (:played-words game))))) ; TODO check partials as well
+       (not (some #(= word (:word %)) (:played-words game))))) ; TODO check partials as well
 
 (defn- update-tiles-fn
   [owner]
