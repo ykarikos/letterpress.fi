@@ -8,8 +8,8 @@
                  [ring-server "0.5.0"]
                  [reagent "0.8.1"]
                  [reagent-utils "0.3.1"]
-                 [ring "1.6.3"]
-                 [ring/ring-defaults "0.3.1"]
+                 [ring "1.7.0"]
+                 [ring/ring-defaults "0.3.2"]
                  [compojure "1.6.1"]
                  [hiccup "1.0.5"]
                  [yogthos/config "1.1.1"]
@@ -18,7 +18,7 @@
                  [org.clojure/clojurescript "1.10.339"
                   :scope "provided"]
                  [secretary "1.2.3"]
-                 [cljs-ajax "0.7.3"]
+                 [cljs-ajax "0.7.5"]
                  [fogus/ring-edn "0.3.0"]
                  [venantius/accountant "0.2.4"
                   :exclusions [org.clojure/tools.reader]]]
@@ -67,7 +67,6 @@
               :optimizations :none
               :pretty-print  true}}}}
 
-
   :figwheel
   {:http-server-root "public"
    :reload-clj-files true
@@ -86,10 +85,10 @@
                    :dependencies [[cider/piggieback "0.3.8"]
                                   [binaryage/devtools "0.9.10"]
                                   [ring/ring-mock "0.3.2"]
-                                  [ring/ring-devel "1.6.3"]
-                                  [prone "1.5.2"]
-                                  [figwheel-sidecar "0.5.16"]
-                                  [nrepl "0.4.4"]
+                                  [ring/ring-devel "1.7.0"]
+                                  [prone "1.6.1"]
+                                  [figwheel-sidecar "0.5.17"]
+                                  [nrepl "0.4.5"]
                                   [cider/piggieback "0.3.8"]
                                   [pjstadig/humane-test-output "0.8.3"]
 
@@ -98,7 +97,7 @@
 
 
                    :source-paths ["env/dev/clj"]
-                   :plugins [[lein-figwheel "0.5.16"]
+                   :plugins [[lein-figwheel "0.5.17"]
                              [deraen/lein-sass4clj "0.3.1"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
