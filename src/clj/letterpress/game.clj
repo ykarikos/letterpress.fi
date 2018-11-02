@@ -126,6 +126,24 @@ returns the game object."
           [(-> old-score first inc) (-> old-score second)]
           [(-> old-score first) (-> old-score second inc)])))))
 
+(defn- create-new-game-state
+  [word game tiles]
+  (let [new-tiles (reduce (update-tiles-fn (:turn game)) (:tiles game) tiles)
+        new-score (reduce (new-score-fn (:turn game)) (:score game) tiles)
+        new-played-words (conj (:played-words game) {:word word :turn (:turn game)})
+        tile-count (count new-tiles)
+        score-sum (apply + new-score)
+        winner (when (= score-sum tile-count)
+                 {:winner (if (apply > new-score)
+                            (:player-one game)
+                            (:player-two game))})]
+    (conj
+      {:tiles new-tiles
+       :score new-score
+       :turn (turn-flip (:turn game))
+       :played-words new-played-words}
+      winner)))
+
 (defn submit-word
   [id player-name tiles]
   (let [word (->> tiles (map :letter) (reduce str) clojure.string/lower-case)
@@ -133,8 +151,5 @@ returns the game object."
     (when (valid-submit? word game tiles player-name)
       (db/update-game
         id
-        {:tiles (reduce (update-tiles-fn (:turn game)) (:tiles game) tiles)
-         :score (reduce (new-score-fn (:turn game)) (:score game) tiles)
-         :turn (turn-flip (:turn game))
-         :played-words (conj (:played-words game) {:word word :turn (:turn game)})})
+        (create-new-game-state word game tiles))
       (db/get-game id))))

@@ -69,4 +69,4 @@
 
 (deftest new-score
   (testing "Calculate new score"
-    (is (= [8 6] (reduce (#'game/new-score-fn "player-one") (:score game)  tiles2)))))
+    (is (= [8 6] ((#'game/create-new-game-state "kerran" game tiles2) :score)))))
