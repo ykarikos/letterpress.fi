@@ -137,7 +137,7 @@
         (for [tile (:tiles @game)]
           ^{:key (:id tile)} [tile/tile tile size])]
        [:ul {:class "playedWords container"
-             :style {:top (str (+ 120 (* size 90)) "px")}}
+             :style {:top (str (+ 30 (* size 90)) "px")}}
         (for [word (:played-words @game)]
           ^{:key (:word word)}
           [:li {:class (:turn word)} (:word word)])]])))

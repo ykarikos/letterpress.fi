@@ -110,6 +110,7 @@ input[type="submit"] {
 #selected {
 	margin-top: 5px;
 	margin-bottom: 10px;
+	height: 90px;
 	display: block;
 	position: relative;
 	li {
@@ -120,7 +121,7 @@ input[type="submit"] {
 
 #board {
 	position: relative;
-	top: -100px;
+	top: -190px;
 	li {
     position: absolute;
 		display: inline-block;
@@ -167,9 +168,11 @@ input[type="submit"] {
 	position: relative;
   padding-left: 0;
 	text-transform: uppercase;
+	clear: left;
 
 	li {
 		list-style: none;
+		padding-right: 5px;
 		display: inline-block;
 	}
 	.player-one {
