@@ -14,6 +14,12 @@
     (println @game)
     (accountant/navigate! (str "/game/" (:_id new-game)))))
 
+(defn- save-player-name! [player-name]
+  (if (empty? player-name)
+    (println "Player name missing!")
+    (reset! current-player player-name)))
+
+
 (defn- create-game! [player-name]
   (if (empty? player-name)
     (println "Player name missing!") ; TODO
@@ -49,4 +55,8 @@
        [:div
         [:input {:type "submit"
                  :value "Käynnistä uusi peli"
-                 :on-click #(create-game! @player-name)}]]])))
+                 :on-click #(create-game! @player-name)}]
+        (when (nil? @current-player)
+          [:input {:type "submit"
+                   :value "Tallenna nimi"
+                   :on-click #(save-player-name! @player-name)}])]])))
