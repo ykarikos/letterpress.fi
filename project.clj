@@ -26,7 +26,12 @@
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.7"]
             [lein-asset-minifier "0.2.7"
-             :exclusions [org.clojure/clojure]]]
+             :exclusions [org.clojure/clojure]]
+            [lein-exec "0.3.7"]]
+
+  :aliases
+  {"compile-sass" ["exec" "-e"
+                   "(println (:out (clojure.java.shell/sh \"lein\" \"sass4clj\" \"once\")))"]}
 
   :ring {:handler letterpress.handler/app
          :uberwar-name "letterpress.war"}
@@ -108,7 +113,7 @@
 
              :uberjar {:hooks [minify-assets.plugin/hooks]
                        :source-paths ["env/prod/clj"]
-                       :prep-tasks ["compile" ["cljsbuild" "once" "min"]]
+                       :prep-tasks ["compile-sass" "compile" ["cljsbuild" "once" "min"]]
                        :env {:production true}
                        :aot :all
                        :omit-source true}})
