@@ -34,7 +34,7 @@
 
 (defn- clear-selected! []
   (do
-    (swap! game dissoc :new-score)
+    (swap! game dissoc :new-score :valid-word)
     (reset! selected-tiles [])))
 
 ; Components
@@ -89,15 +89,15 @@
 (defn- render-players [game current-player]
   (let [ended (-> game :winner nil? not)]
     [:div {:class "playersContainer container"}
-     [:input {:type "submit"
-              :value "Tyhjennä"
-              :class "clear topbuttons"
-              :on-click clear-selected!}]
-     [:input (conj {:type "submit"
-                    :value "Pass"
-                    :class "pass topbuttons"}
-                   (when (or ended (not= current-player (turn game)))
-                     {:disabled "disabled"}))]
+     [:button {:type "submit"
+               :class "clear topbuttons"
+               :on-click clear-selected!}
+      "Tyhjennä"]
+     [:button (conj {:type "submit"
+                     :class "pass topbuttons"}
+                    (when (or ended (not= current-player (turn game)))
+                      {:disabled "disabled"}))
+      "Pass"]
      [:ul {:class "players"}
       (render-player 1
                      (:player-one game)
@@ -113,12 +113,12 @@
                        (:player-two game)
                        (get-score game second)
                        (and (= (:turn game) "player-two") (not ended))))]
-     [:input (conj {:type "submit"
-                    :value "Lähetä"
-                    :class "submit topbuttons"
-                    :on-click #(submit-word! (:_id game))}
+     [:button (conj {:type "submit"
+                     :class "submit topbuttons"
+                     :on-click #(submit-word! (:_id game))}
                    (when (disable-submit? ended current-player game)
-                     {:disabled "disabled"}))]]))
+                     {:disabled "disabled"}))
+      "Lähetä"]]))
 
 (defn- render-game-over [game]
   (let [winner (:winner game)
