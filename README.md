@@ -10,7 +10,7 @@ A Finnish language [Letterpress](http://www.letterpressapp.com/) clone.
 
 ## Environment variables
 
-* `DB_URI` – MongoDB URI, defaults to `"mongodb://localhost/letterpress"`
+* `MONGODB_URI` – MongoDB URI, defaults to `"mongodb://localhost/letterpress"`
 
 ## Development mode
 

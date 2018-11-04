@@ -5,7 +5,7 @@
             [config.core :refer [env]]))
 
 (def db-uri
-  (or (:db-uri env) "mongodb://localhost/letterpress"))
+  (or (:mongodb-uri env) "mongodb://localhost/letterpress"))
 
 (def connection
   (mg/connect-via-uri db-uri))
