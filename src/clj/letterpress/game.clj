@@ -103,3 +103,20 @@ returns the game object."
         id
         (create-new-game-state word game tiles))
       (db/get-game id))))
+
+(defn- get-player
+  [player-name game]
+  (if (= player-name (:player-one game))
+    "player-one"
+    (when (= player-name (:player-two game))
+      "player-two")))
+
+(defn validate-word
+  [id player-name tiles]
+  (let [word (->> tiles (map :letter) (reduce str) clojure.string/lower-case)
+        game (db/get-game id)
+        player (get-player player-name game)]
+    (if (nil? player)
+      {:valid-word false}
+      {:new-score (reduce (new-score-fn player) (:score game) tiles)
+       :valid-word (valid-submit? word game tiles player-name)})))

@@ -5,7 +5,7 @@
             [ajax.core :refer [GET POST]]
             [cljs.tools.reader.edn :as edn]))
 
-; Calls to backend
+; Calls to backend and actions
 
 (defn- update-game-state [data]
   (reset! selected-tiles [])
@@ -31,6 +31,11 @@
                   :player-name @current-player}
          :format :raw
          :handler update-game-state}))
+
+(defn- clear-selected! []
+  (do
+    (swap! game dissoc :new-score)
+    (reset! selected-tiles [])))
 
 ; Components
 
@@ -69,6 +74,17 @@
                 :class "namesubmit"
                 :on-click #(join-game! (:_id game) @player-name)}]])))
 
+(defn- disable-submit?
+  [ended current-player game]
+  (or ended
+      (not= current-player (turn game))
+      (not (:valid-word game))))
+
+(defn- get-score
+  [game f]
+  (if (:new-score game)
+    (f (:new-score game))
+    (f (:score game))))
 
 (defn- render-players [game current-player]
   (let [ended (-> game :winner nil? not)]
@@ -76,7 +92,7 @@
      [:input {:type "submit"
               :value "Tyhjennä"
               :class "clear topbuttons"
-              :on-click #(reset! selected-tiles [])}]
+              :on-click clear-selected!}]
      [:input (conj {:type "submit"
                     :value "Pass"
                     :class "pass topbuttons"}
@@ -85,7 +101,7 @@
      [:ul {:class "players"}
       (render-player 1
                      (:player-one game)
-                     (-> game :score first)
+                     (get-score game first)
                      (and (= (:turn game) "player-one") (not ended)))
       (if (-> game :player-two nil?)
         (if (= (:player-one game) current-player)
@@ -95,13 +111,13 @@
           [join-game-form game current-player])
         (render-player 2
                        (:player-two game)
-                       (-> game :score second)
+                       (get-score game second)
                        (and (= (:turn game) "player-two") (not ended))))]
      [:input (conj {:type "submit"
                     :value "Lähetä"
                     :class "submit topbuttons"
                     :on-click #(submit-word! (:_id game))}
-                   (when (or ended (not= current-player (turn game)))
+                   (when (disable-submit? ended current-player game)
                      {:disabled "disabled"}))]]))
 
 (defn- render-game-over [game]

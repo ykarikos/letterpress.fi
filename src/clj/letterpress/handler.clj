@@ -60,7 +60,9 @@
     (POST "/game/:id/join" [id player-name]
       (api-response (game/join-game id player-name)))
     (POST "/game/:id/submit" [id tiles player-name]
-      (api-response (game/submit-word id player-name (edn/read-string tiles)))))
+      (api-response (game/submit-word id player-name (edn/read-string tiles))))
+    (POST "/game/:id/validate" [id tiles player-name]
+      (api-response (game/validate-word id player-name (edn/read-string tiles)))))
 
   (resources "/")
   (not-found "Not Found"))

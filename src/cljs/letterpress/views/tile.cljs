@@ -1,11 +1,26 @@
 (ns letterpress.views.tile
-  (:require [letterpress.state :refer [selected-tiles]]))
+  (:require [letterpress.state :refer [game current-player selected-tiles]]
+            [ajax.core :refer [POST]]
+            [cljs.tools.reader.edn :as edn]))
+
+(defn- update-game-state [data]
+  (swap! game conj (edn/read-string data)))
 
 (defn- selected-tile-click! [tile]
-  (reset! selected-tiles (filterv #(not= (:id tile) (:id %)) @selected-tiles)))
+  (reset! selected-tiles (filterv #(not= (:id tile) (:id %)) @selected-tiles))
+  (POST (str "/api/game/" (:_id @game) "/validate")
+        {:params {:tiles (str @selected-tiles)
+                  :player-name @current-player}
+         :format :raw
+         :handler update-game-state}))
 
 (defn- tile-click! [tile]
-  (swap! selected-tiles conj tile))
+  (swap! selected-tiles conj tile)
+  (POST (str "/api/game/" (:_id @game) "/validate")
+        {:params {:tiles (str @selected-tiles)
+                  :player-name @current-player}
+         :format :raw
+         :handler update-game-state}))
 
 (defn- hidden-tile? [tile]
   (some #(= (:id tile) (:id %)) @selected-tiles))
