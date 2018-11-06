@@ -1,5 +1,3 @@
-- validate word before submitting and show new scores before submit -> enable/disable submit
 - pass a turn
 - notify frontend that a turn has been played
 - make letters draggable
-- list games

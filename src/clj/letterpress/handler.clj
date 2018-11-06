@@ -62,7 +62,9 @@
     (POST "/game/:id/submit" [id tiles player-name]
       (api-response (game/submit-word id player-name (edn/read-string tiles))))
     (POST "/game/:id/validate" [id tiles player-name]
-      (api-response (game/validate-word id player-name (edn/read-string tiles)))))
+      (api-response (game/validate-word id player-name (edn/read-string tiles))))
+    (GET "/list" [player-name]
+      (api-response (game/list-games player-name))))
 
   (resources "/")
   (not-found "Not Found"))

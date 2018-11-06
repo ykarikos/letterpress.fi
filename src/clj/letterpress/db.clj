@@ -1,6 +1,6 @@
 (ns letterpress.db
   (:require [monger.collection :as mc]
-            [monger.operators :refer [$set]]
+            [monger.operators :refer [$set $or]]
             [monger.core :as mg]
             [config.core :refer [env]]))
 
@@ -26,3 +26,8 @@
 
 (defn update-game [id game]
   (mc/update-by-id db game-db id {$set game}))
+
+(defn list-games [player-name]
+  (mc/find-maps db game-db {$or [{:player-one player-name}
+                                 {:player-two player-name}]}
+                           [:_id :player-one :player-two]))

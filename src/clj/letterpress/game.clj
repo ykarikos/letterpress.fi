@@ -27,6 +27,9 @@ returns the game object."
     (db/save-game game)
     game))
 
+(defn list-games [player-name]
+  (db/list-games player-name))
+
 (defn get-game
   [id]
   (db/get-game id))
