@@ -40,6 +40,25 @@ returns the game object."
     (when (= 1 result)
       (db/get-game id))))
 
+(defn- is-turn?
+  [game player-name]
+  (-> game :turn keyword game (= player-name)))
+      
+(defn- turn-flip
+  [turn]
+  (if (= turn "player-one")
+      "player-two"
+      "player-one"))
+  
+(defn pass-game
+  [id player-name]
+  (let [game (db/get-game id)]
+    (when (is-turn? game player-name)
+      (db/update-game id
+        (conj game
+          {:turn (turn-flip (:turn game))}))
+      (db/get-game id))))
+
 (defn- game-contains-tiles?
   [game-tiles tiles]
   (->> tiles
@@ -55,14 +74,8 @@ returns the game object."
   "Are `word` and `tiles` a valid submission for game state `game` and `player-name`?"
   (and (some (partial = word) words)
        (game-contains-tiles? (:tiles game) tiles)
-       (-> game :turn keyword game (= player-name))
+       (is-turn? game player-name)
        (not (is-played-word? word (:played-words game)))))
-
-(defn- turn-flip
-  [turn]
-  (if (= turn "player-one")
-      "player-two"
-      "player-one"))
 
 (defn- new-score-fn
   [turn]

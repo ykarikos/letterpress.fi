@@ -37,6 +37,12 @@
     (swap! game dissoc :new-score :valid-word)
     (reset! selected-tiles [])))
 
+(defn- pass! [id]
+  (POST (str "/api/game/" id "/pass")
+        {:params {:player-name @current-player}
+         :format :raw
+         :handler update-game-state}))
+    
 ; Components
 
 (defn- render-player [num name score current-turn]
@@ -94,7 +100,8 @@
                :on-click clear-selected!}
       "Tyhjennä"]
      [:button (conj {:type "submit"
-                     :class "pass topbuttons"}
+                     :class "pass topbuttons"
+                     :on-click #(pass! (:_id game))}
                     (when (or ended (not= current-player (turn game)))
                       {:disabled "disabled"}))
       "Pass"]
@@ -116,8 +123,8 @@
      [:button (conj {:type "submit"
                      :class "submit topbuttons"
                      :on-click #(submit-word! (:_id game))}
-                   (when (disable-submit? ended current-player game)
-                     {:disabled "disabled"}))
+                    (when (disable-submit? ended current-player game)
+                      {:disabled "disabled"}))
       "Lähetä"]]))
 
 (defn- render-game-over [game]
