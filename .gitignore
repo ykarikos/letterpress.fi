@@ -13,6 +13,6 @@ pom.xml.asc
 *.log
 /.env
 /.sass-cache
-resources/public/css/site.css
+resources/public/css
 .rebel_readline_history
 .timelog
