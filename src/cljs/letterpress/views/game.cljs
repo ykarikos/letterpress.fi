@@ -42,14 +42,14 @@
         {:params {:player-name @current-player}
          :format :raw
          :handler update-game-state}))
-    
+
 ; Components
 
 (defn- render-player [num name score current-turn]
   [:li {:class (str "player" num)}
    [:span {:class "icon"
            :title name}
-    "☺"]
+    "☻"]
    [:br]
    [:span {:class "playerName"}
     name]
