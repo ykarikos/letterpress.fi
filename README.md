@@ -97,3 +97,18 @@ git push heroku master
 
 Your application should now be deployed to Heroku!
 For further instructions see the [official documentation](https://devcenter.heroku.com/articles/clojure).
+
+
+## Licenses
+
+Letterpress.fi's source code is licensed with the MIT License, see [LICENSE.txt](LICENSE.txt)
+
+Varela Round font is obtained from [Google Web Fonts](http://www.google.com/webfonts)
+and is licensed with SIL Open Font License, see [OFL.txt](OFL.txt).
+
+Finnish word list is obtained from [Kotimaisten kielten keskus](http://kaino.kotus.fi/sanat/nykysuomi/)
+and is licensed with [GNU LGPL](http://www.gnu.org/licenses/lgpl.html)
+
+## Thanks
+
+This project is a grateful recipient of the [Futurice Open Source sponsorship program](http://futurice.com/blog/sponsoring-free-time-open-source-activities?utm_source=github&utm_medium=spice) 🌶🦄.
