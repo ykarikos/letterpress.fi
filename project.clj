@@ -4,30 +4,31 @@
   :license {:name "MIT"
             :url "https://github.com/ykarikos/letterpress.fi/blob/clj-rewrite/LICENSE"}
 
-  :dependencies [[org.clojure/clojure "1.9.0"]
+  :dependencies [[org.clojure/clojure "1.10.1"]
                  [ring-server "0.5.0"]
-                 [reagent "0.8.1"]
-                 [reagent-utils "0.3.1"]
-                 [ring "1.7.0"]
+                 [reagent "0.10.0"]
+                 [reagent-utils "0.3.3"]
+                 [ring "1.8.1"]
                  [ring/ring-defaults "0.3.2"]
-                 [compojure "1.6.1"]
+                 [compojure "1.6.2"]
                  [hiccup "1.0.5"]
-                 [yogthos/config "1.1.1"]
-                 [alandipert/storage-atom "1.2.4"]
-                 [com.novemberain/monger "3.1.0" :exclusions [com.google.guava/guava]]
-                 [org.clojure/clojurescript "1.10.339"
+                 [yogthos/config "1.1.7"]
+                 [alandipert/storage-atom "2.0.1"]
+                 [com.novemberain/monger "3.5.0" :exclusions [com.google.guava/guava]]
+                 [org.clojure/clojurescript "1.10.773"
                   :scope "provided"]
-                 [secretary "1.2.3"]
-                 [cljs-ajax "0.7.5"]
+                 [clj-commons/secretary "1.2.4"]
+                 [cljs-ajax "0.8.0"]
                  [fogus/ring-edn "0.3.0"]
-                 [venantius/accountant "0.2.4"
+                 [venantius/accountant "0.2.5"
                   :exclusions [org.clojure/tools.reader]]]
 
-  :plugins [[lein-environ "1.1.0"]
-            [lein-cljsbuild "1.1.7"]
-            [lein-asset-minifier "0.2.7"
+  :plugins [[lein-environ "1.2.0"]
+            [lein-cljsbuild "1.1.8"]
+            [lein-asset-minifier "0.4.6"
              :exclusions [org.clojure/clojure]]
-            [lein-exec "0.3.7"]]
+            [lein-exec "0.3.7"]
+            [lein-ancient "0.6.15"]]
 
   :aliases
   {"compile-sass" ["exec" "-e"
@@ -87,24 +88,24 @@
          :target-path "resources/public/css"}
 
   :profiles {:dev {:repl-options {:init-ns letterpress.repl}
-                   :dependencies [[cider/piggieback "0.3.8"]
-                                  [binaryage/devtools "0.9.10"]
-                                  [ring/ring-mock "0.3.2"]
-                                  [ring/ring-devel "1.7.0"]
-                                  [prone "1.6.1"]
-                                  [figwheel-sidecar "0.5.17"]
-                                  [nrepl "0.4.5"]
-                                  [cider/piggieback "0.3.8"]
-                                  [pjstadig/humane-test-output "0.8.3"]
+                   :dependencies [[cider/piggieback "0.5.1"]
+                                  [binaryage/devtools "1.0.2"]
+                                  [ring/ring-mock "0.4.0"]
+                                  [ring/ring-devel "1.8.1"]
+                                  [prone "2020-01-17"]
+                                  [figwheel-sidecar "0.5.20"]
+                                  [nrepl "0.8.0"]
+                                  [cider/piggieback "0.5.1"]
+                                  [pjstadig/humane-test-output "0.10.0"]
 
                                   ;; To silence warnings from sass4clj dependecies about missing logger implementation
-                                  [org.slf4j/slf4j-nop "1.7.25"]]
+                                  [org.slf4j/slf4j-nop "1.7.30"]]
 
 
                    :source-paths ["env/dev/clj"]
-                   :plugins [[lein-figwheel "0.5.17"]
-                             [com.jakemccrary/lein-test-refresh "0.23.0"]
-                             [deraen/lein-sass4clj "0.3.1"]]
+                   :plugins [[lein-figwheel "0.5.20"]
+                             [com.jakemccrary/lein-test-refresh "0.24.1"]
+                             [deraen/lein-sass4clj "0.5.1"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]

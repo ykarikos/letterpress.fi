@@ -1,5 +1,6 @@
 (ns letterpress.core
   (:require [reagent.core :as r]
+            [reagent.dom :as dom]
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
             [letterpress.views.index :refer [index-page]]
@@ -28,7 +29,7 @@
 ;; Initialize app
 
 (defn mount-root []
-  (r/render [current-page] (.getElementById js/document "app")))
+  (dom/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
   (accountant/configure-navigation!

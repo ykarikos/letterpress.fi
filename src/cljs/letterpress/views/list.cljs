@@ -12,9 +12,8 @@
         :handler #(reset! game-list (edn/read-string %))}))
 
 (defn- render-game [game]
-  [:li
-   [:a {:href (str "/game/" (:_id game))}
-    (:player-one game) "-" (:player-two game)]])
+  [:a {:href (str "/game/" (:_id game))}
+   (:player-one game) "-" (:player-two game)])
 
 (defn list-page []
   [:div {:class "container"
@@ -30,4 +29,4 @@
          [:div "Ei tallennettuja pelejä."]
          [:ul
           (for [game @game-list]
-            ^{:key (:_id game)} (render-game game))])))])
+            ^{:key (:_id game)} [:li (render-game game)])])))])
