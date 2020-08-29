@@ -1,5 +1,5 @@
 (ns letterpress.game
-  (:require [letterpress.db :as db]
+  (:require [letterpress.db.postgresql :as db]
             [clojure.java.io :as io]
             [letterpress.tile :as tile]))
 
@@ -103,7 +103,8 @@ returns the game object."
                  {:winner (if (apply > new-score)
                             (:player-one game)
                             (:player-two game))})]
-    (conj
+    (merge
+      game
       {:tiles new-tiles
        :score new-score
        :turn (turn-flip (:turn game))

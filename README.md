@@ -57,6 +57,19 @@ and stopped by running:
 (stop-server)
 ```
 
+## Starting the database
+
+### Mongo
+
+```
+docker run -d -p 27017:27017 --name letterpress-mongo mongo
+```
+
+### Postgresql
+
+```
+docker run -d -e POSTGRES_PASSWORD=secret --name letterpress-possu -p 5432:5432 postgres
+```
 
 ## Building for release
 

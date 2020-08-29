@@ -21,7 +21,10 @@
                  [cljs-ajax "0.8.0"]
                  [fogus/ring-edn "0.3.0"]
                  [venantius/accountant "0.2.5"
-                  :exclusions [org.clojure/tools.reader]]]
+                  :exclusions [org.clojure/tools.reader]]
+                 [org.clojure/java.jdbc "0.7.11"]
+                 [org.postgresql/postgresql "42.2.16"]
+                 [clj-postgresql "0.7.0"]]
 
   :plugins [[lein-environ "1.2.0"]
             [lein-cljsbuild "1.1.8"]
