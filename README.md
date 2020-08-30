@@ -6,11 +6,11 @@ A Finnish language [Letterpress](http://www.letterpressapp.com/) clone.
 
 * [Leiningen](https://leiningen.org/) for Development
 * JVM for running it
-* [Mongodb](https://www.mongodb.com/)
+* [PostgreSQL](https://www.postgresql.org/)
 
 ## Environment variables
 
-* `MONGODB_URI` – MongoDB URI, defaults to `"mongodb://localhost/letterpress"`
+* `DATABASE_URL` – PostgreSQL URI, defaults to `"postgres://postgres:secret@localhost:5432/letterpress"`
 
 ## Development mode
 
@@ -59,16 +59,16 @@ and stopped by running:
 
 ## Starting the database
 
-### Mongo
-
-```
-docker run -d -p 27017:27017 --name letterpress-mongo mongo
-```
-
 ### Postgresql
 
 ```
 docker run -d -e POSTGRES_PASSWORD=secret --name letterpress-possu -p 5432:5432 postgres
+```
+
+### Mongo
+
+```
+docker run -d -p 27017:27017 --name letterpress-mongo mongo
 ```
 
 ## Building for release
